@@ -46,6 +46,8 @@ Clone the repository.
 git clone https://github.com/Toxocious/Ephemeral.git
 ```
 
+After cloning the repository onto your system, you can compile the project by running the [compile.sh](./compile.sh) script.
+
 
 
 # Project Structure
@@ -81,10 +83,6 @@ Each part of the project contains a README containing further information about 
 │   ├── Build-Game.lua
 │   ├── Makefile
 │   └── README.md
-├── scripts/
-│   └── README.md
-│   └── Setup-Linux.sh
-│   └── Setup-Windows.sh
 └── server/
     ├── src/
     │   └── ...
