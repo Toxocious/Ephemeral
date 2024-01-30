@@ -28,6 +28,7 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Project Setup](#project-setup)
+  - [Project Dependencies](#project-dependencies)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
@@ -36,17 +37,36 @@
 
 # Getting Started
 ## Prerequisites
-TBD
+[Premake](https://premake.github.io/) and [Vulkan](https://www.vulkan.org/) are required to generate project files and to also run the application once compiled.
 
+Without Premake, you will not be able to generate the necessary project files.
+
+Without Vulkan, the applications will not be able to run.
+
+Be sure to install both of them and to add them to your operating system's PATH before continuing.
 
 ## Project Setup
-Clone the repository.
+Clone the repository recursively so that all required submodules are downloaded.
 
 ```bash
-git clone https://github.com/Toxocious/Ephemeral.git
+git clone --recursive https://github.com/Toxocious/Ephemeral.git
 ```
 
 After cloning the repository onto your system, you can compile the project by running the [compile.sh](./compile.sh) script.
+
+## Project Dependencies
+We have chosen a number of third-party dependencies to use.
+
+- [GLFW](https://github.com/TheCherno/glfw)
+  - GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan application development. It provides a simple, platform-independent API for creating windows, contexts and surfaces, reading input, handling events, etc.
+- [GLM](https://github.com/g-truc/glm)
+  - OpenGL Mathematics (GLM) is a header only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications.
+- [Dear ImGui](https://github.com/ocornut/imgui/)
+  - Dear ImGui is a bloat-free graphical user interface library for C++.
+- [ImGuizmo](https://github.com/thecherno/imguizmo)
+  - ImGizmo is a small library built on-top of Dear ImGui that allows you to manipulate 4x4 float matrices.
+- [SpdLog](https://github.com/gabime/spdlog)
+  - A very fast, header-only/compiled, C++ logging library.
 
 
 
@@ -88,6 +108,7 @@ Each part of the project contains a README containing further information about 
     │   └── ...
     └── README.md
 ```
+
 
 
 # Contributing
