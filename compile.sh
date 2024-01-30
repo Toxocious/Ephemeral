@@ -7,8 +7,7 @@ case "$(uname -s)" in
 
     CYGWIN*|MINGW*|MSYS*)
         echo "~ Compiling for Windows"
-        # Add Windows-specific commands or actions here
-        premake5 --cc=clang --file=Build.lua vs2022
+        premake5 --file=Build.lua vs2022
         ;;
 
     Darwin*)
