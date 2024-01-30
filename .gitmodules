@@ -1,0 +1,19 @@
+[submodule "core/vendor/imgui"]
+	path = core/vendor/imgui
+	url = https://github.com/ocornut/imgui/
+	branch = docking
+[submodule "core/vendor/imguizmo"]
+	path = core/vendor/imguizmo
+	url = https://github.com/thecherno/imguizmo
+[submodule "core/vendor/glfw"]
+	path = core/vendor/glfw
+	url = https://github.com/TheCherno/glfw
+	branch = master
+[submodule "core/vendor/glm"]
+	path = core/vendor/glm
+	url = https://github.com/g-truc/glm
+	branch = master
+[submodule "core/vendor/spdlog"]
+	path = core/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+	branch = v1.x
