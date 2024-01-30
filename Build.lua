@@ -1,17 +1,32 @@
--- premake5.lua
+-- include "Build-Dependencies.lua"
+
 workspace "Ephemeral"
-   architecture "x64"
-   configurations { "Debug", "Release", "Dist" }
+   architecture "x86_64"
    startproject "Editor"
+
+   configurations {
+      "Debug",
+      "Release",
+      "Dist"
+   }
+
+   flags
+	{
+		"MultiProcessorCompile"
+	}
 
    -- Workspace-wide build options for MSVC
    filter "system:windows"
       buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus" }
 
-OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
+outputdir = "%{cfg.system}/%{cfg.architecture}/%{cfg.buildcfg}"
+
+-- group "Dependencies"
+-- 	include "core/vendor/GLFW"
+-- group ""
 
 group "Core"
-	include "Core/Build-Core.lua"
+	include "core/Build-Core.lua"
 group ""
 
 include "editor/Build-Editor.lua"
