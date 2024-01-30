@@ -1,4 +1,4 @@
--- include "Build-Dependencies.lua"
+include "Build-Dependencies.lua"
 
 workspace "Ephemeral"
    architecture "x86_64"
@@ -21,9 +21,9 @@ workspace "Ephemeral"
 
 outputdir = "%{cfg.system}/%{cfg.architecture}/%{cfg.buildcfg}"
 
--- group "Dependencies"
--- 	include "core/vendor/GLFW"
--- group ""
+group "Dependencies"
+	include "core/vendor/glfw"
+group ""
 
 group "Core"
 	include "core/Build-Core.lua"

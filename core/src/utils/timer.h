@@ -4,7 +4,6 @@
 
 namespace Ephemeral
 {
-
     class Timer
     {
     public:

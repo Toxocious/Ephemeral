@@ -10,13 +10,31 @@ project "Core"
 
     files
     {
-        "src/**.h",
-        "src/**.cpp",
+        -- Source code
+        "src/*/**.h",
+        "src/*/**.cpp",
 
+        -- Vendor // GLFW
+        "vendor/glfw/include/GLFW/glfw3.h",
+
+        -- Vendor // GLM
         "vendor/glm/glm/**.hpp",
         "vendor/glm/glm/**.inl",
+
+        -- Vendor // Dear ImGui
+        "vendor/imgui/imgui.h",
+        "vendor/imgui/imgui_internal.h",
+        "vendor/imgui/misc/cpp/imgui_stdlib.h",
+
+        -- Vendor // ImGuizmo
         "vendor/imguizmo/ImGuizmo.h",
-        "vendor/imguizmo/ImGuizmo.cpp"
+        "vendor/imguizmo/ImGuizmo.cpp",
+
+        -- Vendor // SpdLog
+        "vendor/spdlog/include/stdout_color_sinks.h",
+        "vendor/spdlog/include/basic_file_sink.h",
+        "vendor/spdlog/include/fmt/ostr.h",
+        "vendor/spdlog/include/spdlog.h",
     }
 
     defines
@@ -39,7 +57,7 @@ project "Core"
 
 	links
 	{
-		-- "GLFW",
+		"GLFW",
 		-- "ImGui",
 		"opengl32.lib",
 	}
