@@ -1,6 +1,9 @@
 #pragma once
 
-namespace Core
+namespace Ephemeral
 {
-	void PrintHelloWorld();
+    namespace Core
+    {
+        void PrintHelloWorld();
+    }
 }

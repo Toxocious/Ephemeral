@@ -1,4 +1,4 @@
-project "Core"
+project "core"
     kind "StaticLib"
     language "C++"
     cppdialect "C++20"
@@ -8,18 +8,27 @@ project "Core"
     targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
     objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "include.h"
+	pchsource "src/include.cpp"
+
     files
     {
         -- Source code
-        "src/*/**.h",
-        "src/*/**.cpp",
+        "src/include.h",
+        "src/include.cpp",
+        "src/Core/*.h",
+        "src/Core/*.cpp",
+        "src/utils/*.h",
+        "src/utils/*.cpp",
 
         -- Vendor // GLFW
         "vendor/glfw/include/GLFW/glfw3.h",
 
         -- Vendor // GLM
-        "vendor/glm/glm/**.hpp",
-        "vendor/glm/glm/**.inl",
+        "vendor/glm/glm/*.hpp",
+        "vendor/glm/glm/*.inl",
+        "vendor/glm/glm/gtx/*.hpp",
+        "vendor/glm/glm/gtx/*.inl",
 
         -- Vendor // Dear ImGui
         "vendor/imgui/imgui.h",

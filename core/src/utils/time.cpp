@@ -1,10 +1,8 @@
 #pragma once
 
-#include "time.h"
+#include "include.h"
 
-#include <chrono>
-
-#include <GLFW/glfw3.h>
+#include "Time.h"
 
 namespace Ephemeral
 {

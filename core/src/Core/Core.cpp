@@ -1,22 +1,27 @@
+#include "include.h"
+
 #include "Core.h"
 
-#include <iostream>
-
-#include <utils/timer.h>
 #include <utils/time.h>
+#include <utils/timer.h>
 
-#include <glm/common.hpp>
-
-namespace Core
+namespace Ephemeral
 {
-	void PrintHelloWorld()
-	{
-		auto t = glm::abs(1.0f);
+    namespace Core
+    {
+        void PrintHelloWorld()
+        {
+            Ephemeral::Timer timer;
 
-		Ephemeral::Timer timer;
-		std::cout << "Hello World!\n";
-		std::cout << "Time elapsed: " << timer.ElapsedMillis() << "ms" << std::endl;
-		std::cout << "Current time: " << Ephemeral::Time::GetTime() << std::endl;
-		std::cin.get();
-	}
+            std::cout << "Hello World!\n";
+
+            for ( auto i = 0; i < 10; i++ )
+            {
+                std::cout << "Time elapsed: " << timer.ElapsedMillis() << "ms" << std::endl;
+                std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
+            }
+
+            std::cin.get();
+        }
+    }
 }

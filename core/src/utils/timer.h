@@ -1,5 +1,7 @@
 #pragma once
 
+#include "include.h"
+
 #include <chrono>
 
 namespace Ephemeral
