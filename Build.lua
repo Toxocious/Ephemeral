@@ -22,7 +22,9 @@ workspace "Ephemeral"
 outputdir = "%{cfg.system}/%{cfg.architecture}/%{cfg.buildcfg}"
 
 group "Dependencies"
+   include "core/vendor/glad"
 	include "core/vendor/glfw"
+   include "core/vendor/imgui"
 group ""
 
 group "Core"
