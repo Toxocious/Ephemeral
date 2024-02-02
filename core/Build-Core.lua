@@ -1,8 +1,7 @@
 project "core"
     kind "StaticLib"
     language "C++"
-    cppdialect "C++20"
-    targetdir "bin/%{cfg.buildcfg}"
+    cppdialect "C++17"
     staticruntime "off"
 
     targetdir ("../bin/" .. outputdir .. "/%{prj.name}")

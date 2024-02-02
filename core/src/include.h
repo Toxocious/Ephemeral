@@ -1,6 +1,8 @@
 #pragma once
 
-// -- Standard Library
+/**
+ * Standard Library
+ */
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -19,29 +21,38 @@
 #    include <Windows.h>
 #endif
 
-// -- Vendor Dependencies
-//   ---- GLFW
+/**
+ * Vendor Dependencies
+ *   - Filewatch     (https://github.com/ThomasMonkman/filewatch)
+ *   - GLFW          (https://github.com/glfw/glfw)
+ *   - GLAD          (https://github.com/Dav1dde/glad)
+ *   - GLM           (https://github.com/g-truc/glm)
+ *   - Dear ImGui    (https://github.com/ocornut/imgui)
+ *   - ImGuizmos     (https://github.com/CedricGuillemet/ImGuizmo)
+ *   - SpdLog        (https://github.com/gabime/spdlog)
+ *   - stb_image     (https://github.com/nothings/stb)
+ */
 #include <GLFW/glfw3.h>
 
-//   ---- GLM
 #include <glm/common.hpp>
 
-//   ---- Dear ImGui
 #include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_win32.h"
 #include "imgui_internal.h"
 
 #include "ImGuizmo.h"
 
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_impl_win32.h"
-
-// -- Ephemeral
+/**
+ * Ephemeral Headers
+ */
 #include "Core/Base.h"
 #include "Core/KeyCodes.h"
 #include "Core/MouseCodes.h"
 #include "Core/Platform.h"
 
-// #include "Core/Log.h"
+#include "Utils/Assert.h"
 
+// #include "Core/Log.h"
 // #include "Debug/Instrumentor.h"
