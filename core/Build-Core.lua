@@ -5,7 +5,7 @@ project "core"
     staticruntime "off"
 
     targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
+    objdir ("../bin/" .. outputdir .. "/%{prj.name}/obj")
 
     pchheader "include.h"
 	pchsource "src/include.cpp"
@@ -15,6 +15,8 @@ project "core"
         -- Source code
         "src/include.h",
         "src/include.cpp",
+        "src/Constants/*.h",
+        "src/Constants/*.cpp",
         "src/Core/*.h",
         "src/Core/*.cpp",
         "src/utils/*.h",

@@ -1,12 +1,15 @@
 project "Editor"
-    kind "ConsoleApp"
+    -- kind "ConsoleApp"
+    kind "WindowedApp"
     language "C++"
-    cppdialect "C++20"
+    cppdialect "C++17"
     targetdir "bin/%{cfg.buildcfg}"
     staticruntime "off"
 
+    entrypoint "mainCRTStartup"
+
     targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
+    objdir ("../bin/" .. outputdir .. "/%{prj.name}/obj")
 
     files
     {
@@ -25,11 +28,15 @@ project "Editor"
 
         "../core/src",
         "../core/vendor",
-        "../core/vendor/spdlog/include",
-        "../core/vendor/glfw/include",
-        "../core/vendor/glm/glm",
-        "../core/vendor/imgui",
-        "../core/vendor/imguizmo",
+
+        "%{IncludeDir.filewatch}",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.ImGui}/examples",
+		"%{IncludeDir.imguizmo}",
+		"%{IncludeDir.spdlog}",
     }
 
     links

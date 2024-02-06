@@ -2,9 +2,9 @@ project "Glad"
     kind "StaticLib"
     language "C"
     staticruntime "off"
-    
+
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin/" .. outputdir .. "/%{prj.name}/obj")
 
     files
     {
@@ -17,7 +17,7 @@ project "Glad"
     {
         "include"
     }
-    
+
     filter "system:windows"
         systemversion "latest"
 
