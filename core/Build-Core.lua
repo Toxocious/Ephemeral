@@ -19,6 +19,7 @@ project "core"
         "src/Constants/*.cpp",
         "src/Core/*.h",
         "src/Core/*.cpp",
+        "src/Debug/*.h",
         "src/utils/*.h",
         "src/utils/*.cpp",
 

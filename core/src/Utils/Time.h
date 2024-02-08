@@ -5,6 +5,6 @@ namespace Ephemeral
     class Time
     {
     public:
-        static float GetTime();
+        static double GetTime();
     };
 }

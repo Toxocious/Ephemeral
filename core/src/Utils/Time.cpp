@@ -6,7 +6,7 @@
 
 namespace Ephemeral
 {
-    float Time::GetTime()
+    double Time::GetTime()
     {
         return glfwGetTime();
     }
