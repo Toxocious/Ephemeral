@@ -20,8 +20,14 @@ project "core"
         "src/Core/*.h",
         "src/Core/*.cpp",
         "src/Debug/*.h",
-        "src/utils/*.h",
-        "src/utils/*.cpp",
+        "src/ImGui/*.h",
+        "src/ImGui/*.cpp",
+        "src/Platforms/**/*.h",
+        "src/Platforms/**/*.cpp",
+        "src/Renderer/*.h",
+        "src/Renderer/*.cpp",
+        "src/Utils/*.h",
+        "src/Utils/*.cpp",
 
          -- Vendor // Filewatch
         "vendor/filewatch/FileWatch.h",
