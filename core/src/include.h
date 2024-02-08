@@ -47,12 +47,23 @@
 /**
  * Ephemeral Headers
  */
+#include "Constants/Editor.h"
+
 #include "Core/Base.h"
 #include "Core/KeyCodes.h"
 #include "Core/MouseCodes.h"
 #include "Core/Platform.h"
 
+#include "Events/ApplicationEvent.h"
+#include "Events/Event.h"
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+
 #include "Utils/Assert.h"
+#include "Utils/Log.h"
+#include "Utils/Time.h"
+#include "Utils/Timer.h"
+#include "Utils/Timestep.h"
 
 // #include "Core/Log.h"
 // #include "Debug/Instrumentor.h"
