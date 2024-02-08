@@ -65,5 +65,4 @@
 #include "Utils/Timer.h"
 #include "Utils/Timestep.h"
 
-// #include "Core/Log.h"
 // #include "Debug/Instrumentor.h"
