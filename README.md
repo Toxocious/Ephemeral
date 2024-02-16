@@ -2,7 +2,9 @@
   <!-- <img src="./app/images/Assets/banner.png" title="Pokemon Ephemeral Logo" alt="Pokemon Ephemeral Logo" /> -->
   <h1 align="center">Pok&eacute;mon Ephemeral</h1>
 
-  **Pok&eacute;mon Ephemeral** is a heavy work-in-progress Pok&eacute;mon MMORPG, custom built from the ground up.
+  **Pok&eacute;mon Ephemeral** intends to be a handcrafted game engine, game server, and more, all of which will come together to create a Pok&eacute;mon MMO.
+
+  Development of this project will take a great amount of time given the desired scope, but we'll get there.
 
   <img src="https://img.shields.io/github/issues/Toxocious/Ephemeral?style=for-the-badge&logo=appveyor" />
   <img src="https://img.shields.io/github/forks/Toxocious/Ephemeral?style=for-the-badge&logo=appveyor" />
@@ -14,7 +16,7 @@
   </a>
   <br /><br />
 
-  Check us out on Discord and consider starring the repository if you liked it!
+  Check us out on Discord if you like this project and/or want to contribute in any way.
 
   <a href="https://discord.gg/XMsJqZJJeT" target="_blank">
     <img src="https://discord.com/api/guilds/1122601344839188582/widget.png?style=banner2" alt="Discord Banner" />
@@ -29,7 +31,7 @@
   - [Prerequisites](#prerequisites)
   - [Project Setup](#project-setup)
   - [Project Dependencies](#project-dependencies)
-- [Project Structure](#project-structure)
+  - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -37,71 +39,58 @@
 
 # Getting Started
 ## Prerequisites
-[Premake](https://premake.github.io/) and [Vulkan](https://www.vulkan.org/) are required to generate project files and to also run the application once compiled.
+[Premake](https://premake.github.io/) is required to generate project files (Windows) and executables (Linux).
 
 Without Premake, you will not be able to generate the necessary project files.
 
-Without Vulkan, the applications will not be able to run.
-
-Be sure to install both of them and to add them to your operating system's PATH before continuing.
+Be sure to install and to add it to your operating system's PATH before continuing.
 
 ## Project Setup
-Clone the repository recursively so that all required submodules are downloaded.
+Clone the repository.
 
 ```bash
-git clone --recursive https://github.com/Toxocious/Ephemeral.git
+git clone https://github.com/Toxocious/Ephemeral.git
 ```
 
-After cloning the repository onto your system, you can compile the project by running the [compile.sh](./compile.sh) script.
+After cloning the repository onto your system, you can compile the project by running the [Compile.sh](./Compile.sh) script.
 
 ## Project Dependencies
-We have chosen a number of third-party dependencies to use, which you can read more about in our [DEPENDENCIES](docs/DEPENDENCIES.md) documentation.
+We have chosen a number of third-party dependencies to use, which you can read more about in our [DEPENDENCIES](Docs/DEPENDENCIES.md) documentation.
 
-
-
-# Project Structure
+## Project Structure
 We want to uphold a clean and organized structure, which looks like this.
 
 Each part of the project contains a README containing further information about what it does, how it works, etc.
 
 ```
 .
-├── core/
-│   ├── src/
-│   │   └── ...
-│   ├── Build-Core.lua
-│   ├── Makefile
-│   └── README.md
-├── discord/
-│   ├── src/
-│   │   └── ...
-│   └── README.md
-├── docs/
+├── Build/
+│   └── Compiled binary and object files
+├── Docs/
 │   └── CODE_OF_CONDUCT.md
 │   └── CONTRIBUTING.md
+│   └── DEPENDENCIES.md
 │   └── FEATURES.md
-├── editor/
-│   ├── src/
-│   │   └── ...
-│   ├── Build-Editor.lua
-│   ├── Makefile
-│   └── README.md
-├── game/
-│   ├── src/
-│   │   └── ...
-│   ├── Build-Game.lua
-│   ├── Makefile
-│   └── README.md
-└── server/
-    ├── src/
-    │   └── ...
-    └── README.md
+├── Generated/
+│   └── Generated Visual Studio project files
+├── Libraries/
+│   ├── glew/
+│   ├── glfw/
+│   └── imgui/
+├── Projects/
+│   ├── Core/
+│   │   └── Include/
+│   │   └── Source/
+│   ├── Editor/
+│   │   └── Include/
+│   │   └── Source/
+└────── README.md
 ```
 
 
 
 # Contributing
-If you're interested in contributing to Ephemeral, please check out [CONTRIBUTING.md](docs/CONTRIBUTING.md) for more information.
+If you're interested in contributing to Ephemeral, please check out [CONTRIBUTING.md](Docs/CONTRIBUTING.md) for more information.
 
 
 

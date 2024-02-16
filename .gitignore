@@ -1,18 +1,5 @@
-# Directories
-.vs/
-.vscode/
-bin/
-bin-int/
-obj/
+# Ignore build files (binaries, artifacts, pdbs, etc.)
+Build/
 
-# Files
-*.vcxproj
-*.vcxproj.user
-*.vcxproj.filters
-*.sln
-*.log
-*.bak
-Makefile
-
-# Exclude
-!Vendor/Binaries
+# Ignore generated premake files (Visual Studio .sln, .vcxproj, etc.)
+Generated/

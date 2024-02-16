@@ -1,34 +1,41 @@
-include "Build-Dependencies.lua"
+include "./BuildUtils.lua"
 
-workspace "Ephemeral"
-   architecture "x86_64"
-   startproject "Editor"
+workspace "EphemeralTest"
+    language "C++"
+    architecture "x86_64"
+    location "Generated"
+    startproject "Editor"
 
-   configurations {
-      "Debug",
-      "Release",
-      "Dist"
-   }
+    flags
+    {
+        "MultiProcessorCompile"
+    }
 
-   flags
-	{
-		"MultiProcessorCompile"
-	}
+	configurations { "Debug", "Release", "Dist" }
 
-   -- Workspace-wide build options for MSVC
-   filter "system:windows"
-      buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus" }
+	filter { "configurations:Debug" }
+        defines { "EPH_DEBUG", "GLEW_STATIC" }
+        runtime "Debug"
+        optimize "Off"
+		symbols "On"
 
-outputdir = "%{cfg.system}/%{cfg.architecture}/%{cfg.buildcfg}"
+	filter { "configurations:Release" }
+        defines { "EPH_RELEASE", "GLEW_STATIC" }
+        runtime "Release"
+        optimize "On"
+        symbols "On"
 
-group "Dependencies"
-   include "core/vendor/glad"
-	include "core/vendor/glfw"
-   include "core/vendor/imgui"
-group ""
+    filter { "configurations:Dist" }
+        defines { "EPH_DIST", "GLEW_STATIC" }
+        runtime "Release"
+        optimize "On"
+        symbols "Off"
 
-group "Core"
-	include "core/Build-Core.lua"
-group ""
+	filter { }
 
-include "editor/Build-Editor.lua"
+	targetdir ("Build/Binaries/%{prj.name}/%{cfg.longname}")
+	objdir ("Build/Artifacts/%{prj.name}/%{cfg.longname}")
+
+    -- Our project-specific premake configurations
+    include "Build-Core.lua"
+    include "Build-Editor.lua"
