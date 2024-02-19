@@ -14,19 +14,31 @@ workspace "Ephemeral"
 	configurations { "Debug", "Release", "Dist" }
 
 	filter { "configurations:Debug" }
-        defines { "EPH_DEBUG", "GLEW_STATIC" }
+        defines {
+            "EPH_DEBUG",
+            "GLEW_STATIC",
+            "EPH_ENABLE_ASSERTS"
+        }
         runtime "Debug"
         optimize "Off"
 		symbols "On"
 
 	filter { "configurations:Release" }
-        defines { "EPH_RELEASE", "GLEW_STATIC" }
+        defines {
+            "EPH_RELEASE",
+            "GLEW_STATIC",
+            "EPH_ENABLE_ASSERTS"
+        }
         runtime "Release"
         optimize "On"
         symbols "On"
 
     filter { "configurations:Dist" }
-        defines { "EPH_DIST", "GLEW_STATIC" }
+        defines {
+            "EPH_DIST",
+            "GLEW_STATIC",
+            "EPH_ENABLE_ASSERTS"
+        }
         runtime "Release"
         optimize "On"
         symbols "Off"

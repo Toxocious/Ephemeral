@@ -4,6 +4,7 @@ function linkDependencies()
 		"Libraries/glew/include",
 		"Libraries/glfw/include",
 		"Libraries/imgui/include",
+		"Libraries/spdlog/include",
 	}
 
 	libdirs {
@@ -27,6 +28,7 @@ function includeDependencies()
 		"Libraries/glfw/include",
 		"Libraries/glew/include",
 		"Libraries/imgui/include",
+		"Libraries/spdlog/include",
 	}
 
 	files {
@@ -34,6 +36,7 @@ function includeDependencies()
 		"Libraries/glfw/include/**.h",
 		"Libraries/imgui/include/**.h",
 		"Libraries/imgui/include/**.cpp",
+		"Libraries/spdlog/include/**.h",
 	}
 
 	removefiles {

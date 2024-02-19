@@ -1,4 +1,4 @@
-project "Glew"
+project "spdlog"
     kind "StaticLib"
     language "C"
     staticruntime "off"
@@ -8,21 +8,14 @@ project "Glew"
 
     files
     {
-        "include/GL/glew.h",
-        "include/GL/*.h",
-
-        "src/visualinfo.c",
+        "include/spdlog/spdlog.h",
+        "include/spdlog/*.h",
     }
 
     includedirs
     {
         "include",
     }
-
-    defines
-	{
-        "GLEW_STATIC",
-	}
 
     filter "system:windows"
         systemversion "latest"
