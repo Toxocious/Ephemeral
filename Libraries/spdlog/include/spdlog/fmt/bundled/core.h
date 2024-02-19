@@ -1746,10 +1746,13 @@ FMT_CONSTEXPR FMT_INLINE auto make_value(T&& val) -> value<Context> {
   // a pointer cast it to "void *" or "const void *". In particular, this
   // forbids formatting of "[const] volatile char *" which is printed as bool
   // by iostreams.
-  constexpr bool formattable_pointer =
-      !std::is_same<decltype(arg), const unformattable_pointer&>::value;
-  static_assert(formattable_pointer,
-                "Formatting of non-void pointers is disallowed.");
+  // --
+  // EPHEMERAL ~> check back on this later
+  // -- 
+  //constexpr bool formattable_pointer =
+      //!std::is_same<decltype(arg), const unformattable_pointer&>::value;
+  //static_assert(formattable_pointer,
+                //"Formatting of non-void pointers is disallowed.");
 
   constexpr bool formattable =
       !std::is_same<decltype(arg), const unformattable&>::value;

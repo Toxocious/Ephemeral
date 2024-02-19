@@ -11,6 +11,7 @@ function linkDependencies()
 		"Libraries/glew/lib",
 		"Libraries/glfw/lib",
 		"Libraries/imgui/lib",
+		"Libraries/spdlog/lib",
 	}
 
 	-- Our static lib should not link against our dependencies
@@ -19,6 +20,7 @@ function linkDependencies()
 			"glew32",
 			"glfw3",
 			"imgui",
+			"spdlog",
 		}
 end
 

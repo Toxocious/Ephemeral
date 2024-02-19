@@ -1,7 +1,7 @@
 project "spdlog"
     kind "StaticLib"
     language "C++"
-    staticruntime "on"
+    staticruntime "off"
 
     targetdir ("Build/" .. outputdir .. "/%{prj.name}")
     objdir ("Build/" .. outputdir .. "/%{prj.name}/Artifacts")

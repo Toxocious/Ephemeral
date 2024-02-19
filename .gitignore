@@ -1,5 +1,5 @@
 # Ignore build files (binaries, artifacts, pdbs, etc.)
-Build/
+[Bb]uild/
 
 # Ignore generated premake files (Visual Studio .sln, .vcxproj, etc.)
 Generated/

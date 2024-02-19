@@ -16,8 +16,10 @@ workspace "Ephemeral"
 	filter { "configurations:Debug" }
         defines {
             "EPH_DEBUG",
+            "EPH_ENABLE_ASSERTS",
             "GLEW_STATIC",
-            "EPH_ENABLE_ASSERTS"
+            "SPDLOG_COMPILED_LIB",
+            "_CRT_SECURE_NO_WARNINGS",
         }
         runtime "Debug"
         optimize "Off"
@@ -26,8 +28,10 @@ workspace "Ephemeral"
 	filter { "configurations:Release" }
         defines {
             "EPH_RELEASE",
+            "EPH_ENABLE_ASSERTS",
             "GLEW_STATIC",
-            "EPH_ENABLE_ASSERTS"
+            "SPDLOG_COMPILED_LIB",
+            "_CRT_SECURE_NO_WARNINGS",
         }
         runtime "Release"
         optimize "On"
@@ -36,8 +40,10 @@ workspace "Ephemeral"
     filter { "configurations:Dist" }
         defines {
             "EPH_DIST",
+            "EPH_ENABLE_ASSERTS",
             "GLEW_STATIC",
-            "EPH_ENABLE_ASSERTS"
+            "SPDLOG_COMPILED_LIB",
+            "_CRT_SECURE_NO_WARNINGS",
         }
         runtime "Release"
         optimize "On"
