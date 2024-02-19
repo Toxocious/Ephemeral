@@ -1,20 +1,27 @@
 project "spdlog"
     kind "StaticLib"
-    language "C"
-    staticruntime "off"
+    language "C++"
+    staticruntime "on"
 
     targetdir ("Build/" .. outputdir .. "/%{prj.name}")
     objdir ("Build/" .. outputdir .. "/%{prj.name}/Artifacts")
 
     files
     {
-        "include/spdlog/spdlog.h",
-        "include/spdlog/*.h",
+        "include/spdlog/**/*.h",
+
+        "src/**.cpp",
     }
 
     includedirs
     {
         "include",
+    }
+
+    defines
+    {
+        "SPDLOG_COMPILED_LIB",
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     filter "system:windows"
