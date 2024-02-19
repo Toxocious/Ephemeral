@@ -1,6 +1,6 @@
 include "./BuildUtils.lua"
 
-workspace "EphemeralTest"
+workspace "Ephemeral"
     language "C++"
     architecture "x86_64"
     location "Generated"
