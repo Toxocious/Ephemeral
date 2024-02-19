@@ -3,3 +3,7 @@ Build/
 
 # Ignore generated premake files (Visual Studio .sln, .vcxproj, etc.)
 Generated/
+
+# IDE-specific files
+.vscode/
+.vs/

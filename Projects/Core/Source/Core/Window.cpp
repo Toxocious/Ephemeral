@@ -31,29 +31,11 @@ namespace Ephemeral
         Window::Window( int width, int height, const std::string & title )
             : m_Width( width ), m_Height( height ), m_Title( title )
         {
-            // Initialize GLFW
             glfwSetErrorCallback( glfw_error_callback );
             if ( !glfwInit() )
             {
                 return;
             }
-
-            //----------------------------------------
-            // OpenGL    GLSL      GLSL
-            // version   version   string
-            //----------------------------------------
-            //  2.0       110       "#version 110"
-            //  2.1       120       "#version 120"
-            //  3.0       130       "#version 130"
-            //  3.1       140       "#version 140"
-            //  3.2       150       "#version 150"
-            //  3.3       330       "#version 330 core"
-            //  4.0       400       "#version 400 core"
-            //  4.1       410       "#version 410 core"
-            //  4.2       420       "#version 410 core"
-            //  4.3       430       "#version 430 core"
-            //  ES 2.0    100       "#version 100"      = WebGL 1.0
-            //  ES 3.0    300       "#version 300 es"   = WebGL 2.0
 
             const char * glsl_version = "#version 150";
             glfwWindowHint( GLFW_SAMPLES, 4 );
@@ -107,10 +89,6 @@ namespace Ephemeral
             {
                 Window::pollEvents();
 
-                ImGui_ImplOpenGL3_NewFrame();
-                ImGui_ImplGlfw_NewFrame();
-                ImGui::NewFrame();
-
                 // Please note: this is old, OpenGL 1.1 code. It's here for simplicity.
                 {
                     glBegin( GL_TRIANGLES );
@@ -120,21 +98,20 @@ namespace Ephemeral
                     glEnd();
                 }
 
-                // basic imgui shit
+                ImGui_ImplOpenGL3_NewFrame();
+                ImGui_ImplGlfw_NewFrame();
+                ImGui::NewFrame();
+
+                // Basic imgui window
                 {
                     ImGui::Begin( "Another Window" );
-                    ImGui::Text( "Hello from another window!" );
+                    ImGui::Text( "Hello from another window" );
                     ImGui::End();
                 }
 
                 Ephemeral::Rendering::Add_Text( 0.f, 0.f, L"Bing bong", ImColor( 255, 255, 255 ) );
 
                 ImGui::Render();
-
-                // ImVec4 clear_color = ImVec4 { 0.1f, 0.105f, 0.11f, 1.0f };
-                // int display_w, display_h;
-                // glfwGetFramebufferSize( m_Window, &display_w, &display_h );
-                // glViewport( 0, 0, display_w, display_h );
 
                 ImVec4 clear_color = Ephemeral::Rendering::RGBA_To_ImVec4( 22, 22, 28 );
                 glClearColor( clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w );
