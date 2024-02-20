@@ -1,6 +1,6 @@
 project "Editor"
-	-- kind "ConsoleApp"
-    kind "WindowedApp"
+	kind "ConsoleApp"
+    -- kind "WindowedApp"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "off"

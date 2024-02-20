@@ -1,7 +1,9 @@
 #ifndef EPH_RENDERING_IMGUI_HPP
 #define EPH_RENDERING_IMGUI_HPP 1
 
+#include <assert.h>
 #include <imgui.h>
+#include <string>
 
 namespace Ephemeral
 {

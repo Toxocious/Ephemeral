@@ -3,7 +3,10 @@
 #include <Util/Base.h>
 #include <Util/Log.h>
 
+#include <Windows.h>
+#include <assert.h>
 #include <filesystem>
+// #include <iostream>
 
 #ifdef EPH_ENABLE_ASSERTS
 #    define EPH_INTERNAL_ASSERT_IMPL( type, check, msg, ... ) \

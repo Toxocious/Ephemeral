@@ -1,4 +1,6 @@
 project "Core"
+	language "C++"
+	cppdialect "C++17"
 	kind "StaticLib"
 
 	files

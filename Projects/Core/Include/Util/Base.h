@@ -13,7 +13,9 @@
 #    else
 #        error "Platform doesn't support debugbreak yet!"
 #    endif
-#    define EPH_ENABLE_ASSERTS
+#    ifndef EPH_ENABLE_ASSERTS
+#        define EPH_ENABLE_ASSERTS
+#    endif
 #else
 #    define EPH_DEBUGBREAK()
 #endif
@@ -48,5 +50,5 @@ namespace Ephemeral
     }
 }
 
-// #include "<Core/Assert.h>
-// #include "<Core/Log.h>
+#include <Util/Assert.h>
+#include <Util/Log.h>

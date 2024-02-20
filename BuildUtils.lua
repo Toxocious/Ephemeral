@@ -15,13 +15,31 @@ function linkDependencies()
 	}
 
 	-- Our static lib should not link against our dependencies
-	filter "kind:not StaticLib"
+	filter { "kind:not StaticLib", "configurations:Debug" }
+		links {
+			"glew32",
+			"glfw3",
+			"imgui",
+			"spdlogd",
+		}
+
+
+	filter { "kind:not StaticLib", "configurations:Dist" }
 		links {
 			"glew32",
 			"glfw3",
 			"imgui",
 			"spdlog",
 		}
+
+	filter { "kind:not StaticLib", "configurations:Release" }
+		links {
+			"glew32",
+			"glfw3",
+			"imgui",
+			"spdlog",
+		}
+
 end
 
 -- Include the files that we use from our dependencies.
