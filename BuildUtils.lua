@@ -23,7 +23,6 @@ function linkDependencies()
 			"spdlogd",
 		}
 
-
 	filter { "kind:not StaticLib", "configurations:Dist" }
 		links {
 			"glew32",

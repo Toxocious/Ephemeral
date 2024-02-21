@@ -18,7 +18,7 @@ workspace "Ephemeral"
             "EPH_DEBUG",
             "EPH_ENABLE_ASSERTS",
             "GLEW_STATIC",
-            "SPDLOG_COMPILED_LIB",
+            "DSPDLOG_COMPILED_LIB",
             "_CRT_SECURE_NO_WARNINGS",
         }
         runtime "Debug"
