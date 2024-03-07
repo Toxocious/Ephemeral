@@ -9,3 +9,6 @@ Generated/
 .vs/
 .vcxproj
 .vcxproj.filters
+
+# Temp backup files
+*.bak

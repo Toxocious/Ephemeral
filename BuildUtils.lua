@@ -3,6 +3,7 @@ function linkDependencies()
 	includedirs {
 		"Libraries/glew/include",
 		"Libraries/glfw/include",
+		"Libraries/glm/include",
 		"Libraries/imgui/include",
 		"Libraries/spdlog/include",
 	}
@@ -46,6 +47,7 @@ function includeDependencies()
 	includedirs {
 		"Libraries/glfw/include",
 		"Libraries/glew/include",
+		"Libraries/glm/include",
 		"Libraries/imgui/include",
 		"Libraries/spdlog/include",
 	}

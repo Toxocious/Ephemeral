@@ -21,15 +21,6 @@ namespace Ephemeral
 
         // Initialize Glew
         GLenum err = glewInit();
-        
-
-        // int status = gladLoadGLLoader( ( GLADloadproc ) glfwGetProcAddress );
-        // EPH_CORE_ASSERT( status, "Failed to initialize Glad!" );
-
-        // EPH_CORE_INFO( "OpenGL Info:" );
-        // EPH_CORE_INFO( "  Vendor: {0}", glGetString( GL_VENDOR ) );
-        // EPH_CORE_INFO( "  Renderer: {0}", glGetString( GL_RENDERER ) );
-        // EPH_CORE_INFO( "  Version: {0}", glGetString( GL_VERSION ) );
     }
 
     void OpenGLContext::SwapBuffers()
