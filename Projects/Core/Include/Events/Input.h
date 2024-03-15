@@ -3,7 +3,7 @@
 #include <Util/KeyCodes.h>
 #include <Util/MouseCodes.h>
 
-// #include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 namespace Ephemeral
 {
@@ -15,5 +15,7 @@ namespace Ephemeral
 
         static float GetMouseX();
         static float GetMouseY();
+
+        static glm::vec2 GetMousePosition();
     };
 }
