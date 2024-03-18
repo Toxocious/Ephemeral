@@ -1,6 +1,7 @@
 -- Link our dependencies.
 function linkDependencies()
 	includedirs {
+		"Libraries/glad/include",
 		"Libraries/glew/include",
 		"Libraries/glfw/include",
 		"Libraries/glm/include",
@@ -9,6 +10,7 @@ function linkDependencies()
 	}
 
 	libdirs {
+		"Libraries/glad/lib",
 		"Libraries/glew/lib",
 		"Libraries/glfw/lib",
 		"Libraries/imgui/lib",
@@ -18,6 +20,7 @@ function linkDependencies()
 	-- Our static lib should not link against our dependencies
 	filter { "kind:not StaticLib", "configurations:Debug" }
 		links {
+			"glad_debug",
 			"glew32",
 			"glfw3",
 			"imgui",
@@ -26,6 +29,7 @@ function linkDependencies()
 
 	filter { "kind:not StaticLib", "configurations:Dist" }
 		links {
+			"glad_dist",
 			"glew32",
 			"glfw3",
 			"imgui",
@@ -34,6 +38,7 @@ function linkDependencies()
 
 	filter { "kind:not StaticLib", "configurations:Release" }
 		links {
+			"glad_release",
 			"glew32",
 			"glfw3",
 			"imgui",
@@ -45,6 +50,7 @@ end
 -- Include the files that we use from our dependencies.
 function includeDependencies()
 	includedirs {
+		"Libraries/glad/include",
 		"Libraries/glfw/include",
 		"Libraries/glew/include",
 		"Libraries/glm/include",
@@ -53,6 +59,9 @@ function includeDependencies()
 	}
 
 	files {
+		"Libraries/glad/include/**.h",
+		"Libraries/glad/src/glad.c",
+
 		"Libraries/glew/include/**.h",
 		"Libraries/glfw/include/**.h",
 		"Libraries/imgui/include/**.h",
