@@ -1,12 +1,16 @@
 #include "EditorLayer.h"
 
+#include <Events/Input.h>
+#include <Rendering/ImGui.hpp>
 #include <Util/PlatformUtils.h>
 
 #include <assert.h>
 #include <imgui.h>
 
-// #include <glm/gtc/matrix_transform.hpp>
-// #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
 
 // #include "ImGuizmo.h"
 
@@ -31,14 +35,18 @@ namespace Ephemeral
     {
         EPH_PROFILE_FUNCTION();
 
+        /**
+         * Do I need this?
+         * Ideally, the scene is always in an edit or play state.
+         *  -> Edit state being able to place tiles, objects, etc.
+         *  -> Play state being able to play the currently active map/scene.
+         *
+         * Do I want to make the editor only have edit mode, and play test maps in the _Projects/Game_ project (runs the game)?
+         * Seems.. odd to do that, but may be less work?
+         */
         switch ( m_SceneState )
         {
             case SceneState::Edit:
-                {
-                    break;
-                }
-
-            case SceneState::Simulate:
                 {
                     break;
                 }
@@ -64,13 +72,11 @@ namespace Ephemeral
         static bool               opt_fullscreen_persistant = true;
         bool                      opt_fullscreen            = opt_fullscreen_persistant;
         static ImGuiDockNodeFlags dockspace_flags           = ImGuiDockNodeFlags_None;
+        ImGuiWindowFlags          window_flags              = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
-        // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-        // because it would be confusing to have two docking targets within each others.
-        ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+        ImGuiViewport * viewport = ImGui::GetMainViewport();
         if ( opt_fullscreen )
         {
-            ImGuiViewport * viewport = ImGui::GetMainViewport();
             ImGui::SetNextWindowPos( viewport->Pos );
             ImGui::SetNextWindowSize( viewport->Size );
             ImGui::SetNextWindowViewport( viewport->ID );
@@ -80,7 +86,8 @@ namespace Ephemeral
             window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
         }
 
-        // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
+        // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background and
+        // handle the pass-through hole, so we ask Begin() to not render a background.
         if ( dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode )
         {
             window_flags |= ImGuiWindowFlags_NoBackground;
@@ -113,261 +120,43 @@ namespace Ephemeral
 
         style.WindowMinSize.x = minWinSizeX;
 
-        if ( ImGui::BeginMenuBar() )
-        {
-            if ( ImGui::BeginMenu( "File" ) )
-            {
-                if ( ImGui::MenuItem( "Open Project...", "Ctrl+O" ) )
-                {
-                    OpenProject();
-                }
+        // Draw to the application
+        // DrawMenuBar();
 
-                ImGui::Separator();
-
-                if ( ImGui::MenuItem( "New Scene", "Ctrl+N" ) )
-                {
-                    NewScene();
-                }
-
-                if ( ImGui::MenuItem( "Save Scene", "Ctrl+S" ) )
-                {
-                    SaveScene();
-                }
-
-                if ( ImGui::MenuItem( "Save Scene As...", "Ctrl+Shift+S" ) )
-                {
-                    SaveSceneAs();
-                }
-
-                ImGui::Separator();
-
-                if ( ImGui::MenuItem( "Exit" ) )
-                {
-                    Application::Get().Close();
-                }
-
-                ImGui::EndMenu();
-            }
-
-            if ( ImGui::BeginMenu( "Script" ) )
-            {
-                if ( ImGui::MenuItem( "Reload assembly", "Ctrl+R" ) )
-                {
-                }
-
-                ImGui::EndMenu();
-            }
-
-            ImGui::EndMenuBar();
-        }
-
-        m_TestPanel.OnImGuiRender();
-
-        ImGui::Begin( "Stats" );
-        {
-#if 0
-		std::string name = "None";
-		if (m_HoveredEntity)
-			name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
-		ImGui::Text("Hovered Entity: %s", name.c_str());
-#endif
-
-            ImGui::Text( "Renderer2D Stats:" );
-            ImGui::Text( " ~ Draw Calls: N/A" );
-            ImGui::Text( " ~ Quads: N/A" );
-            ImGui::Text( " ~ Vertices: N/A" );
-            ImGui::Text( " ~ Indices: N/A" );
-        }
-        ImGui::End();
-
-        ImGui::Begin( "Settings" );
-        {
-            ImGui::Checkbox( "Show physics colliders", &m_ShowPhysicsColliders );
-        }
-        ImGui::End();
-
+        /**
+         * Editor Scene Viewport
+         */
+        ImGui::SetNextWindowPos( viewport->Pos );
+        ImGui::SetNextWindowSize( viewport->Size );
+        ImGui::SetNextWindowViewport( viewport->ID );
         ImGui::PushStyleVar( ImGuiStyleVar_WindowPadding, ImVec2 { 0, 0 } );
-        ImGui::Begin( "Viewport" );
-        auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
-        auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
-        auto viewportOffset    = ImGui::GetWindowPos();
-        // m_ViewportBounds[0]    = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-        // m_ViewportBounds[1]    = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
-
-        m_ViewportFocused = ImGui::IsWindowFocused();
-        m_ViewportHovered = ImGui::IsWindowHovered();
-
-        Application::Get().GetImGuiLayer()->BlockEvents( !m_ViewportHovered );
-
-        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        // m_ViewportSize           = { viewportPanelSize.x, viewportPanelSize.y };
-
-        // uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-        // ImGui::Image( reinterpret_cast<void *>( textureID ), ImVec2 { m_ViewportSize.x, m_ViewportSize.y }, ImVec2 { 0, 1 }, ImVec2 { 1, 0 } );
-
-        if ( ImGui::BeginDragDropTarget() )
+        ImGui::Begin( "Viewport", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize );
         {
-            if ( const ImGuiPayload * payload = ImGui::AcceptDragDropPayload( "CONTENT_BROWSER_ITEM" ) )
-            {
-                const wchar_t * path = ( const wchar_t * ) payload->Data;
-                OpenScene( path );
-            }
-            ImGui::EndDragDropTarget();
+            auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+            auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+            auto viewportOffset    = ImGui::GetWindowPos();
+            m_ViewportBounds[0]    = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+            m_ViewportBounds[1]    = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+
+            m_ViewportFocused = ImGui::IsWindowFocused();
+            m_ViewportHovered = ImGui::IsWindowHovered();
+
+            Application::Get().GetImGuiLayer()->BlockEvents( !m_ViewportHovered );
+
+            ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+            m_ViewportSize           = { viewportPanelSize.x, viewportPanelSize.y };
+
+            // uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+            // ImGui::Image( reinterpret_cast<void *>( textureID ), m_ViewportSize, ImVec2 { 0, 1 }, ImVec2 { 1, 0 } );
+
+            /**
+             * ImGui Overlays
+             */
+            Ephemeral::Rendering::Overlay::Debug_Stats( viewportPanelSize.x, viewportPanelSize.y );
         }
-
-        // Gizmos
-        // Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-        // if ( selectedEntity && m_GizmoType != -1 )
-        // {
-        //     ImGuizmo::SetOrthographic( false );
-        //     ImGuizmo::SetDrawlist();
-
-        //     ImGuizmo::SetRect( m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y );
-
-        //     // Camera
-
-        //     // Runtime camera from entity
-        //     // auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-        //     // const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-        //     // const glm::mat4& cameraProjection = camera.GetProjection();
-        //     // glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
-
-        //     // Editor camera
-        //     const glm::mat4 & cameraProjection = m_EditorCamera.GetProjection();
-        //     glm::mat4         cameraView       = m_EditorCamera.GetViewMatrix();
-
-        //     // Entity transform
-        //     auto &    tc        = selectedEntity.GetComponent<TransformComponent>();
-        //     glm::mat4 transform = tc.GetTransform();
-
-        //     // Snapping
-        //     bool  snap      = Input::IsKeyPressed( Key::LeftControl );
-        //     float snapValue = 0.5f; // Snap to 0.5m for translation/scale
-        //     // Snap to 45 degrees for rotation
-        //     if ( m_GizmoType == ImGuizmo::OPERATION::ROTATE )
-        //     {
-        //         snapValue = 45.0f;
-        //     }
-
-        //     float snapValues[3] = { snapValue, snapValue, snapValue };
-
-        //     ImGuizmo::Manipulate( glm::value_ptr( cameraView ), glm::value_ptr( cameraProjection ), ( ImGuizmo::OPERATION ) m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr( transform ), nullptr, snap ? snapValues : nullptr );
-
-        //     if ( ImGuizmo::IsUsing() )
-        //     {
-        //         glm::vec3 translation, rotation, scale;
-        //         Math::DecomposeTransform( transform, translation, rotation, scale );
-
-        //         glm::vec3 deltaRotation  = rotation - tc.Rotation;
-        //         tc.Translation           = translation;
-        //         tc.Rotation             += deltaRotation;
-        //         tc.Scale                 = scale;
-        //     }
-        // }
-
         ImGui::End();
         ImGui::PopStyleVar();
 
-        UI_Toolbar();
-
-        ImGui::End();
-    }
-
-    void EditorLayer::UI_Toolbar()
-    {
-        ImGui::PushStyleVar( ImGuiStyleVar_WindowPadding, ImVec2( 0, 2 ) );
-        ImGui::PushStyleVar( ImGuiStyleVar_ItemInnerSpacing, ImVec2( 0, 0 ) );
-        ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 0, 0, 0, 0 ) );
-        auto &       colors        = ImGui::GetStyle().Colors;
-        const auto & buttonHovered = colors[ImGuiCol_ButtonHovered];
-        ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4( buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f ) );
-        const auto & buttonActive = colors[ImGuiCol_ButtonActive];
-        ImGui::PushStyleColor( ImGuiCol_ButtonActive, ImVec4( buttonActive.x, buttonActive.y, buttonActive.z, 0.5f ) );
-
-        ImGui::Begin( "##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse );
-
-        // bool toolbarEnabled = ( bool ) m_ActiveScene;
-        bool toolbarEnabled = true;
-
-        ImVec4 tintColor = ImVec4( 1, 1, 1, 1 );
-        if ( !toolbarEnabled )
-        {
-            tintColor.w = 0.5f;
-        }
-
-        float size = ImGui::GetWindowHeight() - 4.0f;
-        ImGui::SetCursorPosX( ( ImGui::GetWindowContentRegionMax().x * 0.5f ) - ( size * 0.5f ) );
-
-        bool hasPlayButton     = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play;
-        bool hasSimulateButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate;
-        bool hasPauseButton    = m_SceneState != SceneState::Edit;
-
-        // if ( hasPlayButton )
-        // {
-        //     Ref<Texture2D> icon = ( m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate ) ? m_IconPlay : m_IconStop;
-        //     if ( ImGui::ImageButton( ( ImTextureID ) ( uint64_t ) icon->GetRendererID(), ImVec2( size, size ), ImVec2( 0, 0 ), ImVec2( 1, 1 ), 0, ImVec4( 0.0f, 0.0f, 0.0f, 0.0f ), tintColor ) && toolbarEnabled )
-        //     {
-        //         if ( m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate )
-        //         {
-        //             OnScenePlay();
-        //         }
-        //         else if ( m_SceneState == SceneState::Play )
-        //         {
-        //             OnSceneStop();
-        //         }
-        //     }
-        // }
-
-        // if ( hasSimulateButton )
-        // {
-        //     if ( hasPlayButton )
-        //     {
-        //         ImGui::SameLine();
-        //     }
-
-        //     Ref<Texture2D> icon = ( m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play ) ? m_IconSimulate : m_IconStop;
-        //     if ( ImGui::ImageButton( ( ImTextureID ) ( uint64_t ) icon->GetRendererID(), ImVec2( size, size ), ImVec2( 0, 0 ), ImVec2( 1, 1 ), 0, ImVec4( 0.0f, 0.0f, 0.0f, 0.0f ), tintColor ) && toolbarEnabled )
-        //     {
-        //         if ( m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play )
-        //         {
-        //             OnSceneSimulate();
-        //         }
-        //         else if ( m_SceneState == SceneState::Simulate )
-        //         {
-        //             OnSceneStop();
-        //         }
-        //     }
-        // }
-
-        // if ( hasPauseButton )
-        // {
-        //     bool isPaused = m_ActiveScene->IsPaused();
-        //     ImGui::SameLine();
-        //     {
-        //         Ref<Texture2D> icon = m_IconPause;
-        //         if ( ImGui::ImageButton( ( ImTextureID ) ( uint64_t ) icon->GetRendererID(), ImVec2( size, size ), ImVec2( 0, 0 ), ImVec2( 1, 1 ), 0, ImVec4( 0.0f, 0.0f, 0.0f, 0.0f ), tintColor ) && toolbarEnabled )
-        //         {
-        //             m_ActiveScene->SetPaused( !isPaused );
-        //         }
-        //     }
-
-        //     // Step button
-        //     if ( isPaused )
-        //     {
-        //         ImGui::SameLine();
-        //         {
-        //             Ref<Texture2D> icon     = m_IconStep;
-        //             bool           isPaused = m_ActiveScene->IsPaused();
-        //             if ( ImGui::ImageButton( ( ImTextureID ) ( uint64_t ) icon->GetRendererID(), ImVec2( size, size ), ImVec2( 0, 0 ), ImVec2( 1, 1 ), 0, ImVec4( 0.0f, 0.0f, 0.0f, 0.0f ), tintColor ) && toolbarEnabled )
-        //             {
-        //                 m_ActiveScene->Step();
-        //             }
-        //         }
-        //     }
-        // }
-
-        ImGui::PopStyleVar( 2 );
-        ImGui::PopStyleColor( 3 );
         ImGui::End();
     }
 
@@ -386,14 +175,13 @@ namespace Ephemeral
 
     bool EditorLayer::OnKeyPressed( KeyPressedEvent & e )
     {
-        // Shortcuts
         if ( e.IsRepeat() )
         {
             return false;
         }
 
-        // bool control = Input::IsKeyPressed( Key::LeftControl ) || Input::IsKeyPressed( Key::RightControl );
-        // bool shift   = Input::IsKeyPressed( Key::LeftShift ) || Input::IsKeyPressed( Key::RightShift );
+        bool control = Ephemeral::Input::IsKeyPressed( Key::LeftControl ) || Ephemeral::Input::IsKeyPressed( Key::RightControl );
+        bool shift   = Ephemeral::Input::IsKeyPressed( Key::LeftShift ) || Ephemeral::Input::IsKeyPressed( Key::RightShift );
 
         switch ( e.GetKeyCode() )
         {
@@ -547,22 +335,6 @@ namespace Ephemeral
                 //     Renderer2D::DrawRect( transform, glm::vec4( 0, 1, 0, 1 ) );
                 // }
             }
-
-            // Circle Colliders
-            {
-                // auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();
-                // for ( auto entity : view )
-                // {
-                //     auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>( entity );
-
-                //     glm::vec3 translation = tc.Translation + glm::vec3( cc2d.Offset, 0.001f );
-                //     glm::vec3 scale       = tc.Scale * glm::vec3( cc2d.Radius * 2.0f );
-
-                //     glm::mat4 transform = glm::translate( glm::mat4( 1.0f ), translation ) * glm::scale( glm::mat4( 1.0f ), scale );
-
-                //     Renderer2D::DrawCircle( transform, glm::vec4( 0, 1, 0, 1 ), 0.01f );
-                // }
-            }
         }
 
         // Draw selected entity outline
@@ -673,6 +445,7 @@ namespace Ephemeral
         // }
     }
 
+    // Writes scene file to disk.
     // void EditorLayer::SerializeScene( Ref<Scene> scene, const std::filesystem::path & path )
     // {
     //     SceneSerializer serializer( scene );
@@ -681,11 +454,6 @@ namespace Ephemeral
 
     void EditorLayer::OnScenePlay()
     {
-        if ( m_SceneState == SceneState::Simulate )
-        {
-            OnSceneStop();
-        }
-
         m_SceneState = SceneState::Play;
 
         // m_ActiveScene = Scene::Copy( m_EditorScene );
@@ -694,32 +462,13 @@ namespace Ephemeral
         // m_SceneHierarchyPanel.SetContext( m_ActiveScene );
     }
 
-    void EditorLayer::OnSceneSimulate()
-    {
-        if ( m_SceneState == SceneState::Play )
-        {
-            OnSceneStop();
-        }
-
-        m_SceneState = SceneState::Simulate;
-
-        // m_ActiveScene = Scene::Copy( m_EditorScene );
-        // m_ActiveScene->OnSimulationStart();
-
-        // m_SceneHierarchyPanel.SetContext( m_ActiveScene );
-    }
-
     void EditorLayer::OnSceneStop()
     {
-        EPH_CORE_ASSERT( m_SceneState == SceneState::Play || m_SceneState == SceneState::Simulate );
+        EPH_CORE_ASSERT( m_SceneState == SceneState::Play );
 
         if ( m_SceneState == SceneState::Play )
         {
             // m_ActiveScene->OnRuntimeStop();
-        }
-        else if ( m_SceneState == SceneState::Simulate )
-        {
-            // m_ActiveScene->OnSimulationStop();
         }
 
         m_SceneState = SceneState::Edit;
@@ -754,4 +503,65 @@ namespace Ephemeral
         // }
     }
 
+    /**
+     * Functions that draw to the application
+     */
+
+    void EditorLayer::DrawMenuBar()
+    {
+        ImGui::BeginMenuBar();
+        {
+            if ( ImGui::BeginMenu( "File" ) )
+            {
+                if ( ImGui::MenuItem( "Open Project...", "Ctrl+O" ) )
+                {
+                    OpenProject();
+                }
+
+                ImGui::Separator();
+
+                if ( ImGui::MenuItem( "New Scene", "Ctrl+N" ) )
+                {
+                    NewScene();
+                }
+
+                if ( ImGui::MenuItem( "Save Scene", "Ctrl+S" ) )
+                {
+                    SaveScene();
+                }
+
+                if ( ImGui::MenuItem( "Save Scene As...", "Ctrl+Shift+S" ) )
+                {
+                    SaveSceneAs();
+                }
+
+                ImGui::Separator();
+
+                if ( ImGui::MenuItem( "Exit" ) )
+                {
+                    Application::Get().Close();
+                }
+
+                ImGui::EndMenu();
+            }
+        }
+        ImGui::EndMenuBar();
+    }
+
+    void EditorLayer::DrawGrid()
+    {
+        const float CELL_SIZE = 1.f;
+
+        glColor3f( 1.0f, 1.0f, 1.0f ); // Set color to white
+        glBegin( GL_LINES );
+        for ( float i = -1.0f; i <= 1.0f; i += CELL_SIZE )
+        {
+            glVertex2f( i, -1.0f ); // Vertical lines
+            glVertex2f( i, 1.0f );
+
+            glVertex2f( -1.0f, i ); // Horizontal lines
+            glVertex2f( 1.0f, i );
+        }
+        glEnd();
+    }
 }

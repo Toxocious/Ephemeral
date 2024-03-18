@@ -4,6 +4,9 @@
 
 #include "Panels/Test.h"
 
+#include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
+
 // #include "Renderer/EditorCamera.h"
 
 namespace Ephemeral
@@ -47,8 +50,9 @@ namespace Ephemeral
 
         void OnDuplicateEntity();
 
-        // UI Panels
-        void UI_Toolbar();
+        // Draw functions
+        void DrawGrid();
+        void DrawMenuBar();
 
     private:
         // Ephemeral::OrthographicCameraController m_CameraController;
@@ -75,10 +79,9 @@ namespace Ephemeral
 
         bool m_ViewportFocused = false;
         bool m_ViewportHovered = false;
-        // glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
-        // glm::vec2 m_ViewportBounds[2];
 
-        // glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
+        glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+        glm::vec2 m_ViewportBounds[2];
 
         int m_GizmoType = -1;
 
@@ -86,15 +89,12 @@ namespace Ephemeral
 
         enum class SceneState
         {
-            Edit     = 0,
-            Play     = 1,
-            Simulate = 2
+            Edit = 0,
+            Play = 1
         };
         SceneState m_SceneState = SceneState::Edit;
 
         // Panels
-        // SceneHierarchyPanel        m_SceneHierarchyPanel;
-        // Scope<ContentBrowserPanel> m_ContentBrowserPanel;
         TestPanel m_TestPanel;
     };
 }
