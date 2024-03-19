@@ -1,6 +1,7 @@
 #include "EditorLayer.h"
 
 #include <Events/Input.h>
+#include <Rendering/FrameBuffer.h>
 #include <Rendering/ImGui.hpp>
 #include <Util/PlatformUtils.h>
 
@@ -24,6 +25,12 @@ namespace Ephemeral
     void EditorLayer::OnAttach()
     {
         EPH_PROFILE_FUNCTION();
+
+        FramebufferSpecification fbSpec;
+        fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
+        fbSpec.Width       = 1280;
+        fbSpec.Height      = 720;
+        m_Framebuffer      = Framebuffer::Create( fbSpec );
     }
 
     void EditorLayer::OnDetach()
@@ -35,6 +42,20 @@ namespace Ephemeral
     {
         EPH_PROFILE_FUNCTION();
 
+        // Resize ; zero sized framebuffer is invalid
+        if ( FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+             m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
+             ( spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y ) )
+        {
+            m_Framebuffer->Resize( ( uint32_t ) m_ViewportSize.x, ( uint32_t ) m_ViewportSize.y );
+        }
+
+        m_Framebuffer->Bind();
+        glClearColor( 0.45f, 0.55f, 0.60f, 1.00f );
+        glClear( GL_COLOR_BUFFER_BIT );
+        // Clear our entity ID attachment to -1
+        // m_Framebuffer->ClearAttachment( 1, -1 );
+
         /**
          * Do I need this?
          * Ideally, the scene is always in an edit or play state.
@@ -44,24 +65,33 @@ namespace Ephemeral
          * Do I want to make the editor only have edit mode, and play test maps in the _Projects/Game_ project (runs the game)?
          * Seems.. odd to do that, but may be less work?
          */
-        switch ( m_SceneState )
-        {
-            case SceneState::Edit:
-                {
-                    break;
-                }
+        // switch ( m_SceneState )
+        // {
+        //     case SceneState::Edit:
+        //         {
+        //             break;
+        //         }
 
-            case SceneState::Play:
-                {
-                    break;
-                }
-        }
+        //     case SceneState::Play:
+        //         {
+        //             break;
+        //         }
+        // }
 
         auto [mx, my] = ImGui::GetMousePos();
         int mouseX    = ( int ) mx;
         int mouseY    = ( int ) my;
 
+        glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+
+        if ( mouseX >= 0 && mouseY >= 0 && mouseX < ( int ) viewportSize.x && mouseY < ( int ) viewportSize.y )
+        {
+            int pixelData = m_Framebuffer->ReadPixel( 1, mouseX, mouseY );
+        }
+
         OnOverlayRender();
+
+        m_Framebuffer->Unbind();
     }
 
     void EditorLayer::OnImGuiRender()
@@ -146,8 +176,8 @@ namespace Ephemeral
             ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
             m_ViewportSize           = { viewportPanelSize.x, viewportPanelSize.y };
 
-            // uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-            // ImGui::Image( reinterpret_cast<void *>( textureID ), m_ViewportSize, ImVec2 { 0, 1 }, ImVec2 { 1, 0 } );
+            uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+            ImGui::Image( reinterpret_cast<void *>( textureID ), reinterpret_cast<ImVec2 &>( m_ViewportSize ), ImVec2 { 0, 1 }, ImVec2 { 1, 0 } );
 
             /**
              * ImGui Overlays

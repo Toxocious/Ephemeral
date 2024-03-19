@@ -121,8 +121,6 @@ namespace Ephemeral
 
     void OpenGLFramebuffer::Invalidate()
     {
-        EPH_CORE_INFO( "OpenGLFrameBuffer.m_RendererID = {0}", m_RendererID );
-
         if ( m_RendererID )
         {
             glDeleteFramebuffers( 1, &m_RendererID );
@@ -147,6 +145,7 @@ namespace Ephemeral
             for ( size_t i = 0; i < m_ColorAttachments.size(); i++ )
             {
                 Utils::BindTexture( multisample, m_ColorAttachments[i] );
+
                 switch ( m_ColorAttachmentSpecifications[i].TextureFormat )
                 {
                     case FramebufferTextureFormat::RGBA8:
@@ -163,6 +162,7 @@ namespace Ephemeral
         {
             Utils::CreateTextures( multisample, &m_DepthAttachment, 1 );
             Utils::BindTexture( multisample, m_DepthAttachment );
+
             switch ( m_DepthAttachmentSpecification.TextureFormat )
             {
                 case FramebufferTextureFormat::DEPTH24STENCIL8:
@@ -174,6 +174,7 @@ namespace Ephemeral
         if ( m_ColorAttachments.size() > 1 )
         {
             EPH_CORE_ASSERT( m_ColorAttachments.size() <= 4 );
+
             GLenum buffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
             glDrawBuffers( m_ColorAttachments.size(), buffers );
         }
@@ -219,6 +220,7 @@ namespace Ephemeral
         glReadBuffer( GL_COLOR_ATTACHMENT0 + attachmentIndex );
         int pixelData;
         glReadPixels( x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData );
+
         return pixelData;
     }
 

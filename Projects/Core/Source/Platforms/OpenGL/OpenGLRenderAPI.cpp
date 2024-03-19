@@ -2,21 +2,13 @@
 
 #include <Util/Profile.h>
 
-// #include <glad/glad.h>
-
-#ifndef GLEW_STATIC
-#    define GLEW_STATIC
-#endif
+#include <glad/glad.h>
 
 #ifndef GL_SILENCE_DEPRECATION
 #    define GL_SILENCE_DEPRECATION
 #endif
 
 #include <Core/Ephemeral.h>
-
-// Library headers
-#pragma comment( lib, "glew32s" )
-#include <GL/glew.h>
 
 namespace Ephemeral
 {
@@ -61,11 +53,11 @@ namespace Ephemeral
         glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE );
 #endif
 
-        // glEnable( GL_BLEND );
-        // glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+        glEnable( GL_BLEND );
+        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
-        // glEnable( GL_DEPTH_TEST );
-        // glEnable( GL_LINE_SMOOTH );
+        glEnable( GL_DEPTH_TEST );
+        glEnable( GL_LINE_SMOOTH );
     }
 
     void OpenGLRendererAPI::SetViewport( uint32_t x, uint32_t y, uint32_t width, uint32_t height )

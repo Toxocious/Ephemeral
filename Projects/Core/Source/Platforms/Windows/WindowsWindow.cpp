@@ -51,24 +51,31 @@ namespace Ephemeral
             EPH_PROFILE_SCOPE( "glfwInit" );
 
             int success = glfwInit();
-            if ( !success ) {
+            if ( !success )
+            {
                 EPH_CORE_CRITICAL( "Failed to initialize GLFW." );
                 EPH_CORE_ASSERT( success, "Could not initialize GLFW!" );
             }
             glfwSetErrorCallback( GLFWErrorCallback );
         }
 
-        EPH_CORE_INFO("GLFW successfully initialized");
+        EPH_CORE_INFO( "GLFW successfully initialized" );
 
         {
             EPH_PROFILE_SCOPE( "glfwCreateWindow" );
+
+#if defined( EPH_DEBUG )
+            glfwWindowHint( GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE );
+#endif
 
             EPH_CORE_INFO( "Creating GLFW window." );
             m_Window = glfwCreateWindow( ( int ) props.Width, ( int ) props.Height, m_Data.Title.c_str(), nullptr, nullptr );
             ++s_GLFWWindowCount;
 
             if ( m_Window == nullptr )
-                EPH_CORE_CRITICAL("Failed to create GLFW window.");
+            {
+                EPH_CORE_CRITICAL( "Failed to create GLFW window." );
+            }
         }
 
         m_Context = GraphicsContext::Create( m_Window );

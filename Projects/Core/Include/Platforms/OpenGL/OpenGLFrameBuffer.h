@@ -34,13 +34,13 @@ namespace Ephemeral
         }
 
     private:
-        uint32_t                 m_RendererID = 0;
-        FramebufferSpecification m_Specification;
+        uint32_t m_RendererID      = 0;
+        uint32_t m_DepthAttachment = 0;
 
-        std::vector<FramebufferTextureSpecification> m_ColorAttachmentSpecifications;
+        FramebufferSpecification                     m_Specification;
         FramebufferTextureSpecification              m_DepthAttachmentSpecification = FramebufferTextureFormat::None;
+        std::vector<FramebufferTextureSpecification> m_ColorAttachmentSpecifications;
 
         std::vector<uint32_t> m_ColorAttachments;
-        uint32_t              m_DepthAttachment = 0;
     };
 }
