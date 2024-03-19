@@ -2,7 +2,6 @@
 function linkDependencies()
 	includedirs {
 		"Libraries/glad/include",
-		"Libraries/glew/include",
 		"Libraries/glfw/include",
 		"Libraries/glm/include",
 		"Libraries/imgui/include",
@@ -11,7 +10,6 @@ function linkDependencies()
 
 	libdirs {
 		"Libraries/glad/lib",
-		"Libraries/glew/lib",
 		"Libraries/glfw/lib",
 		"Libraries/imgui/lib",
 		"Libraries/spdlog/lib",
@@ -21,7 +19,6 @@ function linkDependencies()
 	filter { "kind:not StaticLib", "configurations:Debug" }
 		links {
 			"glad_debug",
-			"glew32",
 			"glfw3",
 			"imgui",
 			"spdlogd",
@@ -30,7 +27,6 @@ function linkDependencies()
 	filter { "kind:not StaticLib", "configurations:Dist" }
 		links {
 			"glad_dist",
-			"glew32",
 			"glfw3",
 			"imgui",
 			"spdlog",
@@ -39,7 +35,6 @@ function linkDependencies()
 	filter { "kind:not StaticLib", "configurations:Release" }
 		links {
 			"glad_release",
-			"glew32",
 			"glfw3",
 			"imgui",
 			"spdlog",
@@ -52,7 +47,6 @@ function includeDependencies()
 	includedirs {
 		"Libraries/glad/include",
 		"Libraries/glfw/include",
-		"Libraries/glew/include",
 		"Libraries/glm/include",
 		"Libraries/imgui/include",
 		"Libraries/spdlog/include",
@@ -62,7 +56,6 @@ function includeDependencies()
 		"Libraries/glad/include/**.h",
 		"Libraries/glad/src/glad.c",
 
-		"Libraries/glew/include/**.h",
 		"Libraries/glfw/include/**.h",
 		"Libraries/imgui/include/**.h",
 		"Libraries/imgui/include/**.cpp",

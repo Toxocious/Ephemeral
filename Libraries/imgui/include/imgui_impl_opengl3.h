@@ -60,9 +60,8 @@ IMGUI_IMPL_API void ImGui_ImplOpenGL3_DestroyDeviceObjects();
 // Library headers
 
 #    elif defined( __has_include )
-#        pragma comment( lib, "glew32s" )
-
 #        if __has_include( <GL/glew.h>)
+#            pragma comment( lib, "glew32s" )
 #            define IMGUI_IMPL_OPENGL_LOADER_GLEW
 #        elif __has_include( <glad/glad.h>)
 #            define IMGUI_IMPL_OPENGL_LOADER_GLAD

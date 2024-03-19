@@ -74,9 +74,11 @@ Each part of the project contains a README containing further information about 
 ├── Generated/
 │   └── Generated Visual Studio project files
 ├── Libraries/
-│   ├── glew/
+│   ├── glad/
 │   ├── glfw/
+│   ├── glm/
 │   └── imgui/
+│   ├── spdlog/
 ├── Projects/
 │   ├── Core/
 │   │   └── Include/
