@@ -2,6 +2,7 @@ project "Core"
 	language "C++"
 	cppdialect "C++17"
 	kind "StaticLib"
+	location "Projects/Core"
 
 	files
 	{

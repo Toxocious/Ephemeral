@@ -2,6 +2,7 @@ project "Editor"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "off"
+    location "Projects/Editor"
 
     entrypoint "mainCRTStartup"
 
