@@ -1,39 +1,67 @@
 -- Link our dependencies.
 function linkDependencies()
 	includedirs {
-		"Libraries/glew/include",
+		"Libraries/glad/include",
 		"Libraries/glfw/include",
+		"Libraries/glm/include",
 		"Libraries/imgui/include",
+		"Libraries/spdlog/include",
 	}
 
 	libdirs {
-		"Libraries/glew/lib",
+		"Libraries/glad/lib",
 		"Libraries/glfw/lib",
 		"Libraries/imgui/lib",
+		"Libraries/spdlog/lib",
 	}
 
 	-- Our static lib should not link against our dependencies
-	filter "kind:not StaticLib"
+	filter { "kind:not StaticLib", "configurations:Debug" }
 		links {
-			"glew32",
+			"glad_debug",
 			"glfw3",
 			"imgui",
+			"spdlogd",
 		}
+
+	filter { "kind:not StaticLib", "configurations:Dist" }
+		links {
+			"glad_dist",
+			"glfw3",
+			"imgui",
+			"spdlog",
+		}
+
+	filter { "kind:not StaticLib", "configurations:Release" }
+		links {
+			"glad_release",
+			"glfw3",
+			"imgui",
+			"spdlog",
+		}
+
 end
 
 -- Include the files that we use from our dependencies.
 function includeDependencies()
 	includedirs {
+		"Libraries/glad/include",
 		"Libraries/glfw/include",
-		"Libraries/glew/include",
+		"Libraries/glm/include",
 		"Libraries/imgui/include",
+		"Libraries/spdlog/include",
 	}
 
 	files {
-		"Libraries/glew/include/**.h",
+		"Libraries/glad/include/**.h",
+		"Libraries/glad/src/glad.c",
+
 		"Libraries/glfw/include/**.h",
+
 		"Libraries/imgui/include/**.h",
 		"Libraries/imgui/include/**.cpp",
+
+		"Libraries/spdlog/include/**.h",
 	}
 
 	removefiles {

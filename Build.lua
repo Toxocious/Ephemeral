@@ -1,6 +1,6 @@
 include "./BuildUtils.lua"
 
-workspace "EphemeralTest"
+workspace "Ephemeral"
     language "C++"
     architecture "x86_64"
     location "Generated"
@@ -14,19 +14,37 @@ workspace "EphemeralTest"
 	configurations { "Debug", "Release", "Dist" }
 
 	filter { "configurations:Debug" }
-        defines { "EPH_DEBUG", "GLEW_STATIC" }
+        defines {
+            "EPH_DEBUG",
+            "EPH_ENABLE_ASSERTS",
+            "EPH_PLATFORM_WINDOWS",
+            "DSPDLOG_COMPILED_LIB",
+            "_CRT_SECURE_NO_WARNINGS",
+        }
         runtime "Debug"
         optimize "Off"
 		symbols "On"
 
 	filter { "configurations:Release" }
-        defines { "EPH_RELEASE", "GLEW_STATIC" }
+        defines {
+            "EPH_RELEASE",
+            "EPH_ENABLE_ASSERTS",
+            "EPH_PLATFORM_WINDOWS",
+            "SPDLOG_COMPILED_LIB",
+            "_CRT_SECURE_NO_WARNINGS",
+        }
         runtime "Release"
         optimize "On"
         symbols "On"
 
     filter { "configurations:Dist" }
-        defines { "EPH_DIST", "GLEW_STATIC" }
+        defines {
+            "EPH_DIST",
+            "EPH_ENABLE_ASSERTS",
+            "EPH_PLATFORM_WINDOWS",
+            "SPDLOG_COMPILED_LIB",
+            "_CRT_SECURE_NO_WARNINGS",
+        }
         runtime "Release"
         optimize "On"
         symbols "Off"
