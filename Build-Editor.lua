@@ -1,11 +1,12 @@
 project "Editor"
-	-- kind "ConsoleApp"
-    kind "WindowedApp"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "off"
+    location "Projects/Editor"
 
     entrypoint "mainCRTStartup"
+
+    targetname "Ephemeral Editor"
 
     files
     {
@@ -33,3 +34,12 @@ project "Editor"
         {
             "GL"
         }
+
+    filter { "configurations:Debug" }
+        kind "ConsoleApp"
+
+	filter { "configurations:Release" }
+        kind "WindowedApp"
+
+    filter { "configurations:Dist" }
+        kind "WindowedApp"

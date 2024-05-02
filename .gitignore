@@ -1,5 +1,23 @@
 # Ignore build files (binaries, artifacts, pdbs, etc.)
-Build/
+[Bb]uild/
 
 # Ignore generated premake files (Visual Studio .sln, .vcxproj, etc.)
 Generated/
+
+# IDE-specific files
+.vscode/
+.vs/
+
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Ephemeral-specific files
+EphemeralProfile-Runtime.json
+EphemeralProfile-Shutdown.json
+EphemeralProfile-Startup.json
+Ephemeral.log
+imgui.ini
+
+# Temp backup files
+*.bak

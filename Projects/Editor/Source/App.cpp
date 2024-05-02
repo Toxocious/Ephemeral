@@ -1,15 +1,14 @@
-#include <Core/Window.hpp>
+#include <Core/Ephemeral.h>
+#include <Util/Window.h>
 
-#if defined _WIN32
-#    include <Windows.h>
-#endif
-
-#include <gl/GL.h>
+const GLuint WIDTH = 1366, HEIGHT = 768;
+const char * WINDOW_TITLE = "Ephemeral Map Editor";
 
 int main()
 {
-    using namespace Ephemeral::Core;
-    Window window { 1366, 768, "Ephemeral Editor" };
+    Ephemeral::Log::Init();
+
+    Ephemeral::Window window( HEIGHT, WIDTH, WINDOW_TITLE );
     window.Run();
 
     return 0;
