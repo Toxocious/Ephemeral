@@ -6,124 +6,97 @@
 
 namespace Ephemeral
 {
-    // Reads a text file and outputs a string with everything in the text file
-    std::string get_file_contents( const char * filename )
-    {
-        std::ifstream in( filename, std::ios::binary );
-        if ( in )
-        {
-            std::string contents;
-            in.seekg( 0, std::ios::end );
-            contents.resize( in.tellg() );
-            in.seekg( 0, std::ios::beg );
-            in.read( &contents[0], contents.size() );
-            in.close();
-            return contents;
-        }
-        throw( errno );
-    }
-
     // Constructor that build the Shader Program from 2 different shaders
-    Shader::Shader( std::string folderName, const char * vertexFile, const char * fragmentFile )
+    Shader::Shader( const char * vertexFile, const char * fragmentFile )
     {
         EPH_CORE_TRACE( "Attempting to initialize shaders" );
         {
-            namespace fs = std::filesystem;
+            std::string vertexCode   = ReadFile( Ephemeral::Global::GetCoreAssetPath(), "\\Shaders\\Default\\default.vert" );
+            std::string fragmentCode = ReadFile( Ephemeral::Global::GetCoreAssetPath(), "\\Shaders\\Default\\default.frag" );
 
-            std::vector<std::string> shaderFiles;
+            const char * vShaderCode = vertexCode.c_str();
+            const char * fShaderCode = fragmentCode.c_str();
 
-            // Get the directory path of the current source file
-            std::filesystem::path currentSourcePath( __FILE__ );
-            std::filesystem::path shaderDirectory = currentSourcePath.parent_path().parent_path().parent_path().concat( "\\Assets\\Shaders" ).concat( "\\" + folderName );
+            unsigned int vertex, fragment;
 
-            // Check if the directory exists
-            if ( !std::filesystem::exists( shaderDirectory ) )
-            {
-                EPH_CORE_WARN( "Couldn't find directory for the '{0]' shader.", folderName );
-                return;
-            }
+            vertex = glCreateShader( GL_VERTEX_SHADER );
+            glShaderSource( vertex, 1, &vShaderCode, NULL );
+            glCompileShader( vertex );
+            compileErrors( vertex, "VERTEX" );
 
-            // Iterate over the directory contents
-            for ( const auto & entry : std::filesystem::directory_iterator( shaderDirectory ) )
-            {
-                if ( entry.is_regular_file() )
-                {
-                    // Check if the file has a ".glsl" extension (you can adjust this as needed)
-                    if ( entry.path().extension() == ".frag" || entry.path().extension() == ".vert" )
-                    {
-                        shaderFiles.push_back( entry.path().string() );
-                    }
-                }
-            }
+            fragment = glCreateShader( GL_FRAGMENT_SHADER );
+            glShaderSource( fragment, 1, &fShaderCode, NULL );
+            glCompileShader( fragment );
+            compileErrors( fragment, "FRAGMENT" );
 
-            for ( const auto & filePath : shaderFiles )
-            {
-                EPH_CORE_INFO( "Loaded '{0}' shader file", filePath );
+            ID = glCreateProgram();
+            glAttachShader( ID, vertex );
+            glAttachShader( ID, fragment );
+            glLinkProgram( ID );
+            compileErrors( ID, "PROGRAM" );
 
-                std::ifstream     file( filePath );
-                std::stringstream buffer;
-                buffer << file.rdbuf();
-
-                // Process the shader source code as needed
-                // For example, compile the shader if it's not already compiled
-                // std::cout << "Shader Source:" << std::endl;
-                // std::cout << buffer.str() << std::endl;
-            }
+            glDeleteShader( vertex );
+            glDeleteShader( fragment );
         }
-
-        return;
-
-        // Read vertexFile and fragmentFile and store the strings
-        std::string vertexCode   = get_file_contents( vertexFile );
-        std::string fragmentCode = get_file_contents( fragmentFile );
-
-        // Convert the shader source strings into character arrays
-        const char * vertexSource   = vertexCode.c_str();
-        const char * fragmentSource = fragmentCode.c_str();
-
-        // Create Vertex Shader Object and get its reference
-        GLuint vertexShader = glCreateShader( GL_VERTEX_SHADER );
-        // Attach Vertex Shader source to the Vertex Shader Object
-        glShaderSource( vertexShader, 1, &vertexSource, NULL );
-        // Compile the Vertex Shader into machine code
-        glCompileShader( vertexShader );
-        // Checks if Shader compiled succesfully
-        compileErrors( vertexShader, "VERTEX" );
-
-        // Create Fragment Shader Object and get its reference
-        GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
-        // Attach Fragment Shader source to the Fragment Shader Object
-        glShaderSource( fragmentShader, 1, &fragmentSource, NULL );
-        // Compile the Vertex Shader into machine code
-        glCompileShader( fragmentShader );
-        // Checks if Shader compiled succesfully
-        compileErrors( fragmentShader, "FRAGMENT" );
-
-        // Create Shader Program Object and get its reference
-        ID = glCreateProgram();
-        // Attach the Vertex and Fragment Shaders to the Shader Program
-        glAttachShader( ID, vertexShader );
-        glAttachShader( ID, fragmentShader );
-        // Wrap-up/Link all the shaders together into the Shader Program
-        glLinkProgram( ID );
-        // Checks if Shaders linked succesfully
-        compileErrors( ID, "PROGRAM" );
-
-        // Delete the now useless Vertex and Fragment Shader objects
-        glDeleteShader( vertexShader );
-        glDeleteShader( fragmentShader );
     }
 
     // Activates the Shader Program
     void Shader::Activate()
     {
-        glUseProgram( ID );
+        glUseProgram( m_RendererID );
     }
 
     // Deletes the Shader Program
     void Shader::Delete()
     {
-        glDeleteProgram( ID );
+        glDeleteProgram( m_RendererID );
+    }
+
+    void Shader::setBool( const std::string & name, bool value )
+    {
+        glUniform1i( glGetUniformLocation( ID, name.c_str() ), ( int ) value );
+    }
+
+    void Shader::setInt( const std::string & name, int value )
+    {
+        glUniform1i( glGetUniformLocation( ID, name.c_str() ), value );
+    }
+
+    void Shader::setFloat( const std::string & name, float value )
+    {
+        glUniform1f( glGetUniformLocation( ID, name.c_str() ), value );
+    }
+
+    // Reads a text file and outputs a string with everything in the text file
+    std::string Shader::ReadFile( std::filesystem::path assetPath, std::string filepath )
+    {
+        std::string fullPath = assetPath.string().append( filepath );
+
+        std::string   result;
+        std::ifstream in( fullPath, std::ios::in | std::ios::binary );
+        if ( in )
+        {
+            in.seekg( 0, std::ios::end );
+            size_t size = in.tellg();
+            if ( size != -1 )
+            {
+                result.resize( size );
+                in.seekg( 0, std::ios::beg );
+                in.read( &result[0], size );
+            }
+            else
+            {
+                EPH_CORE_ERROR( "Could not read from file '{0}'", fullPath );
+                return nullptr;
+            }
+        }
+        else
+        {
+            EPH_CORE_ERROR( "Could not open file '{0}'", fullPath );
+            return nullptr;
+        }
+
+        return result;
     }
 
     // Checks if the different Shaders have compiled properly
@@ -140,8 +113,6 @@ namespace Ephemeral
             if ( hasCompiled == GL_FALSE )
             {
                 glGetShaderInfoLog( shader, 1024, NULL, infoLog );
-                // std::cout << "SHADER_COMPILATION_ERROR for:" << type << "\n"
-                //           << infoLog << std::endl;
 
                 EPH_CORE_ERROR( "Shader compilation failed - {0} {1}", type, infoLog );
             }
@@ -152,8 +123,6 @@ namespace Ephemeral
             if ( hasCompiled == GL_FALSE )
             {
                 glGetProgramInfoLog( shader, 1024, NULL, infoLog );
-                // std::cout << "SHADER_LINKING_ERROR for:" << type << "\n"
-                //           << infoLog << std::endl;
 
                 EPH_CORE_ERROR( "Shader linking failed - {0} {1}", type, infoLog );
             }

@@ -65,6 +65,8 @@
 
 #ifndef EPH_CORE_HEADERS
 #    define EPH_CORE_HEADERS
+#    include <Core/Global.h>
+
 #    include <Util/Assert.h>
 #    include <Util/Log.h>
 #    include <Util/Macro.h>

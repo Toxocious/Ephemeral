@@ -4,6 +4,7 @@
 #    define EPH_CORE_WINDOW_H
 
 #    include <Core/Ephemeral.h>
+#    include <Renderer/Shader.h>
 
 namespace Ephemeral
 {
@@ -28,7 +29,7 @@ namespace Ephemeral
         std::unique_ptr<GLFWwindow, decltype( &glfwDestroyWindow )>
             m_Window;
 
-        GLuint m_ShaderProgram;
+        Ephemeral::Shader m_ShaderProgram;
 
         GLuint VBO, VAO, EBO;
 

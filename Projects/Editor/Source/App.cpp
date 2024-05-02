@@ -2,7 +2,7 @@
 #include <Util/Window.h>
 
 const GLuint WIDTH = 1366, HEIGHT = 768;
-const char * WINDOW_TITLE = "OpenGL Learning";
+const char * WINDOW_TITLE = "Ephemeral Map Editor";
 
 int main()
 {
