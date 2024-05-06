@@ -60,8 +60,11 @@ namespace Ephemeral
         Ephemeral::Imgui::Shutdown();
 
         // Clean up resources
-        glDeleteVertexArrays( 1, &VAO );
-        glDeleteBuffers( 1, &VBO );
+        m_VAO.Delete();
+        m_VBO.Delete();
+
+        // glDeleteVertexArrays( 1, &m_VAO );
+        // glDeleteBuffers( 1, &m_VBO );
         m_ShaderProgram.Delete();
 
         // Terminate GLFW
@@ -95,7 +98,8 @@ namespace Ephemeral
                 glUniform1f( uniID, 0.5f );
 
                 // Bind the VAO
-                glBindVertexArray( VAO );
+                // glBindVertexArray( m_VAO );
+                m_VAO.Bind();
 
                 // Draw the triangle
                 glDrawArrays( GL_TRIANGLES, 0, 3 );
@@ -173,16 +177,16 @@ namespace Ephemeral
             1 // Upper triangle
         };
 
-        Ephemeral::VAO VAO;
-        Ephemeral::VBO VBO( vertices, sizeof( vertices ) );
-        // Ephemeral::EBO EBO(indices, sizeof(indices));
+        Ephemeral::VAO m_VAO;
+        Ephemeral::VBO m_VBO( vertices, sizeof( vertices ) );
+        // Ephemeral::EBO m_EBO(indices, sizeof(indices));
 
-        VAO.Bind();
-        VBO.Bind();
-        // EBO.Bind();
+        m_VAO.Bind();
+        m_VBO.Bind();
+        // m_EBO.Bind();
 
-        VAO.LinkAttrib( VBO, 0, 3, GL_FLOAT, 6 * sizeof( float ), ( void * ) 0 );
-        VAO.LinkAttrib( VBO, 1, 3, GL_FLOAT, 6 * sizeof( float ), ( void * ) ( 3 * sizeof( float ) ) );
+        m_VAO.LinkAttrib( m_VBO, 0, 3, GL_FLOAT, 6 * sizeof( float ), ( void * ) 0 );
+        m_VAO.LinkAttrib( m_VBO, 1, 3, GL_FLOAT, 6 * sizeof( float ), ( void * ) ( 3 * sizeof( float ) ) );
     }
 
     int Window::ShouldClose()

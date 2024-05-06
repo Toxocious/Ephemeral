@@ -37,9 +37,9 @@ namespace Ephemeral
         Ephemeral::Shader m_ShaderProgram;
 
         // GLuint VBO, VAO, EBO;
-        Ephemeral::VAO VAO;
-        Ephemeral::VBO VBO;
-        Ephemeral::EBO EBO;
+        Ephemeral::VAO m_VAO;
+        Ephemeral::VBO m_VBO;
+        Ephemeral::EBO m_EBO;
 
         int          m_Height;
         int          m_Width;

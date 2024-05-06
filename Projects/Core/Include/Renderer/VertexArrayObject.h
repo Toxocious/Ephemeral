@@ -15,8 +15,7 @@ namespace Ephemeral
         GLuint ID;
 
         // Constructor that generates a VAO ID
-        VAO( int t );
-        VAO() = default;
+        VAO();
 
         // Links a VBO Attribute such as a position or color to the VAO
         void LinkAttrib( VBO & VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void * offset );
