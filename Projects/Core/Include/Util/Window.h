@@ -5,12 +5,6 @@
 
 #    include <Core/Ephemeral.h>
 
-#    include <Renderer/Shader.h>
-
-#    include <Renderer/ElementBufferObject.h>
-#    include <Renderer/VertexArrayObject.h>
-#    include <Renderer/VertexBufferObject.h>
-
 namespace Ephemeral
 {
     class Window
@@ -22,7 +16,7 @@ namespace Ephemeral
         void Run();
 
     private:
-        void CompileShaders();
+        void CenterWindow();
 
         int  ShouldClose();
         void SwapBuffers();
@@ -33,13 +27,6 @@ namespace Ephemeral
     private:
         std::unique_ptr<GLFWwindow, decltype( &glfwDestroyWindow )>
             m_Window;
-
-        Ephemeral::Shader m_ShaderProgram;
-
-        // GLuint VBO, VAO, EBO;
-        Ephemeral::VAO m_VAO;
-        Ephemeral::VBO m_VBO;
-        Ephemeral::EBO m_EBO;
 
         int          m_Height;
         int          m_Width;

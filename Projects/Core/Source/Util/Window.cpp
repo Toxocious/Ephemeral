@@ -2,13 +2,7 @@
 
 #include <Util/Window.h>
 
-#include <Renderer/Imgui.h>
-
-#include <Renderer/Shader.h>
-
-#include <Renderer/ElementBufferObject.h>
-#include <Renderer/VertexArrayObject.h>
-#include <Renderer/VertexBufferObject.h>
+#include <Modules/Imgui.h>
 
 namespace Ephemeral
 {
@@ -46,11 +40,11 @@ namespace Ephemeral
             return;
         }
 
+        CenterWindow();
+
         glViewport( 0, 0, m_Width, m_Height );
 
         EPH_CORE_TRACE( "Successfully initialized GLFW and GLAD, and created a window." );
-
-        CompileShaders();
 
         Ephemeral::Imgui::Initialize( m_Window.get() );
     }
@@ -60,12 +54,6 @@ namespace Ephemeral
         Ephemeral::Imgui::Shutdown();
 
         // Clean up resources
-        m_VAO.Delete();
-        m_VBO.Delete();
-
-        // glDeleteVertexArrays( 1, &m_VAO );
-        // glDeleteBuffers( 1, &m_VBO );
-        m_ShaderProgram.Delete();
 
         // Terminate GLFW
         glfwDestroyWindow( m_Window.get() );
@@ -75,8 +63,6 @@ namespace Ephemeral
     void Window::Run()
     {
         // Gets ID of uniform called "scale"
-        GLuint uniID = glGetUniformLocation( m_ShaderProgram.ID, "scale" );
-
         while ( !ShouldClose() )
         {
             Ephemeral::Imgui::NewFrame();
@@ -91,15 +77,6 @@ namespace Ephemeral
 
                 // Enable depth testing
                 glEnable( GL_DEPTH_TEST );
-
-                // Use the shader program
-                m_ShaderProgram.Activate();
-
-                glUniform1f( uniID, 0.5f );
-
-                // Bind the VAO
-                // glBindVertexArray( m_VAO );
-                m_VAO.Bind();
 
                 // Draw the triangle
                 glDrawArrays( GL_TRIANGLES, 0, 3 );
@@ -119,74 +96,79 @@ namespace Ephemeral
         }
     }
 
-    void Window::CompileShaders()
+    // Centers the window on the user's monitor.
+    // Credits: https://github.com/glfw/glfw/issues/310#issuecomment-52048508
+    void Window::CenterWindow()
     {
-        Ephemeral::Shader m_ShaderProgram( "default.vert", "default.frag" );
+        const auto window = m_Window.get();
 
-        // Vertices coordinates
-        GLfloat vertices[] = {
-            //               COORDINATES                  /     COLORS           //
-            -0.5f,
-            -0.5f * float( sqrt( 3 ) ) * 1 / 3,
-            0.0f,
-            0.8f,
-            0.3f,
-            0.02f, // Lower left corner
-            0.5f,
-            -0.5f * float( sqrt( 3 ) ) * 1 / 3,
-            0.0f,
-            0.8f,
-            0.3f,
-            0.02f, // Lower right corner
-            0.0f,
-            0.5f * float( sqrt( 3 ) ) * 2 / 3,
-            0.0f,
-            1.0f,
-            0.6f,
-            0.32f, // Upper corner
-            -0.25f,
-            0.5f * float( sqrt( 3 ) ) * 1 / 6,
-            0.0f,
-            0.9f,
-            0.45f,
-            0.17f, // Inner left
-            0.25f,
-            0.5f * float( sqrt( 3 ) ) * 1 / 6,
-            0.0f,
-            0.9f,
-            0.45f,
-            0.17f, // Inner right
-            0.0f,
-            -0.5f * float( sqrt( 3 ) ) * 1 / 3,
-            0.0f,
-            0.8f,
-            0.3f,
-            0.02f // Inner down
-        };
+        // Get window position and size
+        int window_x, window_y;
+        glfwGetWindowPos( window, &window_x, &window_y );
 
-        // Indices for vertices order
-        GLuint indices[] = {
-            0,
-            3,
-            5, // Lower left triangle
-            3,
-            2,
-            4, // Lower right triangle
-            5,
-            4,
-            1 // Upper triangle
-        };
+        int window_width, window_height;
+        glfwGetWindowSize( window, &window_width, &window_height );
 
-        Ephemeral::VAO m_VAO;
-        Ephemeral::VBO m_VBO( vertices, sizeof( vertices ) );
-        // Ephemeral::EBO m_EBO(indices, sizeof(indices));
+        // Halve the window size and use it to adjust the window position to the center of the window
+        window_width  *= 0.5;
+        window_height *= 0.5;
 
-        m_VAO.Bind();
-        m_VBO.Bind();
-        // m_EBO.Bind();
+        window_x += window_width;
+        window_y += window_height;
 
-        m_VAO.LinkAttrib( m_VBO, 0, 3, GL_FLOAT, 6 * sizeof( float ), ( void * ) 0 );
-        m_VAO.LinkAttrib( m_VBO, 1, 3, GL_FLOAT, 6 * sizeof( float ), ( void * ) ( 3 * sizeof( float ) ) );
+        // Get the list of monitors
+        int            monitors_length;
+        GLFWmonitor ** monitors = glfwGetMonitors( &monitors_length );
+
+        if ( monitors == NULL )
+        {
+            // Got no monitors back
+            return;
+        }
+
+        // Figure out which monitor the window is in
+        GLFWmonitor * owner = NULL;
+        int           owner_x, owner_y, owner_width, owner_height;
+
+        for ( int i = 0; i < monitors_length; i++ )
+        {
+            // Get the monitor position
+            int monitor_x, monitor_y;
+            glfwGetMonitorPos( monitors[i], &monitor_x, &monitor_y );
+
+            // Get the monitor size from its video mode
+            int           monitor_width, monitor_height;
+            GLFWvidmode * monitor_vidmode = ( GLFWvidmode * ) glfwGetVideoMode( monitors[i] );
+
+            if ( monitor_vidmode == NULL )
+            {
+                // Video mode is required for width and height, so skip this monitor
+                continue;
+            }
+            else
+            {
+                monitor_width  = monitor_vidmode->width;
+                monitor_height = monitor_vidmode->height;
+            }
+
+            // Set the owner to this monitor if the center of the window is within its bounding box
+            if ( ( window_x > monitor_x && window_x < ( monitor_x + monitor_width ) ) && ( window_y > monitor_y && window_y < ( monitor_y + monitor_height ) ) )
+            {
+                owner = monitors[i];
+
+                owner_x = monitor_x;
+                owner_y = monitor_y;
+
+                owner_width  = monitor_width;
+                owner_height = monitor_height;
+            }
+        }
+
+        if ( owner != NULL )
+        {
+            // Set the window position to the center of the owner monitor
+            glfwSetWindowPos( window, owner_x + ( owner_width * 0.5 ) - window_width, owner_y + ( owner_height * 0.5 ) - window_height );
+        }
     }
 
     int Window::ShouldClose()

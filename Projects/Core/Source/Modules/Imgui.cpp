@@ -1,6 +1,6 @@
 #include <Core/Ephemeral.h>
 
-#include <Renderer/Imgui.h>
+#include <Modules/Imgui.h>
 
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
