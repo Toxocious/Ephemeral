@@ -9,7 +9,7 @@ namespace Ephemeral
     // Constructor that build the Shader Program from 2 different shaders
     Shader::Shader( const char * vertexFile, const char * fragmentFile )
     {
-        EPH_CORE_TRACE( "Attempting to initialize shaders" );
+        EPH_CORE_TRACE( "Attempting to initialize shaders - '{0}' '{1}", vertexFile, fragmentFile );
         {
             std::string vertexCode   = ReadFile( Ephemeral::Global::GetCoreAssetPath(), "\\Shaders\\Default\\default.vert" );
             std::string fragmentCode = ReadFile( Ephemeral::Global::GetCoreAssetPath(), "\\Shaders\\Default\\default.frag" );
@@ -22,22 +22,23 @@ namespace Ephemeral
             vertex = glCreateShader( GL_VERTEX_SHADER );
             glShaderSource( vertex, 1, &vShaderCode, NULL );
             glCompileShader( vertex );
-            compileErrors( vertex, "VERTEX" );
+            CheckCompilationErrors( vertex, "VERTEX" );
 
             fragment = glCreateShader( GL_FRAGMENT_SHADER );
             glShaderSource( fragment, 1, &fShaderCode, NULL );
             glCompileShader( fragment );
-            compileErrors( fragment, "FRAGMENT" );
+            CheckCompilationErrors( fragment, "FRAGMENT" );
 
             ID = glCreateProgram();
             glAttachShader( ID, vertex );
             glAttachShader( ID, fragment );
             glLinkProgram( ID );
-            compileErrors( ID, "PROGRAM" );
+            CheckCompilationErrors( ID, "PROGRAM" );
 
             glDeleteShader( vertex );
             glDeleteShader( fragment );
         }
+        EPH_CORE_TRACE( "Shaders successfully initialized." );
     }
 
     // Activates the Shader Program
@@ -100,7 +101,7 @@ namespace Ephemeral
     }
 
     // Checks if the different Shaders have compiled properly
-    void Shader::compileErrors( unsigned int shader, const char * type )
+    void Shader::CheckCompilationErrors( unsigned int shader, const char * type )
     {
         // Stores status of compilation
         GLint hasCompiled;

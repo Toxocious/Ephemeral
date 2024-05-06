@@ -1,5 +1,3 @@
-#pragma once
-
 #include <Core/Ephemeral.h>
 
 #include <Renderer/Imgui.h>

@@ -34,17 +34,17 @@
 #    include <gl/GL.h>
 #endif
 
-#ifndef EPH_IMPL_GLM
-#    define EPH_IMPL_GLM
-#    define GLM_FORCE_CXX17
-#    define GLM_EXTERNAL_TEMPLATE
+// #ifndef EPH_IMPL_GLM
+// #    define EPH_IMPL_GLM
+// #    define GLM_FORCE_CXX17
+// #    define GLM_PRECISION_LOWP_FLOAT
+// #    define GLM_EXTERNAL_TEMPLATE
+// #    define GLM_ENABLE_EXPERIMENTAL
 
-#    include <glm/glm.hpp>
-#    include <glm/gtc/matrix_transform.hpp>
-#    include <glm/gtc/type_ptr.hpp>
-#    include <glm/vec2.hpp>
-#    include <glm/vec4.hpp>
-#endif
+// #    include <glm/glm.hpp> // vec2, vec3, mat4, radians
+
+// #    include <glm/ext.hpp> // perspective, translate, rotate
+// #endif
 
 #ifndef EPH_IMPL_SPDLOG
 #    define EPH_IMPL_SPDLOG

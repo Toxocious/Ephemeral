@@ -18,12 +18,9 @@ namespace Ephemeral
     public:
         unsigned int ID;
 
-        // Constructor that build the Shader Program from 2 different shaders
+        // Constructors
         Shader() = default;
         Shader( const char * vertexPath, const char * fragmentPath );
-
-        // Creates a Shader program
-        void Create();
 
         // Activates the Shader Program
         void Activate();
@@ -41,15 +38,13 @@ namespace Ephemeral
         std::string ReadFile( std::filesystem::path assetPath, std::string filepath );
 
         // Checks if the different Shaders have compiled properly
-        void compileErrors( unsigned int shader, const char * type );
+        void CheckCompilationErrors( unsigned int shader, const char * type );
 
         // Track shader filename
         std::string m_Name;
 
         // Reference ID of the Shader Program
         uint32_t m_RendererID;
-
-        std::unordered_map<GLenum, std::vector<uint32_t>> m_OpenGLSPIRV;
     };
 }
 

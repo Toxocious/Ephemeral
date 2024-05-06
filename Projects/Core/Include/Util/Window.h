@@ -4,7 +4,12 @@
 #    define EPH_CORE_WINDOW_H
 
 #    include <Core/Ephemeral.h>
+
 #    include <Renderer/Shader.h>
+
+#    include <Renderer/ElementBufferObject.h>
+#    include <Renderer/VertexArrayObject.h>
+#    include <Renderer/VertexBufferObject.h>
 
 namespace Ephemeral
 {
@@ -31,7 +36,10 @@ namespace Ephemeral
 
         Ephemeral::Shader m_ShaderProgram;
 
-        GLuint VBO, VAO, EBO;
+        // GLuint VBO, VAO, EBO;
+        Ephemeral::VAO VAO;
+        Ephemeral::VBO VBO;
+        Ephemeral::EBO EBO;
 
         int          m_Height;
         int          m_Width;

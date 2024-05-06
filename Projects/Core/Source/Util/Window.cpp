@@ -24,6 +24,7 @@ namespace Ephemeral
         glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
         glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
         glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+        glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE );
         glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
 
         m_Window.reset( glfwCreateWindow( width, height, title, nullptr, nullptr ) );
@@ -70,6 +71,9 @@ namespace Ephemeral
 
     void Window::Run()
     {
+        // Gets ID of uniform called "scale"
+        GLuint uniID = glGetUniformLocation( m_ShaderProgram.ID, "scale" );
+
         while ( !ShouldClose() )
         {
             Ephemeral::Imgui::NewFrame();
@@ -87,6 +91,8 @@ namespace Ephemeral
 
                 // Use the shader program
                 m_ShaderProgram.Activate();
+
+                glUniform1f( uniID, 0.5f );
 
                 // Bind the VAO
                 glBindVertexArray( VAO );
@@ -113,26 +119,58 @@ namespace Ephemeral
     {
         Ephemeral::Shader m_ShaderProgram( "default.vert", "default.frag" );
 
-        float vertices[] = {
-            // positions         // colors
-            0.5f,
+        // Vertices coordinates
+        GLfloat vertices[] = {
+            //               COORDINATES                  /     COLORS           //
             -0.5f,
+            -0.5f * float( sqrt( 3 ) ) * 1 / 3,
+            0.0f,
+            0.8f,
+            0.3f,
+            0.02f, // Lower left corner
+            0.5f,
+            -0.5f * float( sqrt( 3 ) ) * 1 / 3,
+            0.0f,
+            0.8f,
+            0.3f,
+            0.02f, // Lower right corner
+            0.0f,
+            0.5f * float( sqrt( 3 ) ) * 2 / 3,
             0.0f,
             1.0f,
+            0.6f,
+            0.32f, // Upper corner
+            -0.25f,
+            0.5f * float( sqrt( 3 ) ) * 1 / 6,
             0.0f,
-            0.0f, // bottom right
-            -0.5f,
-            -0.5f,
+            0.9f,
+            0.45f,
+            0.17f, // Inner left
+            0.25f,
+            0.5f * float( sqrt( 3 ) ) * 1 / 6,
             0.0f,
+            0.9f,
+            0.45f,
+            0.17f, // Inner right
             0.0f,
-            1.0f,
-            0.0f, // bottom left
+            -0.5f * float( sqrt( 3 ) ) * 1 / 3,
             0.0f,
-            0.5f,
-            0.0f,
-            0.0f,
-            0.0f,
-            1.0f // top
+            0.8f,
+            0.3f,
+            0.02f // Inner down
+        };
+
+        // Indices for vertices order
+        GLuint indices[] = {
+            0,
+            3,
+            5, // Lower left triangle
+            3,
+            2,
+            4, // Lower right triangle
+            5,
+            4,
+            1 // Upper triangle
         };
 
         Ephemeral::VAO VAO;
