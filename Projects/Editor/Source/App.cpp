@@ -116,9 +116,6 @@ int main()
         EPH_INFO( "Program initialized." );
     }
 
-    // Ephemeral::Window window( HEIGHT, WIDTH, WINDOW_TITLE );
-    // window.Run();
-
     delete App;
     App = nullptr;
 

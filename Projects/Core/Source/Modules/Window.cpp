@@ -53,6 +53,10 @@ namespace Ephemeral
 
             CenterWindow();
 
+            m_Height = height;
+            m_Width  = width;
+            m_Title  = title;
+
             glViewport( 0, 0, m_Width, m_Height );
 
             EPH_CORE_TRACE( "Successfully initialized GLFW and GLAD, and created a window." );
@@ -94,13 +98,18 @@ namespace Ephemeral
 
     UpdateStatus Window::Update()
     {
-        Ephemeral::Imgui::NewFrame();
+        if ( ShouldClose() )
+        {
+            return UpdateStatus::UPDATE_STOP;
+        }
+
+        // Ephemeral::Imgui::NewFrame();
         {
             {
-                Ephemeral::Imgui::RenderFps();
+                // Ephemeral::Imgui::RenderFps();
             }
         }
-        Ephemeral::Imgui::RenderFrame();
+        // Ephemeral::Imgui::RenderFrame();
 
         return UpdateStatus::UPDATE_CONTINUE;
     }
