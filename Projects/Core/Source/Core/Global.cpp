@@ -22,8 +22,6 @@ namespace Ephemeral
 
             if ( fs::exists( childPath ) )
             {
-                EPH_CORE_TRACE( "Global::GetCoreAssetPath() = {0}", childPath );
-
                 return childPath;
             }
             else
