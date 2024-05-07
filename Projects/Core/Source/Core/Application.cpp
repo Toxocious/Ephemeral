@@ -2,6 +2,9 @@
 
 #include <Core/Application.h>
 
+#include <Modules/_Module.h>
+
+#include <Modules/ImGuiLayer.h>
 #include <Modules/Window.h>
 
 namespace Ephemeral
@@ -19,10 +22,12 @@ namespace Ephemeral
         EPH_CORE_TRACE( "Initializing Application" );
         {
             // Create instances of required modules.
-            m_Window = new Window();
+            m_Window     = new Window();
+            m_ImGuiLayer = new ImGuiLayer();
 
             // Assign order of execution to modules.
             m_Modules.push_back( m_Window );
+            m_Modules.push_back( m_ImGuiLayer );
 
             // Initialize all of our modules.
             for ( auto module = m_Modules.begin(); module != m_Modules.end(); ++module )
@@ -139,5 +144,10 @@ namespace Ephemeral
     bool Application::PostUpdate()
     {
         return true;
+    }
+
+    void Application::PushLayer( Module * layer )
+    {
+        m_ImGuiLayer->PushLayer( layer );
     }
 }

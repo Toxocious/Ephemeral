@@ -2,6 +2,9 @@
 #ifndef EPH_CORE_APP_H
 #    define EPH_CORE_APP_H
 
+#    include <Modules/_Module.h>
+
+#    include <Modules/ImGuiLayer.h>
 #    include <Modules/Window.h>
 
 namespace Ephemeral
@@ -20,8 +23,11 @@ namespace Ephemeral
         UpdateStatus Update();
         bool         PostUpdate();
 
+        void PushLayer( Module * layer );
+
     public:
-        Ephemeral::Window * m_Window = nullptr;
+        Ephemeral::Window *     m_Window     = nullptr;
+        Ephemeral::ImGuiLayer * m_ImGuiLayer = nullptr;
 
     private:
         std::string m_Name;

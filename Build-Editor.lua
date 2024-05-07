@@ -18,7 +18,8 @@ project "Editor"
 
 	includedirs
     {
-        "Projects/Core/Include"
+        "Projects/Core/Include",
+        "Projects/Editor/Include",
     }
 
 	useCoreLib()

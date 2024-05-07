@@ -4,6 +4,8 @@
 
 #include <Modules/_Module.h>
 
+#include "Gui/Interface.h"
+
 int main()
 {
     enum class AppState
@@ -50,6 +52,9 @@ int main()
                             if ( App->Initialize( APPLICATION_TITLE, APPLICATION_VERSION, HEIGHT, WIDTH ) )
                             {
                                 currentState = AppState::START;
+
+                                auto editorInterface = new Ephemeral::EditorInterface();
+                                App->PushLayer( editorInterface );
                             }
                             else
                             {
@@ -113,7 +118,6 @@ int main()
                 }
             }
         }
-        EPH_INFO( "Program initialized." );
     }
 
     delete App;
