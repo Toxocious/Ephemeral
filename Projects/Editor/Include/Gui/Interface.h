@@ -25,7 +25,9 @@ namespace Ephemeral
         // UpdateStatus PostUpdate() override;
 
     public:
+        void ShowMenuBar();
         void ShowDebugOverlay();
+        void ShowHudButtons();
     };
 }
 

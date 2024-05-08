@@ -28,94 +28,96 @@ int main()
 
     Ephemeral::Log::Init();
     {
-        EPH_INFO( "Initializing program" );
+        AppState currentState = AppState::CREATION;
+
+        bool running = true;
+
+        while ( running )
         {
-            AppState currentState = AppState::CREATION;
-
-            bool running = true;
-
-            while ( running )
+            switch ( currentState )
             {
-                switch ( currentState )
-                {
-                    case AppState::CREATION:
-                        EPH_TRACE( "Creating application." );
+                case AppState::CREATION:
+                    EPH_INFO( "Creating application" );
+                    {
+                        App          = new Ephemeral::Application();
+                        currentState = AppState::INIT;
+                    }
+                    EPH_INFO( "Application successfully created" );
+                    break;
+
+                case AppState::INIT:
+                    EPH_INFO( "Initializing application and modules" );
+                    {
+                        if ( App->Initialize( APPLICATION_TITLE, APPLICATION_VERSION, HEIGHT, WIDTH ) )
                         {
-                            App          = new Ephemeral::Application();
-                            currentState = AppState::INIT;
-                        }
-                        break;
+                            currentState = AppState::START;
 
-                    case AppState::INIT:
-                        EPH_TRACE( "Initializing application." );
+                            auto editorInterface = new Ephemeral::EditorInterface();
+                            App->PushLayer( editorInterface );
+                        }
+                        else
                         {
-                            if ( App->Initialize( APPLICATION_TITLE, APPLICATION_VERSION, HEIGHT, WIDTH ) )
-                            {
-                                currentState = AppState::START;
-
-                                auto editorInterface = new Ephemeral::EditorInterface();
-                                App->PushLayer( editorInterface );
-                            }
-                            else
-                            {
-                                EPH_ERROR( "Failed to create application. Exiting." );
-                                currentState = AppState::EXIT_ERROR;
-                            }
+                            EPH_ERROR( "Failed to create application. Exiting" );
+                            currentState = AppState::EXIT_ERROR;
+                            break;
                         }
-                        break;
+                    }
+                    EPH_INFO( "Application successfully initialized" );
+                    break;
 
-                    case AppState::START:
-                        EPH_TRACE( "Starting application modules." );
+                case AppState::START:
+                    EPH_INFO( "Starting application modules" );
+                    {
+                        if ( App->Start() )
                         {
-                            if ( App->Start() )
-                            {
-                                currentState = AppState::UPDATE;
-                            }
-                            else
-                            {
-                                EPH_ERROR( "Failed to start application modules. Exiting." );
-                                currentState = AppState::EXIT_ERROR;
-                            }
+                            currentState = AppState::UPDATE;
                         }
-                        break;
-
-                    case AppState::UPDATE:
-                        switch ( App->Update() )
+                        else
                         {
-                            case Ephemeral::UpdateStatus::UPDATE_STOP:
-                                currentState = AppState::FINISH;
-                                break;
-                            case Ephemeral::UpdateStatus::UPDATE_ERROR:
-                                currentState = AppState::EXIT_ERROR;
-                                break;
+                            EPH_ERROR( "Failed to start application modules. Exiting" );
+                            currentState = AppState::EXIT_ERROR;
                         }
-                        break;
+                    }
+                    EPH_INFO( "Application modules successfully started" );
 
-                    case AppState::FINISH:
-                        EPH_TRACE( "Application Finish" );
+                    break;
+
+                case AppState::UPDATE:
+                    switch ( App->Update() )
+                    {
+                        case Ephemeral::UpdateStatus::UPDATE_STOP:
+                            currentState = AppState::FINISH;
+                            break;
+                        case Ephemeral::UpdateStatus::UPDATE_ERROR:
+                            currentState = AppState::EXIT_ERROR;
+                            break;
+                    }
+                    break;
+
+                case AppState::FINISH:
+                    EPH_INFO( "Cleaning up application before exiting" );
+                    {
+                        if ( App->CleanUp() )
                         {
-                            if ( App->CleanUp() )
-                            {
-                                currentState = AppState::EXIT;
-                            }
-                            else
-                            {
-                                EPH_ERROR( "Failed to clean up the application. Exiting." );
-                                currentState = AppState::EXIT_ERROR;
-                            }
+                            currentState = AppState::EXIT;
                         }
-                        break;
+                        else
+                        {
+                            EPH_ERROR( "Failed to clean up the application. Exiting" );
+                            currentState = AppState::EXIT_ERROR;
+                        }
+                    }
+                    break;
 
-                    case AppState::EXIT:
-                        EPH_TRACE( "Application has successfully exited." );
-                        running = false;
-                        break;
+                case AppState::EXIT:
+                    EPH_INFO( "Application has successfully exited" );
+                    running = false;
+                    break;
 
-                    case AppState::EXIT_ERROR:
-                        EPH_TRACE( "Application has exited with errors." );
-                        running = false;
-                        break;
-                }
+                case AppState::EXIT_ERROR:
+                    EPH_INFO( "Application has exited with errors" );
+                    running = false;
+                    break;
             }
         }
     }

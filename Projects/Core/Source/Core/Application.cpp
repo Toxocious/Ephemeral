@@ -19,42 +19,38 @@ namespace Ephemeral
 
     bool Application::Initialize( std::string name, std::string version, int height, int width )
     {
-        EPH_CORE_TRACE( "Initializing Application" );
+        // Create instances of required modules.
+        m_Window     = new Window();
+        m_ImGuiLayer = new ImGuiLayer();
+
+        // Assign order of execution to modules.
+        m_Modules.push_back( m_Window );
+        m_Modules.push_back( m_ImGuiLayer );
+
+        // Initialize all of our modules.
+        for ( auto module = m_Modules.begin(); module != m_Modules.end(); ++module )
         {
-            // Create instances of required modules.
-            m_Window     = new Window();
-            m_ImGuiLayer = new ImGuiLayer();
+            auto p_Module = ( *module );
+            EPH_CORE_TRACE( "Initializing module '{0}'", p_Module->m_Name.c_str() );
 
-            // Assign order of execution to modules.
-            m_Modules.push_back( m_Window );
-            m_Modules.push_back( m_ImGuiLayer );
-
-            // Initialize all of our modules.
-            for ( auto module = m_Modules.begin(); module != m_Modules.end(); ++module )
+            if ( p_Module->m_Name == "Window" )
             {
-                auto p_Module = ( *module );
-                EPH_CORE_TRACE( "Initializing module '{0}'", p_Module->m_Name.c_str() );
-
-                if ( p_Module->m_Name == "Window" )
-                {
-                    p_Module->Initialize( height, width, name.c_str() );
-                }
+                p_Module->Initialize( height, width, name.c_str() );
             }
-
-            // Set the name, version, and dimensions of the application.
-            m_Name    = name;
-            m_Version = version;
-            m_Height  = height;
-            m_Width   = width;
         }
-        EPH_CORE_TRACE( "Application initialized" );
+
+        // Set the name, version, and dimensions of the application.
+        m_Name    = name;
+        m_Version = version;
+        m_Height  = height;
+        m_Width   = width;
 
         return true;
     }
 
     bool Application::Start()
     {
-        EPH_CORE_TRACE( "Starting Application" );
+        EPH_CORE_TRACE( "Starting Application and modules" );
         {
             // Start all of our modules.
             for ( auto module = m_Modules.begin(); module != m_Modules.end(); ++module )

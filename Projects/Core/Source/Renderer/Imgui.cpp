@@ -9,31 +9,6 @@ namespace Ephemeral
 {
     namespace Imgui
     {
-        void RenderFps()
-        {
-            ImGuiIO &        io           = ImGui::GetIO();
-            ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-
-            const float           PAD       = 10.0f;
-            const ImGuiViewport * viewport  = ImGui::GetMainViewport();
-            ImVec2                work_pos  = viewport->Pos;
-            ImVec2                work_size = viewport->Size;
-            ImVec2                window_pos, window_pos_pivot;
-            window_pos.x       = ( 3 & 1 ) ? ( work_pos.x + work_size.x - PAD ) : ( work_pos.x + PAD );
-            window_pos.y       = ( 3 & 2 ) ? ( work_pos.y + work_size.y - PAD ) : ( work_pos.y + PAD );
-            window_pos_pivot.x = ( 3 & 1 ) ? 1.0f : 0.0f;
-            window_pos_pivot.y = ( 3 & 2 ) ? 1.0f : 0.0f;
-            ImGui::SetNextWindowPos( window_pos, ImGuiCond_Always, window_pos_pivot );
-            window_flags |= ImGuiWindowFlags_NoMove;
-
-            ImGui::SetNextWindowBgAlpha( 0.35f );
-            if ( ImGui::Begin( "FPS Overlay", nullptr, window_flags ) )
-            {
-                ImGui::Text( "(%.1f FPS)", ImGui::GetIO().Framerate );
-            }
-            ImGui::End();
-        }
-
         /**
          * Initialization and frame handlers.
          */
@@ -43,32 +18,87 @@ namespace Ephemeral
             ImGui::CreateContext();
             ImGuiIO & io = ImGui::GetIO();
             ( void ) io;
-            ImGui::StyleColorsDark();
+
+            // Set font size and add fonts.
+            auto fontPath = ( Global::GetCoreAssetPath() / "Fonts\\OpenSans\\OpenSans-Regular.ttf" ).string();
+            EPH_CORE_INFO( "Attempting to load OpenSans font at '{0}'", fontPath );
+            float fontSize = 18.0f;
+            io.Fonts->AddFontFromFileTTF( fontPath.c_str(), fontSize );
+            io.FontDefault = io.Fonts->AddFontFromFileTTF( fontPath.c_str(), fontSize );
+
+            // Set styling.
+            SetDarkThemeColors();
+
+            // Initialize Dear ImGui.
             ImGui_ImplGlfw_InitForOpenGL( m_Window, true );
             ImGui_ImplOpenGL3_Init( "#version 430" );
         }
 
+        /**
+         * Tell OpenGL a new frame is about to begin
+         */
         void NewFrame()
         {
-            // Tell OpenGL a new frame is about to begin
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
         }
 
+        /**
+         * Renders the ImGUI elements
+         */
         void RenderFrame()
         {
-            // Renders the ImGUI elements
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData( ImGui::GetDrawData() );
         }
 
+        /**
+         * Deletes all ImGUI instances
+         */
         void Shutdown()
         {
-            // Deletes all ImGUI instances
             ImGui_ImplOpenGL3_Shutdown();
             ImGui_ImplGlfw_Shutdown();
             ImGui::DestroyContext();
+        }
+
+        /**
+         * Sets a custom dark theme
+         */
+        void SetDarkThemeColors()
+        {
+            ImGui::StyleColorsDark();
+
+            auto & colors             = ImGui::GetStyle().Colors;
+            colors[ImGuiCol_WindowBg] = ImVec4 { 0.1f, 0.105f, 0.11f, 1.0f };
+
+            // Headers
+            colors[ImGuiCol_Header]        = ImVec4 { 0.2f, 0.205f, 0.21f, 1.0f };
+            colors[ImGuiCol_HeaderHovered] = ImVec4 { 0.3f, 0.305f, 0.31f, 1.0f };
+            colors[ImGuiCol_HeaderActive]  = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+
+            // Buttons
+            colors[ImGuiCol_Button]        = ImVec4 { 0.2f, 0.205f, 0.21f, 1.0f };
+            colors[ImGuiCol_ButtonHovered] = ImVec4 { 0.3f, 0.305f, 0.31f, 1.0f };
+            colors[ImGuiCol_ButtonActive]  = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+
+            // Frame BG
+            colors[ImGuiCol_FrameBg]        = ImVec4 { 0.2f, 0.205f, 0.21f, 1.0f };
+            colors[ImGuiCol_FrameBgHovered] = ImVec4 { 0.3f, 0.305f, 0.31f, 1.0f };
+            colors[ImGuiCol_FrameBgActive]  = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+
+            // Tabs
+            colors[ImGuiCol_Tab]                = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+            colors[ImGuiCol_TabHovered]         = ImVec4 { 0.38f, 0.3805f, 0.381f, 1.0f };
+            colors[ImGuiCol_TabActive]          = ImVec4 { 0.28f, 0.2805f, 0.281f, 1.0f };
+            colors[ImGuiCol_TabUnfocused]       = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+            colors[ImGuiCol_TabUnfocusedActive] = ImVec4 { 0.2f, 0.205f, 0.21f, 1.0f };
+
+            // Title
+            colors[ImGuiCol_TitleBg]          = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+            colors[ImGuiCol_TitleBgActive]    = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+            colors[ImGuiCol_TitleBgCollapsed] = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
         }
     };
 }
