@@ -4,6 +4,8 @@
 
 #include <Renderer/Imgui.h>
 
+#include <stb_image/stb_image.h>
+
 namespace Ephemeral
 {
     Window::Window( bool enabled )
@@ -18,52 +20,57 @@ namespace Ephemeral
 
     bool Window::Initialize( const int height, const int width, const char * title )
     {
-        EPH_CORE_TRACE( "Initializing window" );
+        if ( !glfwInit() )
         {
-            if ( !glfwInit() )
-            {
-                EPH_CORE_ERROR( "Failed to initialize GLFW" );
-                return false;
-            }
-
-            glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
-            glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
-            glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-            glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE );
-            glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
-
-            m_Window.reset( glfwCreateWindow( width, height, title, nullptr, nullptr ) );
-            if ( !m_Window )
-            {
-                EPH_CORE_ERROR( "Failed to create the GLFW window" );
-                glfwTerminate();
-                return false;
-            }
-
-            glfwMakeContextCurrent( GetGLFWWindow() );
-            glfwSwapInterval( 0 );
-
-            int status = gladLoadGL();
-            if ( !status )
-            {
-                EPH_CORE_ERROR( "Failed to initialize GLAD" );
-                glfwTerminate();
-                return false;
-            }
-
-            CenterWindow();
-
-            m_Height = height;
-            m_Width  = width;
-            m_Title  = title;
-
-            glViewport( 0, 0, m_Width, m_Height );
-
-            EPH_CORE_TRACE( "Successfully initialized GLFW and GLAD, and created a window." );
-
-            Ephemeral::Imgui::Initialize( GetGLFWWindow() );
+            EPH_CORE_ERROR( "Failed to initialize GLFW" );
+            return false;
         }
-        EPH_CORE_INFO( "Window initialized" );
+
+        glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
+        glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
+        glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+        glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE );
+        glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
+
+        m_Window.reset( glfwCreateWindow( width, height, title, nullptr, nullptr ) );
+        if ( !m_Window )
+        {
+            EPH_CORE_ERROR( "Failed to create the GLFW window" );
+            glfwTerminate();
+            return false;
+        }
+
+        glfwMakeContextCurrent( GetGLFWWindow() );
+        glfwSwapInterval( 0 );
+
+        int status = gladLoadGL();
+        if ( !status )
+        {
+            EPH_CORE_ERROR( "Failed to initialize GLAD" );
+            glfwTerminate();
+            return false;
+        }
+
+        int  iconWidth, iconHeight, channels;
+        auto iconFilePath = ( Global::GetCoreAssetPath() / "Ephemeral.png" ).string();
+        m_WindowIcon      = stbi_load( iconFilePath.c_str(), &iconWidth, &iconHeight, &channels, 0 );
+
+        if ( m_WindowIcon != nullptr )
+        {
+            GLFWimage images[1];
+            images[0].pixels = stbi_load( iconFilePath.c_str(), &images[0].width, &images[0].height, 0, 4 );
+            glfwSetWindowIcon( GetGLFWWindow(), 1, images );
+        }
+
+        CenterWindow();
+
+        m_Height = height;
+        m_Width  = width;
+        m_Title  = title;
+
+        glViewport( 0, 0, m_Width, m_Height );
+
+        Ephemeral::Imgui::Initialize( GetGLFWWindow() );
 
         return true;
     }
@@ -76,7 +83,7 @@ namespace Ephemeral
     UpdateStatus Window::PreUpdate()
     {
         // Clear the background color.
-        glClearColor( 0.3f, 0.3f, 0.3f, 1.0f );
+        glClearColor( 0.1f, 0.1f, 0.1f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
         // Enable depth testing.
@@ -118,6 +125,7 @@ namespace Ephemeral
     {
         Ephemeral::Imgui::Shutdown();
 
+        stbi_image_free( m_WindowIcon );
         glfwDestroyWindow( GetGLFWWindow() );
         glfwTerminate();
 
