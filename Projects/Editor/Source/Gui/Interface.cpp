@@ -1,4 +1,5 @@
 #include <Core/Ephemeral.h>
+#include <Renderer/Imgui.h>
 
 #include "Gui/Interface.h"
 
@@ -35,7 +36,7 @@ namespace Ephemeral
     UpdateStatus EditorInterface::Update()
     {
         ShowMenuBar();
-        ShowDebugOverlay();
+        // ShowDebugOverlay();
         ShowHudButtons();
 
         return UpdateStatus::UPDATE_CONTINUE;
@@ -45,8 +46,22 @@ namespace Ephemeral
     {
         if ( ImGui::BeginMainMenuBar() )
         {
-            if ( ImGui::BeginMenu( "File" ) )
+            if ( ImGui::BeginMenu( "Map" ) )
             {
+                {
+                    if ( ImGui::MenuItem( "New Map", "CTRL + N" ) )
+                    {
+                        m_showNewMapPopup = true;
+                    }
+
+                    ImGui::MenuItem( "Save Map (Local)", "CTRL + S" );
+                    ImGui::MenuItem( "Load Map (Local)", "CTRL + L" );
+                }
+                ImGui::Separator();
+                {
+                    ImGui::MenuItem( "Load Map From Server" );
+                    ImGui::MenuItem( "Upload Map To Server" );
+                }
                 ImGui::EndMenu();
             }
 
@@ -55,7 +70,51 @@ namespace Ephemeral
                 ImGui::EndMenu();
             }
 
+            // Map Name
+            Ephemeral::Imgui::TextCentered( "New Map" );
+
+            // Right aligned menu objects
+            ImGui::SetCursorPosX( ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 60.f );
+            {
+            }
+
             ImGui::EndMainMenuBar();
+        }
+
+        // Show modals.
+        ShowNewMapModal();
+    }
+
+    void EditorInterface::ShowNewMapModal()
+    {
+        if ( !m_showNewMapPopup )
+        {
+            return;
+        }
+
+        ImGui::OpenPopup( "Create New Map?" );
+
+        ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+        ImGui::SetNextWindowPos( center, ImGuiCond_Appearing, ImVec2( 0.5f, 0.5f ) );
+
+        if ( ImGui::BeginPopupModal( "Create New Map?", NULL, ImGuiWindowFlags_AlwaysAutoResize ) )
+        {
+            ImGui::Text( "Creating a new map will unload the current map and not preserve any unsaved changes.\n\nAre you sure you want to discard any unsaved changes and create a new map?\n" );
+
+            ImGui::Separator();
+
+            if ( ImGui::Button( "Yes", ImVec2( 120, 0 ) ) )
+            {
+                // create a new map and close the popup
+            }
+            ImGui::SameLine();
+            if ( ImGui::Button( "Cancel", ImVec2( 120, 0 ) ) )
+            {
+                m_showNewMapPopup = false;
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
         }
     }
 

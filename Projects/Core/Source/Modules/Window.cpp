@@ -41,7 +41,7 @@ namespace Ephemeral
         }
 
         glfwMakeContextCurrent( GetGLFWWindow() );
-        glfwSwapInterval( 0 );
+        // glfwSwapInterval( 0 );
 
         int status = gladLoadGL();
         if ( !status )

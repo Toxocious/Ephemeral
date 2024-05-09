@@ -28,6 +28,11 @@ namespace Ephemeral
         void ShowMenuBar();
         void ShowDebugOverlay();
         void ShowHudButtons();
+
+        void ShowNewMapModal();
+
+    private:
+        bool m_showNewMapPopup = false;
     };
 }
 

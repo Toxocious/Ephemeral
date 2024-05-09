@@ -20,8 +20,7 @@ namespace Ephemeral
             ( void ) io;
 
             // Set font size and add fonts.
-            auto fontPath = ( Global::GetCoreAssetPath() / "Fonts\\OpenSans\\OpenSans-Regular.ttf" ).string();
-            EPH_CORE_INFO( "Attempting to load OpenSans font at '{0}'", fontPath );
+            auto  fontPath = ( Global::GetCoreAssetPath() / "Fonts\\OpenSans\\OpenSans-Regular.ttf" ).string();
             float fontSize = 18.0f;
             io.Fonts->AddFontFromFileTTF( fontPath.c_str(), fontSize );
             io.FontDefault = io.Fonts->AddFontFromFileTTF( fontPath.c_str(), fontSize );
@@ -99,6 +98,15 @@ namespace Ephemeral
             colors[ImGuiCol_TitleBg]          = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
             colors[ImGuiCol_TitleBgActive]    = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
             colors[ImGuiCol_TitleBgCollapsed] = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
+        }
+
+        void TextCentered( std::string text )
+        {
+            auto windowWidth = ImGui::GetWindowSize().x;
+            auto textWidth   = ImGui::CalcTextSize( text.c_str() ).x;
+
+            ImGui::SetCursorPosX( ( windowWidth - textWidth ) * 0.5f );
+            ImGui::Text( text.c_str() );
         }
     };
 }
