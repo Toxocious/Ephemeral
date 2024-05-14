@@ -5,6 +5,7 @@
 #    include <Modules/_Module.h>
 
 #    include <Modules/ImGuiLayer.h>
+#    include <Modules/Renderer.h>
 #    include <Modules/Window.h>
 
 namespace Ephemeral
@@ -28,6 +29,7 @@ namespace Ephemeral
     public:
         Ephemeral::Window *     m_Window     = nullptr;
         Ephemeral::ImGuiLayer * m_ImGuiLayer = nullptr;
+        Ephemeral::Renderer *   m_Renderer   = nullptr;
 
     private:
         std::string m_Name;
@@ -37,6 +39,9 @@ namespace Ephemeral
 
         std::vector<Module *> m_Modules;
     };
+
 }
+
+extern Ephemeral::Application * App;
 
 #endif

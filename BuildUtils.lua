@@ -6,6 +6,7 @@ function linkDependencies()
 		"Libraries/glm/include",
 		"Libraries/imgui/include",
 		"Libraries/spdlog/include",
+		"Libraries/stb_image/include",
 	}
 
 	libdirs {
@@ -54,6 +55,7 @@ function includeDependencies()
 		"Libraries/glm/include",
 		"Libraries/imgui/include",
 		"Libraries/spdlog/include",
+		"Libraries/stb_image/include",
 	}
 
 	files {
@@ -62,16 +64,16 @@ function includeDependencies()
 
 		"Libraries/glfw/include/**.h",
 
-		-- "Libraries/glm/include/**.h",
 		"Libraries/glm/include/**.hpp",
-		-- "Libraries/glm/include/**.c",
-		-- "Libraries/glm/include/**.cpp",
 		"Libraries/glm/include/**.inl",
 
 		"Libraries/imgui/include/**.h",
 		"Libraries/imgui/include/**.cpp",
 
 		"Libraries/spdlog/include/**.h",
+
+		"Libraries/stb_image/include/**.h",
+		"Libraries/stb_image/include/**.cpp",
 	}
 
 	removefiles {

@@ -13,6 +13,11 @@ workspace "Ephemeral"
 
 	configurations { "Debug", "Release", "Dist" }
 
+    filter { "system:windows" }
+		systemversion "latest"
+        files { 'Projects/Core/Assets/Resources.rc', '**.ico' }
+        vpaths { [ 'Projects/Core/Assets/*' ] = { '**.ico' } }
+
 	filter { "configurations:Debug" }
         defines {
             "EPH_DEBUG",
@@ -22,8 +27,8 @@ workspace "Ephemeral"
             "_CRT_SECURE_NO_WARNINGS",
         }
         runtime "Debug"
-        optimize "Off"
-		symbols "On"
+        optimize "Debug"
+		symbols "Full"
 
 	filter { "configurations:Release" }
         defines {
@@ -34,8 +39,9 @@ workspace "Ephemeral"
             "_CRT_SECURE_NO_WARNINGS",
         }
         runtime "Release"
-        optimize "On"
-        symbols "On"
+        optimize "Off"
+        -- optimize "On"
+        -- symbols "On"
 
     filter { "configurations:Dist" }
         defines {
@@ -46,10 +52,11 @@ workspace "Ephemeral"
             "_CRT_SECURE_NO_WARNINGS",
         }
         runtime "Release"
-        optimize "On"
-        symbols "Off"
+        optimize "Off"
+        -- optimize "On"
+        -- symbols "Off"
 
-	filter { }
+    filter {}
 
 	targetdir ("Build/Binaries/%{prj.name}/%{cfg.longname}")
 	objdir ("Build/Artifacts/%{prj.name}/%{cfg.longname}")

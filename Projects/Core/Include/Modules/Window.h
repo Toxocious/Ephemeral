@@ -7,6 +7,8 @@
 
 #    include <Modules/_Module.h>
 
+#    include <stb_image/stb_image.h>
+
 namespace Ephemeral
 {
     class Window : public Module
@@ -32,9 +34,9 @@ namespace Ephemeral
 
         void CenterWindow();
 
-    private:
         GLFWwindow * GetGLFWWindow();
 
+    private:
         int  ShouldClose();
         void SwapBuffers();
         void PollEvents();
@@ -45,6 +47,7 @@ namespace Ephemeral
         int          m_Height;
         int          m_Width;
         const char * m_Title;
+        stbi_uc *    m_WindowIcon;
     };
 }
 

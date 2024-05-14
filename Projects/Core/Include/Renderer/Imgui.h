@@ -11,14 +11,14 @@ namespace Ephemeral
 {
     namespace Imgui
     {
-        // Initialization and frame handling
         void Initialize( GLFWwindow * m_Window );
         void NewFrame();
         void RenderFrame();
         void Shutdown();
 
-        // Misc.
-        void RenderFps();
+        void TextCentered( std::string text );
+
+        void SetDarkThemeColors();
     };
 }
 

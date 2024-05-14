@@ -25,7 +25,17 @@ namespace Ephemeral
         // UpdateStatus PostUpdate() override;
 
     public:
+        void ShowMenuBar();
+
+        void ShowHudButtons();
+        void ShowToolButtons();
+
+        void ShowNewMapModal();
+
         void ShowDebugOverlay();
+
+    private:
+        bool m_showNewMapPopup = false;
     };
 }
 
