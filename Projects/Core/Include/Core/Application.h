@@ -37,6 +37,9 @@ namespace Ephemeral
 
         std::vector<Module *> m_Modules;
     };
+
 }
+
+extern Ephemeral::Application * App;
 
 #endif

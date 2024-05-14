@@ -6,6 +6,8 @@
 
 #include "Gui/Interface.h"
 
+Ephemeral::Application * App = nullptr;
+
 int main()
 {
     enum class AppState
@@ -23,8 +25,6 @@ int main()
     const GLuint WIDTH = 1366, HEIGHT = 768;
     const char * APPLICATION_TITLE   = "Ephemeral Map Editor";
     const char * APPLICATION_VERSION = "v0.1";
-
-    Ephemeral::Application * App = nullptr;
 
     Ephemeral::Log::Init();
     {
