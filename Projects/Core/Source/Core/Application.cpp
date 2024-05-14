@@ -37,6 +37,10 @@ namespace Ephemeral
             {
                 p_Module->Initialize( height, width, name.c_str() );
             }
+            else
+            {
+                p_Module->Initialize();
+            }
         }
 
         // Set the name, version, and dimensions of the application.
