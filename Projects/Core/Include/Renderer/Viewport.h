@@ -4,6 +4,7 @@
 #    define EPH_CORE_VIEWPORT_H
 
 #    include <Core/Ephemeral.h>
+
 #    include <Util/Math/Integer.h>
 
 class Camera;
@@ -12,9 +13,8 @@ namespace Ephemeral
 {
     class Viewport
     {
-        friend class m1Render3D;
-        friend class p1Scene;
-        friend class p1ObjectEditor;
+        friend class Renderer;
+        // friend class Scene;
 
     public:
         Viewport();
@@ -23,19 +23,19 @@ namespace Ephemeral
         void Begin() const;
         void End() const;
 
+        void Clear();
+
         void RenderOnImGui();
 
         void DrawGrid();
-        bool drawGrid = true;
+        bool m_ShowGrid = true;
 
         inline Camera * GetCamera() const
         {
-            return camera;
+            return m_Camera;
         }
 
     private:
-        void Clear();
-
         void Update();
         void UpdateSize( int x, int y );
         void Blit() const;
@@ -43,11 +43,11 @@ namespace Ephemeral
         unsigned int GetTexture() const;
 
     public:
-        float    color[3] = { .2f, .2f, .2f };
-        Camera * camera   = nullptr;
+        float    m_Color[3] = { .2f, .2f, .2f };
+        Camera * m_Camera   = nullptr;
 
     private:
-        IntegerUtil size;
+        IntegerUtil m_Size;
 
         enum FBOIDS
         {
@@ -59,7 +59,7 @@ namespace Ephemeral
             RBO_MS
         };
 
-        unsigned int ID[6];
+        unsigned int m_ID[6];
     };
 }
 

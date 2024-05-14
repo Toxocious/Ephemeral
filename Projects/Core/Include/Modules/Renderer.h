@@ -7,6 +7,7 @@
 
 #    include <Modules/_Module.h>
 
+#    include <Renderer/Shader.h>
 #    include <Renderer/Viewport.h>
 
 #    include <map>
@@ -31,10 +32,10 @@ namespace Ephemeral
         Viewport * CreateViewport( const char * name );
         Viewport * GetViewport( const char * name );
 
-        // EphShader * GetShader( const char * name );
+        Shader * GetShader( const char * name );
 
     private:
-        // void LoadShaders();
+        void LoadShaders();
 
     public:
         int smaa = 4;
@@ -43,7 +44,7 @@ namespace Ephemeral
         std::map<std::string, Viewport *> m_Viewports;
 
         std::map<std::string, unsigned int> m_Shaders;
-        // std::map<std::string, EphShader *>   m_Programs;
+        std::map<std::string, Shader *>     m_Programs;
     };
 }
 
