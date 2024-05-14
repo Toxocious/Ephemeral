@@ -40,16 +40,16 @@ namespace Ephemeral
             return false;
         }
 
-        glfwMakeContextCurrent( GetGLFWWindow() );
+        // glfwMakeContextCurrent( GetGLFWWindow() );
         // glfwSwapInterval( 0 );
 
-        int status = gladLoadGL();
-        if ( !status )
-        {
-            EPH_CORE_ERROR( "Failed to initialize GLAD" );
-            glfwTerminate();
-            return false;
-        }
+        // int status = gladLoadGL();
+        // if ( !status )
+        // {
+        //     EPH_CORE_ERROR( "Failed to initialize GLAD" );
+        //     glfwTerminate();
+        //     return false;
+        // }
 
         int  iconWidth, iconHeight, channels;
         auto iconFilePath = ( Global::GetCoreAssetPath() / "Ephemeral.png" ).string();
@@ -68,9 +68,12 @@ namespace Ephemeral
         m_Width  = width;
         m_Title  = title;
 
-        glViewport( 0, 0, m_Width, m_Height );
+        // glViewport( 0, 0, m_Width, m_Height );
 
-        Ephemeral::Imgui::Initialize( GetGLFWWindow() );
+        // // glfwMakeContextCurrent( GetGLFWWindow() );
+        // // glfwSwapInterval( 0 );
+
+        // Ephemeral::Imgui::Initialize( GetGLFWWindow() );
 
         return true;
     }
@@ -83,11 +86,15 @@ namespace Ephemeral
     UpdateStatus Window::PreUpdate()
     {
         // Clear the background color.
-        glClearColor( 0.1f, 0.1f, 0.1f, 1.0f );
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        // glClearColor( 0.1f, 0.1f, 0.1f, 1.0f );
+        // glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-        // Enable depth testing.
-        glEnable( GL_DEPTH_TEST );
+        // // Enable depth testing.
+        // glEnable( GL_DEPTH_TEST );
+
+        // // face culling
+        // glEnable( GL_CULL_FACE );
+        // glCullFace( GL_FRONT );
 
         // Set wireframing.
         // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -110,21 +117,11 @@ namespace Ephemeral
             return UpdateStatus::UPDATE_STOP;
         }
 
-        // Ephemeral::Imgui::NewFrame();
-        {
-            {
-                // Ephemeral::Imgui::RenderFps();
-            }
-        }
-        // Ephemeral::Imgui::RenderFrame();
-
         return UpdateStatus::UPDATE_CONTINUE;
     }
 
     bool Window::CleanUp()
     {
-        Ephemeral::Imgui::Shutdown();
-
         stbi_image_free( m_WindowIcon );
         glfwDestroyWindow( GetGLFWWindow() );
         glfwTerminate();

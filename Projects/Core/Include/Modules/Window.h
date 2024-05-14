@@ -34,9 +34,9 @@ namespace Ephemeral
 
         void CenterWindow();
 
-    private:
         GLFWwindow * GetGLFWWindow();
 
+    private:
         int  ShouldClose();
         void SwapBuffers();
         void PollEvents();
