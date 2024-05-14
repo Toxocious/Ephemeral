@@ -44,6 +44,8 @@ namespace Ephemeral
 
     void EditorInterface::ShowMenuBar()
     {
+        ImGui::PushStyleVar( ImGuiStyleVar_WindowBorderSize, 0.0f );
+
         if ( ImGui::BeginMainMenuBar() )
         {
             if ( ImGui::BeginMenu( "Map" ) )
@@ -78,13 +80,34 @@ namespace Ephemeral
             {
             }
 
+            // Custom bottom border line.
+            // Get the draw list for the current window
+            ImDrawList * draw_list = ImGui::GetWindowDrawList();
+
+            // Get the position and size of the menubar
+            ImVec2 pos  = ImGui::GetWindowPos();
+            ImVec2 size = ImGui::GetWindowSize();
+
+            // Draw the bottom border line
+            draw_list->AddLine(
+                ImVec2( pos.x, pos.y + size.y - 1 ),                        // Start point (bottom-left)
+                ImVec2( pos.x + size.x, pos.y + size.y - 1 ),               // End point (bottom-right)
+                ImGui::GetColorU32( ImVec4( 0.08f, 0.10f, 0.12f, 1.00f ) ), // Border color
+                1.0f                                                        // Border thickness
+            );
+
             ImGui::EndMainMenuBar();
         }
+
+        ImGui::PopStyleVar();
 
         // Show modals.
         ShowNewMapModal();
     }
 
+    /**
+     * Render the modal that prompts the user about creating a new map.
+     */
     void EditorInterface::ShowNewMapModal()
     {
         if ( !m_showNewMapPopup )
@@ -120,6 +143,14 @@ namespace Ephemeral
 
     void EditorInterface::ShowHudButtons()
     {
+        ShowToolButtons();
+    }
+
+    /**
+     * Buttons that handle the currently active tool, ie. paint brush, eraser, etc.
+     */
+    void EditorInterface::ShowToolButtons()
+    {
         ImGuiIO &        io           = ImGui::GetIO();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
 
@@ -136,19 +167,24 @@ namespace Ephemeral
 
         if ( ImGui::Begin( "Hud Buttons", nullptr, window_flags ) )
         {
-            ImGui::PushStyleVar( ImGuiStyleVar_FrameRounding, 6.f );
             {
-                ImGui::Button( "1", ImVec2( 30.f, 30.f ) );
-                ImGui::Button( "2", ImVec2( 30.f, 30.f ) );
-                ImGui::Button( "3", ImVec2( 30.f, 30.f ) );
-                ImGui::Button( "4", ImVec2( 30.f, 30.f ) );
-                ImGui::Button( "5", ImVec2( 30.f, 30.f ) );
+                ImGui::PushStyleVar( ImGuiStyleVar_FrameRounding, 6.f );
+                {
+                    ImGui::Button( "1", ImVec2( 30.f, 30.f ) );
+                    ImGui::Button( "2", ImVec2( 30.f, 30.f ) );
+                    ImGui::Button( "3", ImVec2( 30.f, 30.f ) );
+                    ImGui::Button( "4", ImVec2( 30.f, 30.f ) );
+                    ImGui::Button( "5", ImVec2( 30.f, 30.f ) );
+                }
+                ImGui::PopStyleVar();
             }
-            ImGui::PopStyleVar();
         }
         ImGui::End();
     }
 
+    /**
+     * Debug overlay
+     */
     void EditorInterface::ShowDebugOverlay()
     {
         ImGuiIO &        io           = ImGui::GetIO();

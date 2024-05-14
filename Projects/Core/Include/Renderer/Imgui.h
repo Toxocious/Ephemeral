@@ -16,8 +16,9 @@ namespace Ephemeral
         void RenderFrame();
         void Shutdown();
 
-        void SetDarkThemeColors();
         void TextCentered( std::string text );
+
+        void SetDarkThemeColors();
     };
 }
 

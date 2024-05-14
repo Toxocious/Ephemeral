@@ -63,6 +63,18 @@ namespace Ephemeral
         }
 
         /**
+         * Sets some text to be centered.
+         */
+        void TextCentered( std::string text )
+        {
+            auto windowWidth = ImGui::GetWindowSize().x;
+            auto textWidth   = ImGui::CalcTextSize( text.c_str() ).x;
+
+            ImGui::SetCursorPosX( ( windowWidth - textWidth ) * 0.5f );
+            ImGui::Text( text.c_str() );
+        }
+
+        /**
          * Sets a custom dark theme
          */
         void SetDarkThemeColors()
@@ -98,15 +110,6 @@ namespace Ephemeral
             colors[ImGuiCol_TitleBg]          = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
             colors[ImGuiCol_TitleBgActive]    = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
             colors[ImGuiCol_TitleBgCollapsed] = ImVec4 { 0.15f, 0.1505f, 0.151f, 1.0f };
-        }
-
-        void TextCentered( std::string text )
-        {
-            auto windowWidth = ImGui::GetWindowSize().x;
-            auto textWidth   = ImGui::CalcTextSize( text.c_str() ).x;
-
-            ImGui::SetCursorPosX( ( windowWidth - textWidth ) * 0.5f );
-            ImGui::Text( text.c_str() );
         }
     };
 }

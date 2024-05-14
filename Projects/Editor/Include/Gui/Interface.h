@@ -26,10 +26,13 @@ namespace Ephemeral
 
     public:
         void ShowMenuBar();
-        void ShowDebugOverlay();
+
         void ShowHudButtons();
+        void ShowToolButtons();
 
         void ShowNewMapModal();
+
+        void ShowDebugOverlay();
 
     private:
         bool m_showNewMapPopup = false;

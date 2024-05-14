@@ -144,6 +144,12 @@ namespace Ephemeral
     {
         Begin();
 
+        // static auto shader1 = App->Renderer->GetShader( "grid" );
+        // shader1->Use();
+        // OpenGLUtil::DepthEnable( true );
+        // OpenGLUtil::DrawArrays( 6 );
+        // OpenGLUtil::DepthEnable( false );
+
         End();
     }
 }
