@@ -26,6 +26,11 @@ namespace Ephemeral
 
         void PushLayer( Module * layer );
 
+        inline const float & GetDeltaTime() const
+        {
+            return m_Window->GetDeltaTime();
+        }
+
     public:
         Ephemeral::Window *     m_Window     = nullptr;
         Ephemeral::ImGuiLayer * m_ImGuiLayer = nullptr;

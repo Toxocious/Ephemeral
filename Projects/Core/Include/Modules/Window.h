@@ -17,7 +17,6 @@ namespace Ephemeral
         Window( bool enabled = true );
         ~Window();
 
-    public:
         bool Initialize( const int height, const int width, const char * title ) override;
         bool Start() override;
         bool CleanUp() override;
@@ -36,6 +35,11 @@ namespace Ephemeral
 
         GLFWwindow * GetGLFWWindow();
 
+        inline const float & GetDeltaTime() const
+        {
+            return m_DeltaTime;
+        }
+
     private:
         int  ShouldClose();
         void SwapBuffers();
@@ -48,6 +52,9 @@ namespace Ephemeral
         int          m_Width;
         const char * m_Title;
         stbi_uc *    m_WindowIcon;
+
+        float m_DeltaTime;
+        float m_LastTime = 0;
     };
 }
 
