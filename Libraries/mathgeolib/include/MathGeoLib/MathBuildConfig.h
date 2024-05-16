@@ -1,4 +1,4 @@
-/* Copyright 2011 Jukka Jylänki
+/* Copyright 2011 Jukka Jylï¿½nki
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
    limitations under the License. */
 
 /** @file MathBuildConfig.h
-	@author Jukka Jylänki
+	@author Jukka Jylï¿½nki
 	@brief Specifies all build flags for the library. */
 #pragma once
 
@@ -120,7 +120,7 @@
 
 // Choose which internally provided features to build MathGeoLib with.
 // Comment these out to configure what to build.
-#define MATH_WITH_GRISU3
+// #define MATH_WITH_GRISU3
 
 // Uncomment to specify the SIMD instruction set level in use.
 //#define MATH_AVX

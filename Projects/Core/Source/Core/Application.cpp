@@ -6,6 +6,7 @@
 
 #include <Modules/ImGuiLayer.h>
 #include <Modules/Renderer.h>
+#include <Modules/SceneCamera.h>
 #include <Modules/Window.h>
 
 namespace Ephemeral
@@ -21,14 +22,16 @@ namespace Ephemeral
     bool Application::Initialize( std::string name, std::string version, int height, int width )
     {
         // Create instances of required modules.
-        m_Window     = new Window();
-        m_Renderer   = new Renderer();
-        m_ImGuiLayer = new ImGuiLayer();
+        m_Window      = new Window();
+        m_Renderer    = new Renderer();
+        m_ImGuiLayer  = new ImGuiLayer();
+        m_SceneCamera = new SceneCamera();
 
         // Assign order of execution to modules.
         m_Modules.push_back( m_Window );
         m_Modules.push_back( m_Renderer );
         m_Modules.push_back( m_ImGuiLayer );
+        m_Modules.push_back( m_SceneCamera );
 
         // Initialize all of our modules.
         for ( auto module = m_Modules.begin(); module != m_Modules.end(); ++module )

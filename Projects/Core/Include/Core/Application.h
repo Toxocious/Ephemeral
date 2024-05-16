@@ -6,6 +6,7 @@
 
 #    include <Modules/ImGuiLayer.h>
 #    include <Modules/Renderer.h>
+#    include <Modules/SceneCamera.h>
 #    include <Modules/Window.h>
 
 namespace Ephemeral
@@ -32,9 +33,10 @@ namespace Ephemeral
         }
 
     public:
-        Ephemeral::Window *     m_Window     = nullptr;
-        Ephemeral::ImGuiLayer * m_ImGuiLayer = nullptr;
-        Ephemeral::Renderer *   m_Renderer   = nullptr;
+        Ephemeral::Window *      m_Window      = nullptr;
+        Ephemeral::ImGuiLayer *  m_ImGuiLayer  = nullptr;
+        Ephemeral::Renderer *    m_Renderer    = nullptr;
+        Ephemeral::SceneCamera * m_SceneCamera = nullptr;
 
     private:
         std::string m_Name;

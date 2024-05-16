@@ -5,6 +5,8 @@
 
 #    include <Core/Ephemeral.h>
 
+#    include <Renderer/Camera.h>
+
 #    include <Util/Math/Integer.h>
 
 class Camera;
@@ -14,6 +16,7 @@ namespace Ephemeral
     class Viewport
     {
         friend class Renderer;
+        friend class Camera;
         // friend class Scene;
 
     public:

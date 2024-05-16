@@ -17,7 +17,7 @@ namespace Ephemeral
     class Renderer : public Module
     {
     public:
-        Renderer( bool start_enabled = true );
+        Renderer( bool enabled = true );
         ~Renderer();
 
     public:

@@ -108,7 +108,7 @@ namespace Ephemeral
     void Viewport::UpdateSize( int x, int y )
     {
         m_Size = { x, y };
-        // camera->UpdateFrustum( x, y );
+        m_Camera->UpdateFrustum( x, y );
     }
 
     void Viewport::Blit() const
@@ -128,7 +128,7 @@ namespace Ephemeral
     void Viewport::Begin() const
     {
         glBindFramebuffer( GL_FRAMEBUFFER, m_ID[FBO_MS] );
-        // App->camera->UpdateShaders( camera );
+        App->m_SceneCamera->UpdateShaders( m_Camera );
         glViewport( 0, 0, m_Size.x, m_Size.y );
     }
 
@@ -139,7 +139,7 @@ namespace Ephemeral
 
     void Viewport::RenderOnImGui()
     {
-        // camera->is_active = ImGui::IsWindowHovered();
+        m_Camera->isActive = ImGui::IsWindowHovered();
     }
 
     void Viewport::DrawGrid()

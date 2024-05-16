@@ -14,8 +14,8 @@
 
 namespace Ephemeral
 {
-    Renderer::Renderer( bool start_enabled )
-        : Module( "Renderer", start_enabled )
+    Renderer::Renderer( bool enabled )
+        : Module( "Renderer", enabled )
     {
     }
 
@@ -112,9 +112,7 @@ namespace Ephemeral
     Viewport * Renderer::CreateViewport( const char * name )
     {
         Viewport * viewport = new Viewport();
-
-        // Set the viewport's camera.
-        //   viewport->m_Camera = App->Camera->CreateCamera(name);
+        viewport->m_Camera  = App->m_SceneCamera->CreateCamera( name );
 
         m_Viewports[name] = viewport;
 
@@ -174,7 +172,7 @@ namespace Ephemeral
                 }
             }
         }
-        EPH_CORE_TRACE( "\t  All shaders loaded. Look for any warnings regarding failed shaders." );
+        EPH_CORE_TRACE( "\t  All shaders loaded." );
     }
 
     Shader * Renderer::GetShader( const char * name )
