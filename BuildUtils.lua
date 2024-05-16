@@ -5,6 +5,7 @@ function linkDependencies()
 		"Libraries/glfw/include",
 		"Libraries/glm/include",
 		"Libraries/imgui/include",
+		"Libraries/mathgeolib/include",
 		"Libraries/spdlog/include",
 		"Libraries/stb_image/include",
 	}
@@ -54,6 +55,7 @@ function includeDependencies()
 		"Libraries/glfw/include",
 		"Libraries/glm/include",
 		"Libraries/imgui/include",
+		"Libraries/mathgeolib/include",
 		"Libraries/spdlog/include",
 		"Libraries/stb_image/include",
 	}
@@ -69,6 +71,10 @@ function includeDependencies()
 
 		"Libraries/imgui/include/**.h",
 		"Libraries/imgui/include/**.cpp",
+
+		"Libraries/mathgeolib/include/**.h",
+		"Libraries/mathgeolib/include/**.cpp",
+		"Libraries/mathgeolib/include/**.inl",
 
 		"Libraries/spdlog/include/**.h",
 
