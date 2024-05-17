@@ -4,6 +4,8 @@
 
 #include <Renderer/Viewport.h>
 
+#include <Util/OpenGL.h>
+
 namespace Ephemeral
 {
     Viewport::Viewport()
@@ -139,7 +141,6 @@ namespace Ephemeral
 
     void Viewport::RenderOnImGui()
     {
-        m_Camera->isActive = ImGui::IsWindowHovered();
     }
 
     void Viewport::DrawGrid()
@@ -149,9 +150,9 @@ namespace Ephemeral
         static auto gridShader = App->m_Renderer->GetShader( "Grid" );
         gridShader->Use();
 
-        // OpenGLUtil::DepthEnable( true );
-        // OpenGLUtil::DrawArrays( 6 );
-        // OpenGLUtil::DepthEnable( false );
+        OpenGLUtils::DepthEnable( true );
+        OpenGLUtils::DrawArrays( 6 );
+        OpenGLUtils::DepthEnable( false );
 
         End();
     }

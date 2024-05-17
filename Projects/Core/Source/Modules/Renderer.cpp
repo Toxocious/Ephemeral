@@ -39,20 +39,24 @@ namespace Ephemeral
         auto height = App->m_Window->GetHeight();
         auto width  = App->m_Window->GetWidth();
 
-        glViewport( 0, 0, width, height );
-
         // glfwSwapInterval( 0 );
+
+        // // Enable depth testing.
+        // glEnable( GL_DEPTH_TEST );
+
+        // Set wireframing.
+        // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
         Ephemeral::Imgui::Initialize( window );
 
-        glEnable( GL_CULL_FACE );
-        glCullFace( GL_FRONT );
+        // glEnable( GL_CULL_FACE );
+        // glCullFace( GL_FRONT );
 
-        glEnable( GL_MULTISAMPLE );
-        glEnable( GL_BLEND );
-        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+        // glEnable( GL_MULTISAMPLE );
+        // glEnable( GL_BLEND );
+        // glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
-        glDepthFunc( GL_LEQUAL );
+        // glDepthFunc( GL_LEQUAL );
 
         LoadShaders();
 
@@ -68,10 +72,14 @@ namespace Ephemeral
         {
             auto p_Viewport = ( *viewport ).second;
 
+            if ( p_Viewport == nullptr )
+            {
+                continue;
+            }
+
             p_Viewport->Clear();
             if ( p_Viewport->m_ShowGrid )
             {
-                EPH_CORE_TRACE( "Drawing a grid in a viewport." );
                 p_Viewport->DrawGrid();
             }
         }
@@ -175,6 +183,9 @@ namespace Ephemeral
         EPH_CORE_TRACE( "\t  All shaders loaded." );
     }
 
+    /**
+     * Return a shader if it has already been compiled.
+     */
     Shader * Renderer::GetShader( const char * name )
     {
         auto shaderProgram = m_Programs.find( name );

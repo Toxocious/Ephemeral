@@ -24,7 +24,7 @@ namespace Ephemeral
 
     void Camera::CameraMovement()
     {
-        // Not if it is being handled by IMGUI
+        // No movement if ImGui is capturing input devices.
         ImGuiIO & io = ImGui::GetIO();
         ( void ) io;
         if ( io.WantCaptureKeyboard || io.WantCaptureMouse )
@@ -32,9 +32,14 @@ namespace Ephemeral
             return;
         }
 
+        // No movement if we can't get the active glfw window.
         auto window = App->m_Window->GetGLFWWindow();
+        if ( window == nullptr )
+        {
+            return;
+        }
 
-        if ( wasd_move )
+        // Handle WASD movement
         {
             // Forward -- Zooms in
             if ( glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS )

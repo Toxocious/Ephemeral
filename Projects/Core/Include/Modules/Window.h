@@ -9,6 +9,8 @@
 
 #    include <stb_image/stb_image.h>
 
+void SetKeyCallbacks( GLFWwindow * window, int key, int scancode, int action, int mods );
+
 namespace Ephemeral
 {
     class Window : public Module

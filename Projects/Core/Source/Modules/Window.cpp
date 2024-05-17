@@ -6,6 +6,14 @@
 
 #include <stb_image/stb_image.h>
 
+void SetKeyCallbacks( GLFWwindow * window, int key, int scancode, int action, int mods )
+{
+    if ( key == GLFW_KEY_ESCAPE && action == GLFW_PRESS )
+    {
+        glfwSetWindowShouldClose( window, GLFW_TRUE );
+    }
+}
+
 namespace Ephemeral
 {
     Window::Window( bool enabled )
@@ -40,17 +48,6 @@ namespace Ephemeral
             return false;
         }
 
-        // glfwMakeContextCurrent( GetGLFWWindow() );
-        // glfwSwapInterval( 0 );
-
-        // int status = gladLoadGL();
-        // if ( !status )
-        // {
-        //     EPH_CORE_ERROR( "Failed to initialize GLAD" );
-        //     glfwTerminate();
-        //     return false;
-        // }
-
         int  iconWidth, iconHeight, channels;
         auto iconFilePath = ( Global::GetCoreAssetPath() / "Ephemeral.png" ).string();
         m_WindowIcon      = stbi_load( iconFilePath.c_str(), &iconWidth, &iconHeight, &channels, 0 );
@@ -62,18 +59,13 @@ namespace Ephemeral
             glfwSetWindowIcon( GetGLFWWindow(), 1, images );
         }
 
+        glfwSetKeyCallback( GetGLFWWindow(), SetKeyCallbacks );
+
         CenterWindow();
 
         m_Height = height;
         m_Width  = width;
         m_Title  = title;
-
-        // glViewport( 0, 0, m_Width, m_Height );
-
-        // // glfwMakeContextCurrent( GetGLFWWindow() );
-        // // glfwSwapInterval( 0 );
-
-        // Ephemeral::Imgui::Initialize( GetGLFWWindow() );
 
         return true;
     }
@@ -88,20 +80,6 @@ namespace Ephemeral
         float currentTime = ( float ) glfwGetTime();
         m_DeltaTime       = currentTime - m_LastTime;
         m_LastTime        = currentTime;
-
-        // Clear the background color.
-        // glClearColor( 0.1f, 0.1f, 0.1f, 1.0f );
-        // glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-        // // Enable depth testing.
-        // glEnable( GL_DEPTH_TEST );
-
-        // // face culling
-        // glEnable( GL_CULL_FACE );
-        // glCullFace( GL_FRONT );
-
-        // Set wireframing.
-        // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
         return UpdateStatus::UPDATE_CONTINUE;
     }

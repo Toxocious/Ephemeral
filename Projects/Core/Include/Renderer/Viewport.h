@@ -38,7 +38,6 @@ namespace Ephemeral
             return m_Camera;
         }
 
-    private:
         void Update();
         void UpdateSize( int x, int y );
         void Blit() const;

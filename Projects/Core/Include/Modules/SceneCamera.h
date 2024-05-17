@@ -24,7 +24,9 @@ namespace Ephemeral
         UpdateStatus PreUpdate() override;
 
         Camera * CreateCamera( const char * id );
-        void     UpdateShaders( Camera * camera );
+        Camera * GetCamera( const char * id );
+
+        void UpdateShaders( Camera * camera );
 
     private:
         // void SetFov();

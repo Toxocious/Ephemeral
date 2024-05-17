@@ -65,9 +65,24 @@ namespace Ephemeral
         return newCamera;
     }
 
+    Camera * SceneCamera::GetCamera( const char * id )
+    {
+        for ( auto camera : m_Cameras )
+        {
+            if ( strcmp( camera->GetID(), id ) == 0 )
+            {
+                return camera;
+            }
+        }
+
+        return nullptr;
+    }
+
     void SceneCamera::UpdateShaders( Camera * camera )
     {
-        // auto gridShader = App->m_Renderer->GetShader( "Grid" );
-        // gridShader->Use();
+        auto gridShader = App->m_Renderer->GetShader( "Grid" );
+        gridShader->Use();
+        gridShader->SetMat4( "view", camera->frustum.ViewMatrix() );
+        gridShader->SetMat4( "projection", camera->frustum.ProjectionMatrix() );
     }
 }
