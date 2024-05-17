@@ -26,6 +26,7 @@ namespace Ephemeral
 
     public:
         void ShowMenuBar();
+        void ShowSceneWindow();
 
         void ShowHudButtons();
         void ShowToolButtons();

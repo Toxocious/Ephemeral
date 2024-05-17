@@ -36,10 +36,20 @@ namespace Ephemeral
     UpdateStatus EditorInterface::Update()
     {
         ShowMenuBar();
+        ShowSceneWindow();
+
         // ShowDebugOverlay();
         ShowHudButtons();
 
         return UpdateStatus::UPDATE_CONTINUE;
+    }
+
+    void EditorInterface::ShowSceneWindow()
+    {
+        ImGui::Begin( "SceneWindow" );
+        {
+        }
+        ImGui::End();
     }
 
     void EditorInterface::ShowMenuBar()

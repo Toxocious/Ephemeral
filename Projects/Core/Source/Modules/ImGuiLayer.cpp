@@ -4,6 +4,7 @@
 
 #include <Modules/ImGuiLayer.h>
 
+#include <Renderer/GameScene.h>
 #include <Renderer/Imgui.h>
 
 namespace Ephemeral
@@ -20,8 +21,10 @@ namespace Ephemeral
 
     bool ImGuiLayer::Initialize()
     {
-        EPH_CORE_TRACE( "Initializing imGuiLayer" );
+        EPH_CORE_TRACE( "Initializing ImGuiLayer" );
         {
+            m_GameScene = new GameScene();
+            m_GameScene->Initialize();
         }
         EPH_CORE_INFO( "ImGuiLayer initialized" );
 
@@ -30,6 +33,8 @@ namespace Ephemeral
 
     bool ImGuiLayer::Start()
     {
+        m_GameScene->Start();
+
         return true;
     }
 
@@ -47,11 +52,14 @@ namespace Ephemeral
     {
         Ephemeral::Imgui::NewFrame();
         {
+            for ( Module * layer : m_Layers )
             {
-                for ( Module * layer : m_Layers )
-                {
-                    layer->Update();
-                }
+                layer->Update();
+            }
+
+            if ( m_GameScene != nullptr )
+            {
+                m_GameScene->Update();
             }
         }
         Ephemeral::Imgui::RenderFrame();
@@ -61,6 +69,10 @@ namespace Ephemeral
 
     bool ImGuiLayer::CleanUp()
     {
+        m_GameScene->CleanUp();
+        delete m_GameScene;
+        m_GameScene = nullptr;
+
         return true;
     }
 

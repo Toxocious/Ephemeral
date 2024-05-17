@@ -6,6 +6,7 @@
 
 #include <Modules/ImGuiLayer.h>
 #include <Modules/Renderer.h>
+#include <Modules/Scene.h>
 #include <Modules/SceneCamera.h>
 #include <Modules/Window.h>
 
@@ -26,12 +27,14 @@ namespace Ephemeral
         m_Renderer    = new Renderer();
         m_ImGuiLayer  = new ImGuiLayer();
         m_SceneCamera = new SceneCamera();
+        m_Scene       = new Scene();
 
         // Assign order of execution to modules.
         m_Modules.push_back( m_Window );
-        m_Modules.push_back( m_Renderer );
-        m_Modules.push_back( m_ImGuiLayer );
         m_Modules.push_back( m_SceneCamera );
+        m_Modules.push_back( m_Renderer );
+        m_Modules.push_back( m_Scene );
+        m_Modules.push_back( m_ImGuiLayer );
 
         // Initialize all of our modules.
         for ( auto module = m_Modules.begin(); module != m_Modules.end(); ++module )

@@ -9,6 +9,8 @@
 
 namespace Ephemeral
 {
+    class GameScene;
+
     class ImGuiLayer : public Module
     {
     public:
@@ -28,6 +30,8 @@ namespace Ephemeral
 
     private:
         std::vector<Module *> m_Layers;
+
+        GameScene * m_GameScene = nullptr;
     };
 }
 
