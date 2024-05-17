@@ -16,7 +16,7 @@ namespace Ephemeral
         ~ImGuiLayer();
 
     public:
-        bool Initialize( const int height, const int width, const char * title ) override;
+        bool Initialize() override;
         bool Start() override;
         bool CleanUp() override;
 

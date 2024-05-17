@@ -18,7 +18,7 @@ namespace Ephemeral
         CleanUp();
     }
 
-    bool ImGuiLayer::Initialize( const int height, const int width, const char * title )
+    bool ImGuiLayer::Initialize()
     {
         EPH_CORE_TRACE( "Initializing imGuiLayer" );
         {
