@@ -37,9 +37,15 @@ namespace Ephemeral
         std::string GetIdentifier() const;
 
         void SetBool( const char * name, bool value );
-        void SetInt( const char * name, int value );
         void SetFloat( const char * name, float value );
+
+        void SetInt( const char * name, int value );
         void SetInt2( const char * name, const IntegerUtil & value );
+
+        void SetVec2( const char * name, const float2 & vector );
+        void SetVec3( const char * name, const float3 & vector );
+
+        void SetMat4( const char * name, const float4x4 & matrix );
 
     protected:
         void SetName( const char * nname );

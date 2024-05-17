@@ -84,6 +84,130 @@ namespace Ephemeral
     }
 
     /**
+     * Sets a property of the Shader to a boolean.
+     */
+    void Shader::SetBool( const char * name, bool value )
+    {
+        auto it = uniform_cache.find( name );
+        if ( it != uniform_cache.end() )
+        {
+            glUniform1i( ( *it ).second, value );
+        }
+        else
+        {
+            int loc = glGetUniformLocation( m_ID, name );
+            if ( loc != -1 )
+            {
+                uniform_cache[name] = loc;
+                glUniform1i( loc, value );
+            }
+            else
+            {
+                EPH_CORE_WARN( "Variable {0} not found in {1} shader", name, m_Identifier.c_str() );
+            }
+        }
+    }
+
+    /**
+     * Sets a property of the Shader to a Vec2.
+     */
+    void Shader::SetVec2( const char * name, const float2 & vector )
+    {
+        auto it = uniform_cache.find( name );
+        if ( it != uniform_cache.end() )
+        {
+            glUniform2fv( ( *it ).second, 1, vector.ptr() );
+        }
+        else
+        {
+            int loc = glGetUniformLocation( m_ID, name );
+            if ( loc != -1 )
+            {
+                uniform_cache[name] = loc;
+                glUniform3fv( loc, 1, vector.ptr() );
+            }
+            else
+            {
+                EPH_CORE_WARN( "Variable {0} not found in {1} shader", name, m_Identifier.c_str() );
+            }
+        }
+    }
+
+    /**
+     * Sets a property of the Shader to a Vec3.
+     */
+    void Shader::SetVec3( const char * name, const float3 & vector )
+    {
+        auto it = uniform_cache.find( name );
+        if ( it != uniform_cache.end() )
+        {
+            glUniform3fv( ( *it ).second, 1, vector.ptr() );
+        }
+        else
+        {
+            int loc = glGetUniformLocation( m_ID, name );
+            if ( loc != -1 )
+            {
+                uniform_cache[name] = loc;
+                glUniform3fv( loc, 1, vector.ptr() );
+            }
+            else
+            {
+                EPH_CORE_WARN( "Variable {0} not found in {1} shader", name, m_Identifier.c_str() );
+            }
+        }
+    }
+
+    /**
+     * Sets the Shader's 4x4 matrix.
+     */
+    void Shader::SetMat4( const char * name, const float4x4 & matrix )
+    {
+        auto it = uniform_cache.find( name );
+        if ( it != uniform_cache.end() )
+        {
+            glUniformMatrix4fv( ( *it ).second, 1, GL_TRUE, matrix.ptr() );
+        }
+        else
+        {
+            int loc = glGetUniformLocation( m_ID, name );
+            if ( loc != -1 )
+            {
+                uniform_cache[name] = loc;
+                glUniformMatrix4fv( loc, 1, GL_TRUE, matrix.ptr() );
+            }
+            else
+            {
+                EPH_CORE_WARN( "Variable '{0}' not found in '{1}' shader", name, m_Identifier.c_str() );
+            }
+        }
+    }
+
+    /**
+     * Set the Shader's identifier (name).
+     */
+    void Shader::SetName( const char * name )
+    {
+        m_Identifier.assign( name );
+    }
+
+    /**
+     * Returns the ID of the shader.
+     */
+    unsigned int Shader::GetID() const
+    {
+        return m_ID;
+    }
+
+    /**
+     * Returns the shader's identifier (name).
+     */
+    std::string Shader::GetIdentifier() const
+    {
+        return m_Identifier;
+    }
+
+    /**
      * Checks for any errors during shader compilation.
      */
     void Shader::CheckCompileErrors( unsigned int shader, ShaderType type )
@@ -116,29 +240,5 @@ namespace Ephemeral
                 }
             }
         }
-    }
-
-    /**
-     * Set the Shader's identifier (name).
-     */
-    void Shader::SetName( const char * name )
-    {
-        m_Identifier.assign( name );
-    }
-
-    /**
-     * Returns the ID of the shader.
-     */
-    unsigned int Shader::GetID() const
-    {
-        return m_ID;
-    }
-
-    /**
-     * Returns the shader's identifier (name).
-     */
-    std::string Shader::GetIdentifier() const
-    {
-        return m_Identifier;
     }
 }
