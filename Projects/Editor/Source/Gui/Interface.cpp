@@ -46,10 +46,17 @@ namespace Ephemeral
 
     void EditorInterface::ShowSceneWindow()
     {
-        ImGui::Begin( "SceneWindow" );
+        ImGui::SetNextWindowPos( ImVec2( 0.f, 24.f ) );
+        ImGui::SetNextWindowSize( ImVec2( 1366.f, 744.f ) );
+
+        ImGui::PushStyleVar( ImGuiStyleVar_WindowRounding, 0.0f );
+
+        ImGui::Begin( "SceneWindow", nullptr, ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse );
         {
         }
         ImGui::End();
+
+        ImGui::PopStyleVar();
     }
 
     void EditorInterface::ShowMenuBar()

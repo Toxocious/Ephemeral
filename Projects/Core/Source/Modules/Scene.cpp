@@ -44,9 +44,9 @@ namespace Ephemeral
         m_SceneViewport->Begin();
 
         {
-            // static auto shader = App->m_Renderer->GetShader( "Default" );
-            // shader->Use();
-            // shader->SetMat4( "model", float4x4::identity );
+            static auto shader = App->m_Renderer->GetShader( "Default" );
+            shader->Use();
+            shader->SetMat4( "model", float4x4::identity );
         }
 
         m_SceneViewport->End();
