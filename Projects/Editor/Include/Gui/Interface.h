@@ -20,9 +20,9 @@ namespace Ephemeral
         bool Start() override;
         bool CleanUp() override;
 
-        // UpdateStatus PreUpdate() override;
+        UpdateStatus PreUpdate() override;
         UpdateStatus Update() override;
-        // UpdateStatus PostUpdate() override;
+        UpdateStatus PostUpdate() override;
 
     public:
         void ShowMenuBar();
@@ -34,6 +34,11 @@ namespace Ephemeral
         void ShowNewMapModal();
 
         void ShowDebugOverlay();
+
+        void PrepareDockspace();
+
+    private:
+        std::vector<Module *> m_GuiModules;
 
     private:
         bool m_showNewMapPopup = false;

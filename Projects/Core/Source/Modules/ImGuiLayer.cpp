@@ -49,8 +49,6 @@ namespace Ephemeral
 
     UpdateStatus ImGuiLayer::PreUpdate()
     {
-        Ephemeral::Imgui::NewFrame();
-
         for ( Module * layer : m_Layers )
         {
             layer->PreUpdate();
@@ -61,17 +59,19 @@ namespace Ephemeral
 
     UpdateStatus ImGuiLayer::Update()
     {
-        {
-            for ( Module * layer : m_Layers )
-            {
-                layer->Update();
-            }
+        Ephemeral::Imgui::NewFrame();
 
-            if ( m_GameScene != nullptr )
-            {
-                m_GameScene->Update();
-            }
+        for ( Module * layer : m_Layers )
+        {
+            layer->Update();
         }
+
+        if ( m_GameScene != nullptr )
+        {
+            m_GameScene->Update();
+        }
+
+        Ephemeral::Imgui::RenderFrame();
 
         return UpdateStatus::UPDATE_CONTINUE;
     }
@@ -82,8 +82,6 @@ namespace Ephemeral
         {
             layer->PostUpdate();
         }
-
-        Ephemeral::Imgui::RenderFrame();
 
         return UpdateStatus::UPDATE_CONTINUE;
     }

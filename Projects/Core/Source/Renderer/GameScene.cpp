@@ -44,26 +44,26 @@ namespace Ephemeral
 
     void GameScene::Update()
     {
-        ImGui::Begin( "SceneWindow", nullptr, ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse );
-        {
-            ImGui::PushClipRect( ImGui::GetWindowPos(), ImGui::GetWindowPos() + ImGui::GetWindowSize(), false );
+        // ImGui::Begin( "SceneWindow", nullptr, ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse );
+        // {
+        //     ImGui::PushClipRect( ImGui::GetWindowPos(), ImGui::GetWindowPos() + ImGui::GetWindowSize(), false );
 
-            ImGui::SetCursorScreenPos( ImGui::GetWindowPos() + ImVec2( 0, ImGui::GetCurrentWindow()->TitleBarHeight() + ImGui::GetCurrentWindow()->MenuBarHeight() ) );
+        //     ImGui::SetCursorScreenPos( ImGui::GetWindowPos() + ImVec2( 0, ImGui::GetCurrentWindow()->TitleBarHeight() + ImGui::GetCurrentWindow()->MenuBarHeight() ) );
 
-            ImVec2 window_size = ImVec2( 1366.f, 768.f );
+        //     ImVec2 window_size = ImVec2( 1366.f, 768.f );
 
-            {
-                m_SceneViewport->UpdateSize( ( int ) window_size.x, ( int ) window_size.y );
+        //     {
+        //         m_SceneViewport->UpdateSize( ( int ) window_size.x, ( int ) window_size.y );
 
-                m_SceneViewport->Update();
+        //         m_SceneViewport->Update();
 
-                m_SceneViewport->Blit();
-            }
+        //         m_SceneViewport->Blit();
+        //     }
 
-            ImGui::Image( ( ImTextureID ) m_SceneViewport->GetTexture(), window_size, ImVec2( 0, 0 ), ImVec2( 1, -1 ) );
+        //     ImGui::Image( ( ImTextureID ) m_SceneViewport->GetTexture(), window_size, ImVec2( 0, 0 ), ImVec2( 1, -1 ) );
 
-            ImGui::PopClipRect();
-        }
-        ImGui::End();
+        //     ImGui::PopClipRect();
+        // }
+        // ImGui::End();
     }
 }
