@@ -92,7 +92,7 @@ namespace Ephemeral
 
     UpdateStatus EditorInterface::Update()
     {
-        PrepareDockspace();
+        // PrepareDockspace();
 
         for ( auto module = m_GuiModules.begin(); module != m_GuiModules.end(); ++module )
         {
@@ -101,16 +101,25 @@ namespace Ephemeral
             ImGui::PushID( *module );
 
             ImGuiWindowFlags m_WindowFlags = ImGuiWindowFlags_None;
+
             if ( p_Module->m_Name == "EditorScene" )
             {
-                m_WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration;
-            }
+                m_WindowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 
-            if ( ImGui::Begin( p_Module->m_Name.c_str(), 0, m_WindowFlags ) )
+                ImGuiIO & io = ImGui::GetIO();
+
+                ImGui::SetNextWindowSize( ImVec2(io.DisplaySize.x, io.DisplaySize.y - 24) );
+
+                ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f); 
+                ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f); 
+            }
+            if ( ImGui::Begin( p_Module->m_Name.c_str(), nullptr, m_WindowFlags ) )
             {
                 p_Module->Update();
             }
             ImGui::End();
+
+            ImGui::PopStyleVar(2);
 
             ImGui::PopID();
         }

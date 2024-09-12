@@ -57,6 +57,16 @@ namespace Ephemeral
             RenderNewMapModal();
         }
 
+        {
+            // Get the remaining space available in the parent window
+            // ImVec2 available_space = ImGui::GetContentRegionAvail();
+
+            // Begin the child window with the available space dimensions
+            // ImGui::BeginChild( "Child Window", available_space, true );
+            ImGui::Text( "This child window fills the remaining space." );
+            // ImGui::EndChild();
+        }
+
         return UpdateStatus::UPDATE_CONTINUE;
     }
 
@@ -132,11 +142,6 @@ namespace Ephemeral
 
     void EditorScene::RenderNewMapModal()
     {
-        if ( !m_showNewMapPopup )
-        {
-            return;
-        }
-
         ImGui::OpenPopup( "Create New Map?" );
 
         ImVec2 center = ImGui::GetMainViewport()->GetCenter();

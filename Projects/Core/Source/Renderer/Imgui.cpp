@@ -19,10 +19,10 @@ namespace Ephemeral
             ImGuiIO & io = ImGui::GetIO();
             ( void ) io;
 
-            io.ConfigFlags            |= ImGuiConfigFlags_DockingEnable;
-            io.ConfigFlags            |= ImGuiDockNodeFlags_PassthruCentralNode;
-            io.ConfigFlags            |= ImGuiConfigFlags_ViewportsEnable;
-            io.ConfigDockingWithShift  = true;
+            // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+            // io.ConfigFlags            |= ImGuiConfigFlags_DockingEnable;
+            // io.ConfigFlags            |= ImGuiDockNodeFlags_PassthruCentralNode;
+            // io.ConfigDockingWithShift  = true;
 
             // Set font size and add fonts.
             auto  fontPath = ( Global::GetCoreAssetPath() / "Fonts\\OpenSans\\OpenSans-Regular.ttf" ).string();
