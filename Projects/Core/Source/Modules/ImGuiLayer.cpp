@@ -38,19 +38,29 @@ namespace Ephemeral
         return true;
     }
 
-    UpdateStatus ImGuiLayer::PreUpdate()
+    bool ImGuiLayer::CleanUp()
     {
-        return UpdateStatus::UPDATE_CONTINUE;
+        m_GameScene->CleanUp();
+        delete m_GameScene;
+        m_GameScene = nullptr;
+
+        return true;
     }
 
-    UpdateStatus ImGuiLayer::PostUpdate()
+    UpdateStatus ImGuiLayer::PreUpdate()
     {
+        Ephemeral::Imgui::NewFrame();
+
+        for ( Module * layer : m_Layers )
+        {
+            layer->PreUpdate();
+        }
+
         return UpdateStatus::UPDATE_CONTINUE;
     }
 
     UpdateStatus ImGuiLayer::Update()
     {
-        Ephemeral::Imgui::NewFrame();
         {
             for ( Module * layer : m_Layers )
             {
@@ -62,18 +72,20 @@ namespace Ephemeral
                 m_GameScene->Update();
             }
         }
-        Ephemeral::Imgui::RenderFrame();
 
         return UpdateStatus::UPDATE_CONTINUE;
     }
 
-    bool ImGuiLayer::CleanUp()
+    UpdateStatus ImGuiLayer::PostUpdate()
     {
-        m_GameScene->CleanUp();
-        delete m_GameScene;
-        m_GameScene = nullptr;
+        for ( Module * layer : m_Layers )
+        {
+            layer->PostUpdate();
+        }
 
-        return true;
+        Ephemeral::Imgui::RenderFrame();
+
+        return UpdateStatus::UPDATE_CONTINUE;
     }
 
     void ImGuiLayer::PushLayer( Module * layer )
