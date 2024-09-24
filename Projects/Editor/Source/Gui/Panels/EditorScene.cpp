@@ -2,12 +2,14 @@
 
 #include <Core/Application.h>
 
+#include <Util/Math/ImVec.h>
+
 #include <Renderer/Imgui.h>
 
 #include "Gui/Fonts/IconsFontAwesome5.h"
 #include "Gui/Fonts/IconsFontAwesome5Brands.h"
 
-#include "Gui/Panels/Scene.h"
+#include "Gui/Panels/EditorScene.h"
 
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -57,14 +59,30 @@ namespace Ephemeral
             RenderNewMapModal();
         }
 
+        // Render additional GUI panels and whatever.
         {
-            // Get the remaining space available in the parent window
-            // ImVec2 available_space = ImGui::GetContentRegionAvail();
-
             // Begin the child window with the available space dimensions
-            // ImGui::BeginChild( "Child Window", available_space, true );
+            // ImGui::BeginChild( "Child Window", ImGui::GetContentRegionAvail(), true );
             // ImGui::Text( "This child window fills the remaining space." );
             // ImGui::EndChild();
+        }
+
+        // Render map scene.
+        {
+            {
+                ImGui::PushClipRect( ImGui::GetWindowPos(), ImGui::GetWindowPos() + ImGui::GetWindowSize(), false );
+                ImGui::SetCursorScreenPos( ImGui::GetWindowPos() + ImVec2( 0.f, 0.f ) );
+
+                auto windowSize = ImGui::GetContentRegionAvail() + ImVec2( 8.f, 8.f );
+
+                m_Viewport->UpdateSize( ( int ) windowSize.x, ( int ) windowSize.y );
+                m_Viewport->Update();
+                m_Viewport->Blit();
+
+                ImGui::Image( ( ImTextureID ) m_Viewport->GetTexture(), windowSize, ImVec2( 0, 0 ), ImVec2( 1, -1 ) );
+
+                ImGui::PopClipRect();
+            }
         }
 
         return UpdateStatus::UPDATE_CONTINUE;
@@ -82,6 +100,7 @@ namespace Ephemeral
     void EditorScene::RenderSceneMenuBar()
     {
         ImGui::PushStyleVar( ImGuiStyleVar_WindowBorderSize, 0.0f );
+        ImGui::PushStyleVar( ImGuiStyleVar_FramePadding, ImVec2( 8.0f, 8.f ) );
 
         if ( ImGui::BeginMainMenuBar() )
         {
@@ -137,7 +156,7 @@ namespace Ephemeral
             ImGui::EndMainMenuBar();
         }
 
-        ImGui::PopStyleVar();
+        ImGui::PopStyleVar( 2 );
     }
 
     void EditorScene::RenderNewMapModal()

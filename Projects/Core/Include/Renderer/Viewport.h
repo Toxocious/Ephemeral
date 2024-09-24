@@ -45,7 +45,7 @@ namespace Ephemeral
         unsigned int GetTexture() const;
 
     public:
-        float    m_Color[3] = { .2f, .2f, .2f };
+        float    m_Color[3] = { 0.2f, 0.3f, 0.5f };
         Camera * m_Camera   = nullptr;
 
     private:

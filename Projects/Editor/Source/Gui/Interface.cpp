@@ -7,7 +7,7 @@
 #include "Gui/Fonts/IconsFontAwesome5.h"
 #include "Gui/Fonts/IconsFontAwesome5Brands.h"
 
-#include "Gui/Panels/Scene.h"
+#include "Gui/Panels/EditorScene.h"
 
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -94,6 +94,8 @@ namespace Ephemeral
     {
         // PrepareDockspace();
 
+        int ImguiStylePushes = 0;
+
         for ( auto module = m_GuiModules.begin(); module != m_GuiModules.end(); ++module )
         {
             auto p_Module = ( *module );
@@ -104,22 +106,33 @@ namespace Ephemeral
 
             if ( p_Module->m_Name == "EditorScene" )
             {
-                m_WindowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+                m_WindowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_MenuBar;
 
                 ImGuiIO & io = ImGui::GetIO();
 
-                ImGui::SetNextWindowSize( ImVec2(io.DisplaySize.x, io.DisplaySize.y - 24) );
+                ImGui::SetNextWindowSize( ImVec2( io.DisplaySize.x, io.DisplaySize.y ) );
+                ImGui::SetNextWindowPos( ImVec2( 0.f, 34.f ) );
 
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f); 
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f); 
+                ImGui::PushStyleVar( ImGuiStyleVar_WindowRounding, 0.0f );
+                ImGui::PushStyleVar( ImGuiStyleVar_WindowBorderSize, 0.0f );
+
+                ImguiStylePushes = 2;
             }
+            else
+            {
+                ImguiStylePushes = 0;
+            }
+
             if ( ImGui::Begin( p_Module->m_Name.c_str(), nullptr, m_WindowFlags ) )
             {
                 p_Module->Update();
             }
             ImGui::End();
 
-            ImGui::PopStyleVar(2);
+            if ( ImguiStylePushes > 0 )
+            {
+                ImGui::PopStyleVar( 2 );
+            }
 
             ImGui::PopID();
         }
