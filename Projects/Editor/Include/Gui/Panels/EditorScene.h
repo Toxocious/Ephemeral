@@ -39,6 +39,8 @@ namespace Ephemeral
         void RenderSceneMenuBar();
         void RenderNewMapModal();
 
+        void RenderToolButtons();
+
     private:
         Viewport * m_Viewport = nullptr;
 

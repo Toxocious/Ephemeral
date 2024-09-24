@@ -61,6 +61,8 @@ namespace Ephemeral
 
         // Render additional GUI panels and whatever.
         {
+            RenderToolButtons();
+
             // Begin the child window with the available space dimensions
             // ImGui::BeginChild( "Child Window", ImGui::GetContentRegionAvail(), true );
             // ImGui::Text( "This child window fills the remaining space." );
@@ -100,6 +102,7 @@ namespace Ephemeral
     void EditorScene::RenderSceneMenuBar()
     {
         ImGui::PushStyleVar( ImGuiStyleVar_WindowBorderSize, 0.0f );
+        ImGui::PushStyleVar( ImGuiStyleVar_FrameRounding, 10.0f );
         ImGui::PushStyleVar( ImGuiStyleVar_FramePadding, ImVec2( 8.0f, 8.f ) );
 
         if ( ImGui::BeginMainMenuBar() )
@@ -156,7 +159,7 @@ namespace Ephemeral
             ImGui::EndMainMenuBar();
         }
 
-        ImGui::PopStyleVar( 2 );
+        ImGui::PopStyleVar( 3 );
     }
 
     void EditorScene::RenderNewMapModal()
@@ -185,5 +188,38 @@ namespace Ephemeral
 
             ImGui::EndPopup();
         }
+    }
+
+    void EditorScene::RenderToolButtons()
+    {
+        ImGui::PushStyleVar( ImGuiStyleVar_FrameRounding, 4.0f );
+        ImGui::PushStyleVar( ImGuiStyleVar_FramePadding, ImVec2( 4.0f, 4.f ) );
+
+        ImGui::SetNextWindowPos( ImVec2( 10, 40 ), ImGuiCond_Always );
+        ImGui::SetNextWindowBgAlpha( 0.0f );
+
+        if ( ImGui::Begin( "Editor Tool Buttons", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) )
+        {
+            if ( ImGui::Button( "Paint" ) )
+            {
+                // Button action
+            }
+            if ( ImGui::Button( "Erase" ) )
+            {
+                // Button action
+            }
+            if ( ImGui::Button( "NPC" ) )
+            {
+                // Button action
+            }
+            if ( ImGui::Button( "Settings" ) )
+            {
+                // Button action
+            }
+
+            ImGui::End();
+        }
+
+        ImGui::PopStyleVar( 2 );
     }
 }
