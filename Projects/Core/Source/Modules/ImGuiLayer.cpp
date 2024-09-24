@@ -21,29 +21,16 @@ namespace Ephemeral
 
     bool ImGuiLayer::Initialize()
     {
-        EPH_CORE_TRACE( "Initializing ImGuiLayer" );
-        {
-            m_GameScene = new GameScene();
-            m_GameScene->Initialize();
-        }
-        EPH_CORE_INFO( "ImGuiLayer initialized" );
-
         return true;
     }
 
     bool ImGuiLayer::Start()
     {
-        m_GameScene->Start();
-
         return true;
     }
 
     bool ImGuiLayer::CleanUp()
     {
-        m_GameScene->CleanUp();
-        delete m_GameScene;
-        m_GameScene = nullptr;
-
         return true;
     }
 
@@ -64,11 +51,6 @@ namespace Ephemeral
         for ( Module * layer : m_Layers )
         {
             layer->Update();
-        }
-
-        if ( m_GameScene != nullptr )
-        {
-            m_GameScene->Update();
         }
 
         Ephemeral::Imgui::RenderFrame();

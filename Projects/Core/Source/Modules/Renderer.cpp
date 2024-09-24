@@ -116,7 +116,7 @@ namespace Ephemeral
 
     Viewport * Renderer::CreateViewport( const char * name )
     {
-        Viewport * viewport = new Viewport();
+        Viewport * viewport = new Viewport( name );
         viewport->m_Camera  = App->m_SceneCamera->CreateCamera( name );
 
         m_Viewports[name] = viewport;

@@ -19,7 +19,6 @@ namespace Ephemeral
     EditorScene::EditorScene( bool enabled )
         : Module( "EditorScene", enabled )
     {
-        // m_WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration;
     }
 
     EditorScene::~EditorScene()
@@ -29,7 +28,7 @@ namespace Ephemeral
 
     bool EditorScene::Initialize()
     {
-        m_Viewport = App->m_Renderer->CreateViewport( "EditorSceneViewport" );
+        m_Viewport = App->m_Renderer->CreateViewport( "Scene" );
 
         m_Viewport->m_Camera->isActive = true;
 
@@ -102,7 +101,6 @@ namespace Ephemeral
     void EditorScene::RenderSceneMenuBar()
     {
         ImGui::PushStyleVar( ImGuiStyleVar_WindowBorderSize, 0.0f );
-        ImGui::PushStyleVar( ImGuiStyleVar_FrameRounding, 10.0f );
         ImGui::PushStyleVar( ImGuiStyleVar_FramePadding, ImVec2( 8.0f, 8.f ) );
 
         if ( ImGui::BeginMainMenuBar() )
@@ -159,7 +157,7 @@ namespace Ephemeral
             ImGui::EndMainMenuBar();
         }
 
-        ImGui::PopStyleVar( 3 );
+        ImGui::PopStyleVar( 2 );
     }
 
     void EditorScene::RenderNewMapModal()

@@ -39,15 +39,21 @@ namespace Ephemeral
         if ( m_SceneViewport == nullptr )
         {
             m_SceneViewport = App->m_Renderer->GetViewport( "Scene" );
+
+            if ( m_SceneViewport == nullptr )
+            {
+                // EPH_CORE_WARN( "Couldn't get scene viewport for scene '{0}'.", "Scene" );
+                return UpdateStatus::UPDATE_CONTINUE;
+            }
         }
+
+        // EPH_CORE_WARN( "Updating Scene '{0}'.", "Scene" );
 
         m_SceneViewport->Begin();
 
-        {
-            static auto shader = App->m_Renderer->GetShader( "Default" );
-            shader->Use();
-            shader->SetMat4( "model", float4x4::identity );
-        }
+        static auto shader = App->m_Renderer->GetShader( "Default" );
+        shader->Use();
+        shader->SetMat4( "model", float4x4::identity );
 
         m_SceneViewport->End();
 

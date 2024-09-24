@@ -8,9 +8,10 @@
 
 namespace Ephemeral
 {
-    Viewport::Viewport()
+    Viewport::Viewport( const char * name )
+        : m_Name( name )
     {
-        EPH_CORE_TRACE( "Viewport constructed." );
+        EPH_CORE_INFO( "Viewport '{0}' constructed.", name );
 
         glGenFramebuffers( 1, &m_ID[FBO_MS] );
         glBindFramebuffer( GL_FRAMEBUFFER, m_ID[FBO_MS] );

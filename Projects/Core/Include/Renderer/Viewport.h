@@ -20,7 +20,7 @@ namespace Ephemeral
         // friend class Scene;
 
     public:
-        Viewport();
+        Viewport( const char * name );
         ~Viewport();
 
         void Begin() const;
@@ -45,8 +45,9 @@ namespace Ephemeral
         unsigned int GetTexture() const;
 
     public:
-        float    m_Color[3] = { 0.2f, 0.3f, 0.5f };
-        Camera * m_Camera   = nullptr;
+        std::string m_Name;
+
+        Camera * m_Camera = nullptr;
 
     private:
         IntegerUtil m_Size;
@@ -62,6 +63,8 @@ namespace Ephemeral
         };
 
         unsigned int m_ID[6];
+
+        float m_Color[3] = { 0.2f, 0.3f, 0.5f };
     };
 }
 
