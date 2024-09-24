@@ -36,9 +36,6 @@ namespace Ephemeral
             return false;
         }
 
-        auto height = App->m_Window->GetHeight();
-        auto width  = App->m_Window->GetWidth();
-
         // glfwSwapInterval( 0 );
 
         // // Enable depth testing.
@@ -65,7 +62,7 @@ namespace Ephemeral
 
     UpdateStatus Renderer::PreUpdate()
     {
-        glClearColor( 0.15f, 0.15f, 0.15f, 1.0f );
+        glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
         for ( auto viewport = m_Viewports.begin(); viewport != m_Viewports.end(); ++viewport )

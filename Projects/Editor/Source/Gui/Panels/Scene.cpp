@@ -63,7 +63,7 @@ namespace Ephemeral
 
             // Begin the child window with the available space dimensions
             // ImGui::BeginChild( "Child Window", available_space, true );
-            ImGui::Text( "This child window fills the remaining space." );
+            // ImGui::Text( "This child window fills the remaining space." );
             // ImGui::EndChild();
         }
 

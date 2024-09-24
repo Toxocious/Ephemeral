@@ -80,6 +80,13 @@ namespace Ephemeral
 
     void SceneCamera::UpdateShaders( Camera * camera )
     {
+        auto defaultShader = App->m_Renderer->GetShader( "Default" );
+        defaultShader->Use();
+        defaultShader->SetMat4( "model", float4x4::identity );
+        defaultShader->SetMat4( "view", camera->frustum.ViewMatrix() );
+        defaultShader->SetMat4( "projection", camera->frustum.ProjectionMatrix() );
+        defaultShader->SetVec3( "lightPos", camera->frustum.Pos() );
+
         auto gridShader = App->m_Renderer->GetShader( "Grid" );
         gridShader->Use();
         gridShader->SetMat4( "view", camera->frustum.ViewMatrix() );
