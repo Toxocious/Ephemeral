@@ -60,8 +60,6 @@ namespace Ephemeral
 
         // Render additional GUI panels and whatever.
         {
-            RenderToolButtons();
-
             // Begin the child window with the available space dimensions
             // ImGui::BeginChild( "Child Window", ImGui::GetContentRegionAvail(), true );
             // ImGui::Text( "This child window fills the remaining space." );
@@ -85,6 +83,9 @@ namespace Ephemeral
                 ImGui::PopClipRect();
             }
         }
+
+        // Editor tool buttons.
+        RenderToolButtons();
 
         return UpdateStatus::UPDATE_CONTINUE;
     }
@@ -196,7 +197,7 @@ namespace Ephemeral
         ImGui::SetNextWindowPos( ImVec2( 10, 40 ), ImGuiCond_Always );
         ImGui::SetNextWindowBgAlpha( 0.0f );
 
-        if ( ImGui::Begin( "Editor Tool Buttons", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings ) )
+        if ( ImGui::Begin( "Editor Tool Buttons", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNavFocus ) )
         {
             if ( ImGui::Button( "Paint" ) )
             {
@@ -214,9 +215,8 @@ namespace Ephemeral
             {
                 // Button action
             }
-
-            ImGui::End();
         }
+        ImGui::End();
 
         ImGui::PopStyleVar( 2 );
     }
