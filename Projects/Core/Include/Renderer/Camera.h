@@ -53,6 +53,9 @@ namespace Ephemeral
 
         Frustum frustum;
 
+        float m_Near = 0.1f;
+        float m_Far  = 1000.f;
+
     private:
         const char * m_ID = "";
 

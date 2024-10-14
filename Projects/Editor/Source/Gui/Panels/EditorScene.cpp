@@ -68,20 +68,18 @@ namespace Ephemeral
 
         // Render map scene.
         {
-            {
-                ImGui::PushClipRect( ImGui::GetWindowPos(), ImGui::GetWindowPos() + ImGui::GetWindowSize(), false );
-                ImGui::SetCursorScreenPos( ImGui::GetWindowPos() + ImVec2( 0.f, 0.f ) );
+            ImGui::PushClipRect( ImGui::GetWindowPos(), ImGui::GetWindowPos() + ImGui::GetWindowSize(), false );
+            ImGui::SetCursorScreenPos( ImGui::GetWindowPos() + ImVec2( 0.f, 0.f ) );
 
-                auto windowSize = ImGui::GetContentRegionAvail() + ImVec2( 8.f, 8.f );
+            auto windowSize = ImGui::GetContentRegionAvail() + ImVec2( 8.f, 8.f );
 
-                m_Viewport->UpdateSize( ( int ) windowSize.x, ( int ) windowSize.y );
-                m_Viewport->Update();
-                m_Viewport->Blit();
+            m_Viewport->UpdateSize( ( int ) windowSize.x, ( int ) windowSize.y );
+            m_Viewport->Update();
+            m_Viewport->Blit();
 
-                ImGui::Image( ( ImTextureID ) m_Viewport->GetTexture(), windowSize, ImVec2( 0, 0 ), ImVec2( 1, -1 ) );
+            ImGui::Image( ( ImTextureID ) m_Viewport->GetTexture(), windowSize, ImVec2( 0, 0 ), ImVec2( 1, -1 ) );
 
-                ImGui::PopClipRect();
-            }
+            ImGui::PopClipRect();
         }
 
         // Editor tool buttons.
@@ -134,9 +132,11 @@ namespace Ephemeral
             Ephemeral::Imgui::TextCentered( "New Map" );
 
             // Right aligned menu objects
-            ImGui::SetCursorPosX( ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 60.f );
+            ImGui::SetCursorPosX( ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 120.f );
             {
                 // ImGui::Text( "beep" );
+                auto SceneCamera = App->m_SceneCamera->GetCamera( "Scene" )->frustum.Pos();
+                ImGui::Text( "%.2f, %.2f, %.2f", SceneCamera.x, SceneCamera.y, SceneCamera.z );
             }
 
             // Custom bottom border line.
@@ -192,32 +192,42 @@ namespace Ephemeral
     void EditorScene::RenderToolButtons()
     {
         ImGui::PushStyleVar( ImGuiStyleVar_FrameRounding, 4.0f );
-        ImGui::PushStyleVar( ImGuiStyleVar_FramePadding, ImVec2( 4.0f, 4.f ) );
+
+        float OriginalSize       = ImGui::GetFont()->Scale;
+        ImGui::GetFont()->Scale *= 1.75;
+        ImGui::PushFont( ImGui::GetFont() );
 
         ImGui::SetNextWindowPos( ImVec2( 10, 40 ), ImGuiCond_Always );
         ImGui::SetNextWindowBgAlpha( 0.0f );
 
         if ( ImGui::Begin( "Editor Tool Buttons", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNavFocus ) )
         {
-            if ( ImGui::Button( "Paint" ) )
+            ImGui::PushStyleVar( ImGuiStyleVar_FramePadding, ImVec2( 8.0f, 4.f ) );
+
+            if ( ImGui::Button( ICON_FA_PAINT_BRUSH ) )
             {
                 // Button action
             }
-            if ( ImGui::Button( "Erase" ) )
+            if ( ImGui::Button( ICON_FA_ERASER ) )
             {
                 // Button action
             }
-            if ( ImGui::Button( "NPC" ) )
+            if ( ImGui::Button( ICON_FA_USER ) )
             {
                 // Button action
             }
-            if ( ImGui::Button( "Settings" ) )
+            if ( ImGui::Button( ICON_FA_COG ) )
             {
                 // Button action
             }
+
+            ImGui::PopStyleVar();
         }
         ImGui::End();
 
-        ImGui::PopStyleVar( 2 );
+        ImGui::GetFont()->Scale = OriginalSize;
+        ImGui::PopFont();
+
+        ImGui::PopStyleVar();
     }
 }

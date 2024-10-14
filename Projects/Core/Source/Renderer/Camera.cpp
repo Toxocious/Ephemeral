@@ -11,7 +11,7 @@ namespace Ephemeral
     Camera::Camera( const char * id )
         : m_ID( id )
     {
-        frustum.SetFrame( { 2.f, 7.f, -10.f }, float3::unitZ, float3::unitY );
+        frustum.SetFrame( { 0.f, 0.f, -20.f }, float3::unitZ, float3::unitY );
         frustum.SetKind( FrustumProjectiveSpace::FrustumSpaceGL, FrustumHandedness::FrustumLeftHanded );
         frustum.SetViewPlaneDistances( 0.1f, 1000.f );
 
@@ -24,14 +24,6 @@ namespace Ephemeral
 
     void Camera::CameraMovement()
     {
-        // No movement if ImGui is capturing input devices.
-        ImGuiIO & io = ImGui::GetIO();
-        ( void ) io;
-        if ( io.WantCaptureKeyboard || io.WantCaptureMouse )
-        {
-            return;
-        }
-
         // No movement if we can't get the active glfw window.
         auto window = App->m_Window->GetGLFWWindow();
         if ( window == nullptr )
@@ -65,6 +57,8 @@ namespace Ephemeral
                 frustum.Translate( -frustum.Front().Cross( frustum.Up() ) * m_MoveSpeed * App->GetDeltaTime() );
             }
         }
+
+        // EPH_CORE_INFO( "Camera '{3}' Position: {0}, {1}, {2}", frustum.Pos().x, frustum.Pos().y, frustum.Pos().z, m_ID );
     }
 
     void Camera::UpdateFrustum( int sizeX, int sizeY )

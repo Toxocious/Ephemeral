@@ -19,12 +19,27 @@ namespace Ephemeral
 
     void OpenGLUtils::OldDrawLines( const float3 & begin, const float3 & end )
     {
-        // glBegin( GL_LINES );
+        float vertices[] = {
+            begin.x,
+            begin.y,
+            begin.z,
+            end.x,
+            end.y,
+            end.z
+        };
 
-        // glVertex3f( begin.x, begin.y, begin.z );
-        // glVertex3f( end.x, end.y, end.z );
+        unsigned int id = 0;
+        unsigned int VAO, VBO;
+        GenVAO( VAO );
+        GenArrayBuffer( VBO, 2, sizeof( float ), 3, vertices, 0, 3 );
 
-        // glEnd();
+        BindBuffers( VAO, VBO, id );
+
+        glDrawArrays( GL_LINES, 0, 2 );
+
+        UnBindBuffers();
+
+        DeleteVAO( VAO, VBO, id );
     }
 
     /**
@@ -144,8 +159,8 @@ namespace Ephemeral
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FilterEnumToGLEnum( filter ) );
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, FilterEnumToGLEnum( filter ) );
 
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB8, size_x, size_y, 0, GL_RGB, GL_UNSIGNED_BYTE, data );
 

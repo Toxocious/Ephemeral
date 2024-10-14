@@ -140,7 +140,6 @@ namespace Ephemeral
                 EPH_CORE_TRACE( "\t\tCompiling and linking shader '{0}'", shaderFolder->name.c_str() );
 
                 Shader * shader = new Shader();
-                shader->SetName( shaderFolder->name.c_str() );
 
                 unsigned int vertexObject   = -1;
                 unsigned int fragmentObject = -1;
@@ -166,6 +165,7 @@ namespace Ephemeral
 
                 if ( vertexObject != -1 && fragmentObject != -1 )
                 {
+                    shader->SetName( shaderFolder->name.c_str() );
                     shader->Link( vertexObject, fragmentObject );
                     m_Programs[shaderFolder->name.c_str()] = shader;
 

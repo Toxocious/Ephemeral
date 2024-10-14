@@ -15,10 +15,6 @@ namespace Ephemeral
 {
     class Viewport
     {
-        friend class Renderer;
-        friend class Camera;
-        // friend class Scene;
-
     public:
         Viewport( const char * name );
         ~Viewport();
@@ -27,11 +23,6 @@ namespace Ephemeral
         void End() const;
 
         void Clear();
-
-        void RenderOnImGui();
-
-        void DrawGrid();
-        bool m_ShowGrid = true;
 
         inline Camera * GetCamera() const
         {
@@ -45,7 +36,16 @@ namespace Ephemeral
         unsigned int GetTexture() const;
 
     public:
+        void RenderOnImGui();
+
+        void DrawGrid();
+
+        void DrawTriangle();
+
+    public:
         std::string m_Name;
+
+        bool m_ShowGrid = true;
 
         Camera * m_Camera = nullptr;
 
@@ -64,7 +64,7 @@ namespace Ephemeral
 
         unsigned int m_ID[6];
 
-        float m_Color[3] = { 0.2f, 0.3f, 0.5f };
+        float m_Color[3] = { 0.269f, 0.420f, 0.625f };
     };
 }
 
