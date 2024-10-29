@@ -18,6 +18,9 @@ workspace "Ephemeral"
         files { 'Projects/Core/Assets/Resources.rc', '**.ico' }
         vpaths { [ 'Projects/Core/Assets/*' ] = { '**.ico' } }
 
+    -- Debug Configuration
+    --      Doesn't optimize or strip any symbols.
+    --      Should obviously not be released to the public.
 	filter { "configurations:Debug" }
         defines {
             "EPH_DEBUG",
@@ -30,6 +33,9 @@ workspace "Ephemeral"
         optimize "Debug"
 		symbols "Full"
 
+    -- Release Configuration
+    --      Does optimize, but doesn't strip any symbols.
+    --      Should not be released to the public.
 	filter { "configurations:Release" }
         defines {
             "EPH_RELEASE",
@@ -42,6 +48,9 @@ workspace "Ephemeral"
         optimize "Off"
         symbols "On"
 
+    -- Distributable Configuration
+    --      Optimizes and strips out all symbols.
+    --      Should be released to the public.
     filter { "configurations:Dist" }
         defines {
             "EPH_DIST",
@@ -56,12 +65,13 @@ workspace "Ephemeral"
 
     filter {}
 
+    -- Binary and Object paths for the compiled/built project.
     targetdir ("Build/Binaries/%{prj.name}/%{cfg.longname}")
-	objdir ("Build/Artifacts/%{prj.name}/%{cfg.longname}")
+    objdir ("Build/Artifacts/%{prj.name}/%{cfg.longname}")
 
     -- Post build commands
-    --   1. Make the asset directory in the build folder if it doesn't exist.
-    --   2. Copy all usable assets to the build/assets folder.
+    --      1. Make the asset directory in the build folder if it doesn't exist.
+    --      2. Copy all usable assets to the build/assets folder.
     local BinaryDir = "..\\Build\\Binaries\\%{prj.name}\\%{cfg.longname}"
     local ObjectDir = "..\\Build\\Artifacts\\%{prj.name}\\%{cfg.longname}"
 
@@ -74,5 +84,7 @@ workspace "Ephemeral"
     }
 
     -- Our project-specific premake configurations
+    --      1. Core static lib configuration
+    --      2. Editor executable configuration
     include "Build-Core.lua"
     include "Build-Editor.lua"
