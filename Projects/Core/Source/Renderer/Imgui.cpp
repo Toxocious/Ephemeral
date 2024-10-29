@@ -25,7 +25,7 @@ namespace Ephemeral
             // io.ConfigDockingWithShift  = true;
 
             // Set font size and add fonts.
-            auto  fontPath = ( Global::GetCoreAssetPath() / "Fonts\\OpenSans\\OpenSans-Regular.ttf" ).string();
+            auto  fontPath = ( FileSystem::GetCoreAssetPath() / "Fonts\\OpenSans\\OpenSans-Regular.ttf" ).string();
             float fontSize = 18.0f;
             io.Fonts->AddFontFromFileTTF( fontPath.c_str(), fontSize );
             io.FontDefault = io.Fonts->AddFontFromFileTTF( fontPath.c_str(), fontSize );

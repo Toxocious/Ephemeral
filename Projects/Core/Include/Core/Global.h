@@ -10,7 +10,6 @@ namespace Ephemeral
     class Global
     {
     public:
-        static std::filesystem::path GetCoreAssetPath();
     };
 }
 

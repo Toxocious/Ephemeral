@@ -8,8 +8,8 @@
 
 #    include <Core/Ephemeral.h>
 
-#    define FONT_ICON_FILE_NAME_FAR ( Ephemeral::Global::GetCoreAssetPath() / "Fonts/FontAwesome/fa-regular-400.ttf" ).string()
-#    define FONT_ICON_FILE_NAME_FAS ( Ephemeral::Global::GetCoreAssetPath() / "Fonts/FontAwesome/fa-solid-900.ttf" ).string()
+#    define FONT_ICON_FILE_NAME_FAR ( Ephemeral::FileSystem::GetCoreAssetPath() / "Fonts/FontAwesome/fa-regular-400.ttf" ).string()
+#    define FONT_ICON_FILE_NAME_FAS ( Ephemeral::FileSystem::GetCoreAssetPath() / "Fonts/FontAwesome/fa-solid-900.ttf" ).string()
 
 #    define ICON_MIN_FA                                 0xf000
 #    define ICON_MAX_FA                                 0xf976

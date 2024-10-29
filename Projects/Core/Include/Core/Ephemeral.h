@@ -68,6 +68,7 @@
 #    include <Core/Global.h>
 
 #    include <Util/Assert.h>
+#    include <Util/FileSystem.h>
 #    include <Util/Log.h>
 #    include <Util/Macro.h>
 #endif

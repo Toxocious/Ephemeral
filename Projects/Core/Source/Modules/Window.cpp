@@ -49,7 +49,7 @@ namespace Ephemeral
         }
 
         int  iconWidth, iconHeight, channels;
-        auto iconFilePath = ( Global::GetCoreAssetPath() / "Ephemeral.png" ).string();
+        auto iconFilePath = ( FileSystem::GetCoreAssetPath() / "Ephemeral.png" ).string();
         m_WindowIcon      = stbi_load( iconFilePath.c_str(), &iconWidth, &iconHeight, &channels, 0 );
 
         if ( m_WindowIcon != nullptr )
