@@ -77,8 +77,10 @@ Each part of the project contains a README containing further information about 
 │   ├── glad/
 │   ├── glfw/
 │   ├── glm/
-│   └── imgui/
+│   ├── imgui/
+│   ├── mathgeolib/
 │   ├── spdlog/
+│   ├── stb_image/
 ├── Projects/
 │   ├── Core/
 │   │   └── Include/
