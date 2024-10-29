@@ -56,8 +56,22 @@ workspace "Ephemeral"
 
     filter {}
 
-	targetdir ("Build/Binaries/%{prj.name}/%{cfg.longname}")
+    targetdir ("Build/Binaries/%{prj.name}/%{cfg.longname}")
 	objdir ("Build/Artifacts/%{prj.name}/%{cfg.longname}")
+
+    -- Post build commands
+    --   1. Make the asset directory in the build folder if it doesn't exist.
+    --   2. Copy all usable assets to the build/assets folder.
+    local BinaryDir = "..\\Build\\Binaries\\%{prj.name}\\%{cfg.longname}"
+    local ObjectDir = "..\\Build\\Artifacts\\%{prj.name}\\%{cfg.longname}"
+
+    local LocalAssetDir = "..\\..\\Projects\\Core\\Assets\\"
+    local BuildAssetDir = "..\\..\\Build\\Binaries\\Editor\\%{cfg.longname}\\Assets"
+
+    postbuildcommands {
+        "{MKDIR} " .. BuildAssetDir,
+        "{COPYDIR} " .. LocalAssetDir .. " " .. BuildAssetDir
+    }
 
     -- Our project-specific premake configurations
     include "Build-Core.lua"
