@@ -40,8 +40,7 @@ workspace "Ephemeral"
         }
         runtime "Release"
         optimize "Off"
-        -- optimize "On"
-        -- symbols "On"
+        symbols "On"
 
     filter { "configurations:Dist" }
         defines {
@@ -53,8 +52,7 @@ workspace "Ephemeral"
         }
         runtime "Release"
         optimize "Off"
-        -- optimize "On"
-        -- symbols "Off"
+        symbols "Off"
 
     filter {}
 
