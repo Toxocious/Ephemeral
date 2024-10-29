@@ -54,7 +54,7 @@ namespace Ephemeral
         }
         catch ( const char * exception )
         {
-            EPH_CORE_ERROR( "Failed to read shader '{0]' - {1]", filepath, exception );
+            EPH_CORE_ERROR( "Failed to read shader '{0}' - {1}", filepath, exception );
 
             return shaderCreated;
         }
@@ -84,6 +84,30 @@ namespace Ephemeral
     }
 
     /**
+     * Set the Shader's identifier (name).
+     */
+    void Shader::SetName( const char * name )
+    {
+        m_Identifier.assign( name );
+    }
+
+    /**
+     * Returns the ID of the shader.
+     */
+    unsigned int Shader::GetID() const
+    {
+        return m_ID;
+    }
+
+    /**
+     * Returns the shader's identifier (name).
+     */
+    std::string Shader::GetIdentifier() const
+    {
+        return m_Identifier;
+    }
+
+    /**
      * Sets a property of the Shader to a boolean.
      */
     void Shader::SetBool( const char * name, bool value )
@@ -100,6 +124,56 @@ namespace Ephemeral
             {
                 uniform_cache[name] = loc;
                 glUniform1i( loc, value );
+            }
+            else
+            {
+                EPH_CORE_WARN( "Variable {0} not found in {1} shader", name, m_Identifier.c_str() );
+            }
+        }
+    }
+
+    /**
+     * Sets a property of the Shader to a float.
+     */
+    void Shader::SetInt( const char * name, int value )
+    {
+        auto it = uniform_cache.find( name );
+        if ( it != uniform_cache.end() )
+        {
+            glUniform1i( ( *it ).second, value );
+        }
+        else
+        {
+            int loc = glGetUniformLocation( m_ID, name );
+            if ( loc != -1 )
+            {
+                uniform_cache[name] = loc;
+                glUniform1i( loc, value );
+            }
+            else
+            {
+                EPH_CORE_WARN( "Variable {0} not found in {1} shader", name, m_Identifier.c_str() );
+            }
+        }
+    }
+
+    /**
+     * Sets a property of the Shader to a float.
+     */
+    void Shader::SetFloat( const char * name, float value )
+    {
+        auto it = uniform_cache.find( name );
+        if ( it != uniform_cache.end() )
+        {
+            glUniform1f( ( *it ).second, value );
+        }
+        else
+        {
+            int loc = glGetUniformLocation( m_ID, name );
+            if ( loc != -1 )
+            {
+                uniform_cache[name] = loc;
+                glUniform1f( loc, value );
             }
             else
             {
@@ -184,30 +258,6 @@ namespace Ephemeral
     }
 
     /**
-     * Set the Shader's identifier (name).
-     */
-    void Shader::SetName( const char * name )
-    {
-        m_Identifier.assign( name );
-    }
-
-    /**
-     * Returns the ID of the shader.
-     */
-    unsigned int Shader::GetID() const
-    {
-        return m_ID;
-    }
-
-    /**
-     * Returns the shader's identifier (name).
-     */
-    std::string Shader::GetIdentifier() const
-    {
-        return m_Identifier;
-    }
-
-    /**
      * Checks for any errors during shader compilation.
      */
     void Shader::CheckCompileErrors( unsigned int shader, ShaderType type )
@@ -218,18 +268,22 @@ namespace Ephemeral
         if ( type == ShaderType::PROGRAM )
         {
             glGetProgramiv( shader, GL_LINK_STATUS, &success );
+
             if ( !success )
             {
                 glGetProgramInfoLog( shader, 1024, NULL, infoLog );
+
                 EPH_CORE_ERROR( "Failed to link a shader program: '{0}'", infoLog );
             }
         }
         else
         {
             glGetShaderiv( shader, GL_COMPILE_STATUS, &success );
+
             if ( !success )
             {
                 glGetShaderInfoLog( shader, 1024, NULL, infoLog );
+
                 if ( type == ShaderType::VERTEX )
                 {
                     EPH_CORE_ERROR( "Failed to compile a vertex shader: '{0}'", infoLog );
